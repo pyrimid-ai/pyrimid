@@ -27,7 +27,7 @@ const CONTRACTS = {
 const SUBGRAPH_URL = process.env.PYRIMID_SUBGRAPH_URL || 'https://api.studio.thegraph.com/query/pyrimid/pyrimid-base/version/latest';
 const CATALOG_URL  = process.env.NEXT_PUBLIC_BASE_URL
   ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/catalog`
-  : 'https://api.pyrimid.xyz/v1/catalog';
+  : 'https://api.pyrimid.ai/v1/catalog';
 
 // Cache
 let statsCache: { data: any; fetchedAt: number } | null = null;

@@ -87,13 +87,9 @@ export default function DashboardPage() {
       {/* Header */}
       <nav className="border-b border-[#1e2230] bg-[#08090c]/80 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="h-5 w-5 bg-gradient-to-br from-[#5eead4] to-[#c084fc]"
-                 style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
-            <span className="text-lg font-bold tracking-tight text-white">Pyrimid</span>
-            <span className="rounded-full bg-[#5eead4]/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-[#5eead4]">
-              Dashboard
-            </span>
+          <Link href="/" className="flex items-center">
+            <span style={{ color: 'var(--accent)' }} className="font-mono font-bold text-[1.2rem]">pyrimid</span>
+            <span style={{ color: 'var(--dim)' }} className="font-normal text-[.7rem] ml-2">base</span>
           </Link>
           <div className="flex items-center gap-5">
             <Link href="/docs" className="text-sm font-medium text-[#8b90a5] transition hover:text-white">Docs</Link>

@@ -20,7 +20,7 @@ export class PyrimidResolver {
 
   constructor(config: ResolverConfig) {
     this.affiliateId = config.affiliateId;
-    this.catalogUrl = config.catalogUrl || 'https://api.pyrimid.xyz/v1/catalog';
+    this.catalogUrl = config.catalogUrl || 'https://api.pyrimid.ai/v1/catalog';
     this.cacheTtlMs = config.cacheTtlMs || 5 * 60 * 1000;
     this.preferVerified = config.preferVerifiedVendors ?? true;
     this.maxPrice = config.maxPriceUsdc || 10_000_000; // $10 default

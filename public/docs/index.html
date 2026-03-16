@@ -356,7 +356,7 @@
     <a href="#api-reference">API</a>
     <a href="#contracts">Contracts</a>
     <a href="https://basescan.org/address/0x2263852363Bce16791A059c6F6fBb590f0b98c89" target="_blank">BaseScan</a>
-    <a href="https://github.com/pyrimid/sdk" target="_blank">GitHub</a>
+    <a href="https://github.com/henrimahal/pyri" target="_blank">GitHub</a>
     <a href="#quickstart" class="cta">Get Started</a>
   </div>
 </header>
@@ -460,7 +460,7 @@
   <h3>Constructor</h3>
   <pre><code><span class="kw">const</span> resolver = <span class="kw">new</span> <span class="ty">PyrimidResolver</span>({
   <span class="prop">affiliateId</span>: <span class="str">'af_your_id'</span>,          <span class="cm">// Required — your affiliate ID</span>
-  <span class="prop">catalogUrl</span>: <span class="str">'https://api.pyrimid.xyz/v1/catalog'</span>,  <span class="cm">// Optional</span>
+  <span class="prop">catalogUrl</span>: <span class="str">'https://api.pyrimid.ai/v1/catalog'</span>,  <span class="cm">// Optional</span>
   <span class="prop">cacheTtlMs</span>: <span class="num">300_000</span>,               <span class="cm">// Cache TTL (default 5 min)</span>
   <span class="prop">preferVerifiedVendors</span>: <span class="kw">true</span>,       <span class="cm">// ERC-8004 verified first</span>
   <span class="prop">maxPriceUsdc</span>: <span class="num">10_000_000</span>,          <span class="cm">// $10 max per call</span>
@@ -628,14 +628,14 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
 <!-- ═════ API REFERENCE ═════ -->
 <section id="api-reference">
   <h2>API Reference</h2>
-  <p>Base URL: <code>https://api.pyrimid.xyz</code></p>
+  <p>Base URL: <code>https://api.pyrimid.ai</code></p>
 
   <h3 id="api-catalog">GET /v1/catalog</h3>
   <p>Aggregated product catalog from all sources (onchain, Bazaar, MCPize, MCP Hive, Apify).</p>
 
   <div class="endpoint">
     <span class="method get">GET</span>
-    <span class="endpoint-url">https://api.pyrimid.xyz/v1/catalog</span>
+    <span class="endpoint-url">https://api.pyrimid.ai/v1/catalog</span>
   </div>
 
   <table>
@@ -676,7 +676,7 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
 
   <div class="endpoint">
     <span class="method get">GET</span>
-    <span class="endpoint-url">https://api.pyrimid.xyz/v1/stats</span>
+    <span class="endpoint-url">https://api.pyrimid.ai/v1/stats</span>
   </div>
 
   <table>

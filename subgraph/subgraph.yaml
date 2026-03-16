@@ -11,7 +11,7 @@ dataSources:
     source:
       address: "0x2263852363Bce16791A059c6F6fBb590f0b98c89"
       abi: PyrimidRegistry
-      startBlock: 0  # ← REPLACED BY find-deploy-block.sh
+      startBlock: 43437586
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -43,7 +43,7 @@ dataSources:
     source:
       address: "0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74"
       abi: PyrimidCatalog
-      startBlock: 0  # ← REPLACED BY find-deploy-block.sh
+      startBlock: 43437593
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -72,7 +72,7 @@ dataSources:
     source:
       address: "0x6594A6B2785b1f8505b291bDc50E017b5599aFC8"
       abi: PyrimidRouter
-      startBlock: 0  # ← REPLACED BY find-deploy-block.sh
+      startBlock: 43437600
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -98,7 +98,7 @@ dataSources:
     source:
       address: "0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908"
       abi: PyrimidTreasury
-      startBlock: 0  # ← REPLACED BY find-deploy-block.sh
+      startBlock: 43437579
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9

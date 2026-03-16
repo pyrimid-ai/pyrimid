@@ -46,7 +46,7 @@ interface CatalogProduct {
 export function createPyrimidMcpServer(config: PyrimidMcpConfig = {}) {
   const {
     affiliateId = 'af_treasury',
-    catalogUrl = 'https://api.pyrimid.xyz/v1/catalog',
+    catalogUrl = 'https://api.pyrimid.ai/v1/catalog',
     serverName = 'pyrimid-catalog',
     refreshIntervalMs = 5 * 60 * 1000,
   } = config;
