@@ -1,85 +1,142 @@
 # Pyrimid
 
-Onchain monetization infrastructure for agent-to-agent commerce on Base.
+**Onchain affiliate distribution for AI agents.**
+
+Pyrimid is a protocol on Base where vendors list digital products, AI agents register as affiliates to distribute them, and commissions settle instantly in USDC via smart contracts. 1% protocol fee on every transaction.
+
+**Not a marketplace. Not MLM. One-layer affiliate distribution with onchain commission splitting.**
+
+🌐 [pyrimid.ai](https://pyrimid.ai) · 📦 [@pyrimid/sdk](https://www.npmjs.com/package/@pyrimid/sdk) · 📄 [Docs](https://pyrimid.ai/docs)
+
+---
+
+## How It Works
+
+```
+Agent discovers product → Agent buys via x402 payment → Smart contract splits USDC:
+
+  1%        → Protocol treasury
+  5–50%     → Affiliate agent (set by vendor per product)
+  Remainder → Vendor
+```
+
+No affiliate? Vendor gets 99%, protocol gets 1%. Vendors only pay for distribution that delivers sales.
+
+## Contracts (Base Mainnet)
+
+| Contract | Address | Role |
+|----------|---------|------|
+| Registry | [`0x2263...c89`](https://basescan.org/address/0x2263852363Bce16791A059c6F6fBb590f0b98c89) | Affiliate + vendor registration, ERC-8004 identity, reputation |
+| Catalog | [`0x1ae8...E74`](https://basescan.org/address/0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74) | Product listings, pricing, commission rates |
+| Router | [`0x6594...FC8`](https://basescan.org/address/0x6594A6B2785b1f8505b291bDc50E017b5599aFC8) | Commission splitting engine |
+| Treasury | [`0xdF29...908`](https://basescan.org/address/0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908) | Protocol operations fund |
+
+## Three Integration Paths
+
+### Path 1: Embedded Resolver (highest leverage)
+Embed `PyrimidResolver` as the default service layer in your agent framework. Every agent on your stack routes purchases through Pyrimid with your affiliate ID.
+
+```typescript
+import { PyrimidResolver } from '@pyrimid/sdk';
+
+const resolver = new PyrimidResolver({ affiliateId: 'af_your_id' });
+const match = await resolver.findProduct("trading signals");
+if (match) await resolver.purchase(match, agentWallet);
+```
+
+### Path 2: MCP Server (medium leverage)
+Deploy an MCP server wrapping the Pyrimid catalog. Agents connect, browse, buy — your affiliate ID on every transaction.
+
+```typescript
+import { createPyrimidMcpServer } from '@pyrimid/sdk';
+
+const server = createPyrimidMcpServer({
+  affiliateId: 'af_your_id',
+  serverName: 'my-recommender',
+});
+```
+
+### Path 3: Vendor Middleware (for sellers)
+10 lines to activate affiliate distribution on your existing product:
+
+```typescript
+import { pyrimidMiddleware } from '@pyrimid/sdk';
+
+app.use(pyrimidMiddleware({
+  vendorId: 'vn_your_id',
+  products: {
+    'your-endpoint': { price: 250000, affiliateBps: 2000 }
+  }
+}));
+```
 
 ## Architecture
 
 ```
 pyrimid/
-├── app/                          # Next.js App Router
-│   ├── page.tsx                  # Landing page
-│   ├── dashboard/page.tsx        # Protocol dashboard (live stats)
-│   ├── api/v1/catalog/route.ts   # Aggregated product catalog API
-│   └── api/v1/stats/route.ts     # Protocol/affiliate/vendor stats API
-├── lib/
-│   └── contracts.ts              # Shared addresses, chain config, helpers
-├── public/
-│   └── docs/index.html           # Developer documentation (static)
-├── sdk/                          # @pyrimid/sdk npm package
+├── app/                    # Next.js 15 (Vercel)
+│   ├── page.tsx            # Landing page
+│   ├── dashboard/          # Protocol dashboard
+│   └── api/
+│       ├── v1/catalog/     # Aggregated product catalog (94+ products)
+│       ├── v1/stats/       # Protocol analytics
+│       └── mcp/            # MCP JSON-RPC endpoint
+├── sdk/                    # @pyrimid/sdk (npm)
 │   └── src/
-│       ├── index.ts              # Barrel export
-│       ├── types.ts              # Addresses, ABIs, interfaces
-│       ├── resolver.ts           # PyrimidResolver (Path 1)
-│       ├── mcp-server.ts         # MCP server factory (Path 2)
-│       └── middleware.ts         # Vendor middleware (Path 3)
-├── subgraph/                     # The Graph subgraph
-│   ├── schema.graphql            # Entity definitions
-│   ├── subgraph.yaml             # Manifest (all 4 contracts)
-│   └── src/mapping.ts            # Event handlers
-├── pyrimid-spec-v0.2.md          # Master specification
-├── vercel.json                   # Vercel deployment config
-└── next.config.ts                # Next.js config
+│       ├── resolver.ts     # PyrimidResolver
+│       ├── mcp-server.ts   # MCP server factory
+│       ├── middleware.ts   # Vendor middleware
+│       └── types.ts        # ABIs, addresses, interfaces
+├── subgraph/               # The Graph (Base indexer)
+│   ├── schema.graphql
+│   ├── subgraph.yaml
+│   └── src/mapping.ts
+└── lib/
+    └── contracts.ts        # Addresses + chain config
 ```
 
-## Contracts (Base Mainnet)
+## API
 
-| Contract | Address |
-|----------|---------|
-| PyrimidRegistry | `0x2263852363Bce16791A059c6F6fBb590f0b98c89` |
-| PyrimidCatalog | `0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74` |
-| PyrimidRouter | `0x6594A6B2785b1f8505b291bDc50E017b5599aFC8` |
-| PyrimidTreasury | `0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908` |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/v1/catalog` | GET | Aggregated product catalog (onchain + x402 Bazaar + MCPize + more) |
+| `/api/v1/stats` | GET | Protocol-level stats |
+| `/api/v1/stats?type=affiliate&id=af_xxx` | GET | Affiliate performance |
+| `/api/v1/stats?type=vendor&id=vn_xxx` | GET | Vendor analytics |
+| `/api/mcp` | POST | MCP JSON-RPC 2.0 (tools/list, tools/call) |
+| `/api/mcp` | GET | Server info + tool definitions |
+
+## MCP Tools
+
+| Tool | Description |
+|------|-------------|
+| `pyrimid_browse` | Search catalog by query, price, verified status |
+| `pyrimid_buy` | Purchase a product with x402 payment |
+| `pyrimid_preview` | Preview payment split without buying |
+| `pyrimid_categories` | List product categories with counts |
+| `pyrimid_register_affiliate` | Register as an affiliate |
 
 ## Setup
 
 ```bash
-# Install app dependencies
 npm install
-
-# Copy env
 cp .env.example .env
-# Fill in PYRIMID_SUBGRAPH_URL
-
-# Run dev server
 npm run dev
 ```
 
 ## Deploy
 
 ```bash
-# App → Vercel
+# App
 GIT_DIR=/dev/null npx vercel --prod --yes
 
-# SDK → npm
+# SDK
 cd sdk && npm run build && npm publish
 
-# Subgraph → The Graph Studio
-cd subgraph && npm install && npm run build && npm run deploy
+# Subgraph
+cd subgraph && npm run build && npm run deploy
 ```
 
-## API Endpoints
+## License
 
-- `GET /api/v1/catalog` — Aggregated product catalog (5 sources)
-- `GET /api/v1/stats` — Protocol stats
-- `GET /api/v1/stats?type=affiliate&id=af_xxx` — Affiliate stats
-- `GET /api/v1/stats?type=vendor&id=vn_xxx` — Vendor stats
-
-Rewrite aliases: `/v1/catalog` and `/v1/stats` also work.
-
-## Commission Split
-
-```
-1%       → Protocol treasury
-5–50%    → Affiliate (vendor sets per product)
-Remainder → Vendor
-```
+Proprietary. Contracts are public on Base. SDK, MCP server, catalog API, and aggregation logic are source-available, non-commercial.
