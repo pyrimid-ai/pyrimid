@@ -1,4 +1,5 @@
 import { CONTRACTS, CHAIN, LINKS } from '@/lib/contracts';
+import { MobileNav } from './mobile-nav';
 
 /* ═══════════════════════════════════════════════════════════
    Pyrimid Landing — production design
@@ -77,6 +78,7 @@ export default function LandingPage() {
             </a>
           ))}
         </div>
+        <MobileNav />
       </nav>
 
       {/* ═══════ HERO ═══════ */}
@@ -91,7 +93,7 @@ export default function LandingPage() {
         <div className={`${styles.hcode} fu d2`} style={{ background: 'var(--bg2)', borderColor: 'var(--border)', color: 'var(--muted)' }}>
           <span style={{ color: 'var(--accent)' }}>PyrimidRouter</span>.<span style={{ color: 'var(--blue)' }}>routePayment</span>(vendor, product, affiliate, buyer){'\n'}
           {'  '}<span style={{ color: 'var(--dim)' }}>├─</span> <span style={{ color: '#f0a040' }}>1%</span>{'  → protocol\n'}
-          {'  '}<span style={{ color: 'var(--dim)' }}>├─</span> <span style={{ color: '#f0a040' }}>X%</span>{'  → affiliate (5-50%, vendor sets)\n'}
+          {'  '}<span style={{ color: 'var(--dim)' }}>├─</span> <span style={{ color: '#f0a040' }}>5-50%</span>{' → affiliate (vendor sets)\n'}
           {'  '}<span style={{ color: 'var(--dim)' }}>└─</span> rest → vendor
         </div>
         <div className={`${styles.ctas} fu d3`}>

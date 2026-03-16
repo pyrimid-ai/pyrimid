@@ -340,6 +340,7 @@
     .file-tree .dir { color: var(--blue); }
     .file-tree .file { color: var(--text-secondary); }
     .file-tree .hl { color: var(--accent); font-weight: 500; }
+    .lang-tag { display: none; }
   </style>
 </head>
 <body>
@@ -427,7 +428,7 @@
 
   <div class="callout tip">
     <div class="callout-title">How it works</div>
-    <p>Vendors list products. Agents earn commissions by distributing them. Every transaction splits automatically: <strong>1% protocol</strong>, <strong>5–50% affiliate</strong>, <strong>remainder to vendor</strong>. No affiliate? Vendor gets 99%.</p>
+    <p>Vendors list products. Agents earn commissions by distributing them. Every transaction splits automatically: <strong>1% protocol</strong>, <strong>5-50% affiliate</strong> (vendor sets), <strong>remainder to vendor</strong>. No affiliate? Vendor gets 99%.</p>
   </div>
 </section>
 
@@ -460,7 +461,7 @@
   <h3>Constructor</h3>
   <pre><code><span class="kw">const</span> resolver = <span class="kw">new</span> <span class="ty">PyrimidResolver</span>({
   <span class="prop">affiliateId</span>: <span class="str">'af_your_id'</span>,          <span class="cm">// Required — your affiliate ID</span>
-  <span class="prop">catalogUrl</span>: <span class="str">'https://api.pyrimid.ai/v1/catalog'</span>,  <span class="cm">// Optional</span>
+  <span class="prop">catalogUrl</span>: <span class="str">'https://pyrimid.ai/api/v1/catalog'</span>,  <span class="cm">// Optional</span>
   <span class="prop">cacheTtlMs</span>: <span class="num">300_000</span>,               <span class="cm">// Cache TTL (default 5 min)</span>
   <span class="prop">preferVerifiedVendors</span>: <span class="kw">true</span>,       <span class="cm">// ERC-8004 verified first</span>
   <span class="prop">maxPriceUsdc</span>: <span class="num">10_000_000</span>,          <span class="cm">// $10 max per call</span>
@@ -628,14 +629,14 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
 <!-- ═════ API REFERENCE ═════ -->
 <section id="api-reference">
   <h2>API Reference</h2>
-  <p>Base URL: <code>https://api.pyrimid.ai</code></p>
+  <p>Base URL: <code>https://pyrimid.ai/api</code></p>
 
   <h3 id="api-catalog">GET /v1/catalog</h3>
   <p>Aggregated product catalog from all sources (onchain, Bazaar, MCPize, MCP Hive, Apify).</p>
 
   <div class="endpoint">
     <span class="method get">GET</span>
-    <span class="endpoint-url">https://api.pyrimid.ai/v1/catalog</span>
+    <span class="endpoint-url">https://pyrimid.ai/api/v1/catalog</span>
   </div>
 
   <table>
@@ -651,7 +652,8 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
     </tbody>
   </table>
 
-  <pre><code><span class="cm">// Response</span>
+  <div class="callout info" style="margin-bottom:8px;"><div class="callout-title">Sample response</div><p>Example response — actual values reflect live protocol state.</p></div>
+  <pre><code><span class="cm">// Example response</span>
 {
   <span class="str">"products"</span>: [
     {
@@ -667,8 +669,8 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
       <span class="str">"sdk_integrated"</span>: <span class="kw">true</span>
     }
   ],
-  <span class="str">"total"</span>: <span class="num">347</span>,
-  <span class="str">"sources"</span>: { <span class="str">"onchain"</span>: <span class="num">12</span>, <span class="str">"bazaar"</span>: <span class="num">251</span>, <span class="str">"mcpize"</span>: <span class="num">84</span> }
+  <span class="str">"total"</span>: <span class="num">1</span>,
+  <span class="str">"sources"</span>: { <span class="str">"onchain"</span>: <span class="num">1</span> }
 }</code><span class="lang-tag">json</span></pre>
 
   <h3 id="api-stats">GET /v1/stats</h3>
@@ -676,7 +678,7 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
 
   <div class="endpoint">
     <span class="method get">GET</span>
-    <span class="endpoint-url">https://api.pyrimid.ai/v1/stats</span>
+    <span class="endpoint-url">https://pyrimid.ai/api/v1/stats</span>
   </div>
 
   <table>
@@ -694,43 +696,46 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
   </div>
 
   <div id="stats-protocol" class="tab-content active">
-    <pre><code><span class="cm">// GET /v1/stats?type=protocol</span>
+    <pre><code><span class="cm">// Example response — actual values reflect live protocol state</span>
+<span class="cm">// GET /v1/stats?type=protocol</span>
 {
   <span class="str">"protocol"</span>: {
-    <span class="str">"total_volume_usdc"</span>: <span class="num">5420000000</span>,
-    <span class="str">"total_volume_display"</span>: <span class="str">"$5.4K"</span>,
-    <span class="str">"total_transactions"</span>: <span class="num">847</span>,
-    <span class="str">"total_affiliates"</span>: <span class="num">23</span>,
-    <span class="str">"total_vendors"</span>: <span class="num">5</span>,
-    <span class="str">"treasury_balance_usdc"</span>: <span class="num">54200000</span>
+    <span class="str">"total_volume_usdc"</span>: <span class="num">0</span>,
+    <span class="str">"total_volume_display"</span>: <span class="str">"$0.00"</span>,
+    <span class="str">"total_transactions"</span>: <span class="num">0</span>,
+    <span class="str">"total_affiliates"</span>: <span class="num">0</span>,
+    <span class="str">"total_vendors"</span>: <span class="num">0</span>,
+    <span class="str">"treasury_balance_usdc"</span>: <span class="num">0</span>
   },
-  <span class="str">"catalog"</span>: { <span class="str">"total_products"</span>: <span class="num">347</span> },
-  <span class="str">"recent_transactions"</span>: [...]
+  <span class="str">"catalog"</span>: { <span class="str">"total_products"</span>: <span class="num">0</span> },
+  <span class="str">"recent_transactions"</span>: []
 }</code><span class="lang-tag">json</span></pre>
   </div>
   <div id="stats-affiliate" class="tab-content">
-    <pre><code><span class="cm">// GET /v1/stats?type=affiliate&id=af_xxx</span>
+    <pre><code><span class="cm">// Example response — actual values reflect live protocol state</span>
+<span class="cm">// GET /v1/stats?type=affiliate&id=af_xxx</span>
 {
   <span class="str">"affiliate"</span>: {
-    <span class="str">"reputation_score"</span>: <span class="num">4200</span>,
-    <span class="str">"total_earnings_display"</span>: <span class="str">"$127.50"</span>,
-    <span class="str">"sales_count"</span>: <span class="num">89</span>,
-    <span class="str">"unique_buyers"</span>: <span class="num">34</span>,
-    <span class="str">"erc8004_linked"</span>: <span class="kw">true</span>
+    <span class="str">"reputation_score"</span>: <span class="num">0</span>,
+    <span class="str">"total_earnings_display"</span>: <span class="str">"$0.00"</span>,
+    <span class="str">"sales_count"</span>: <span class="num">0</span>,
+    <span class="str">"unique_buyers"</span>: <span class="num">0</span>,
+    <span class="str">"erc8004_linked"</span>: <span class="kw">false</span>
   },
-  <span class="str">"recent_sales"</span>: [...]
+  <span class="str">"recent_sales"</span>: []
 }</code><span class="lang-tag">json</span></pre>
   </div>
   <div id="stats-vendor" class="tab-content">
-    <pre><code><span class="cm">// GET /v1/stats?type=vendor&id=vn_xxx</span>
+    <pre><code><span class="cm">// Example response — actual values reflect live protocol state</span>
+<span class="cm">// GET /v1/stats?type=vendor&id=vn_xxx</span>
 {
   <span class="str">"vendor"</span>: {
-    <span class="str">"total_volume_display"</span>: <span class="str">"$2.1K"</span>,
-    <span class="str">"total_sales"</span>: <span class="num">312</span>,
-    <span class="str">"unique_affiliates"</span>: <span class="num">8</span>,
-    <span class="str">"affiliate_payouts_usdc"</span>: <span class="num">420000000</span>
+    <span class="str">"total_volume_display"</span>: <span class="str">"$0.00"</span>,
+    <span class="str">"total_sales"</span>: <span class="num">0</span>,
+    <span class="str">"unique_affiliates"</span>: <span class="num">0</span>,
+    <span class="str">"affiliate_payouts_usdc"</span>: <span class="num">0</span>
   },
-  <span class="str">"recent_sales"</span>: [...]
+  <span class="str">"recent_sales"</span>: []
 }</code><span class="lang-tag">json</span></pre>
   </div>
 </section>

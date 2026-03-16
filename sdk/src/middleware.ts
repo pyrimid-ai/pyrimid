@@ -17,6 +17,13 @@
  */
 
 import {
+  createPublicClient,
+  http,
+  toEventSelector,
+  type Hex,
+} from 'viem';
+import { base } from 'viem/chains';
+import {
   PYRIMID_ADDRESSES,
   ROUTER_ABI,
   type VendorMiddlewareConfig,
@@ -274,23 +281,92 @@ interface PaymentReceipt {
   split: PaymentSplit;
 }
 
+const PAYMENT_ROUTED_TOPIC = toEventSelector(
+  'PaymentRouted(uint256,bytes32,uint256,address,uint256,uint256,uint256,uint256)'
+);
+
+const TRANSFER_TOPIC = toEventSelector(
+  'Transfer(address,address,uint256)'
+);
+
+const MAX_PROOF_AGE_MS = 5 * 60 * 1000; // 5 minutes
+
 /**
  * Verify an x402 payment was routed through the CommissionRouter.
- * In production, this decodes the EIP-712 signature and checks the
- * onchain receipt via the PaymentRouted event.
+ * Checks onchain for the PaymentRouted event, falling back to
+ * a standard USDC transfer if no router event is found.
  */
 async function verifyPayment(
   proof: string,
   input: VerifyPaymentInput,
 ): Promise<VerifyPaymentResult> {
-  // TODO: Implement onchain verification
-  // 1. Decode x402 payment proof (EIP-712 signed receipt)
-  // 2. Verify signature against buyer wallet
-  // 3. Check PaymentRouted event on CommissionRouter
-  // 4. Validate amounts match product price
-  //
-  // For testnet/development, accept all proofs:
-  return { valid: true, txHash: proof };
+  // Validate proof looks like a tx hash
+  if (!proof || !/^0x[0-9a-fA-F]{64}$/.test(proof)) {
+    return { valid: false, reason: 'Invalid transaction hash format' };
+  }
+
+  const txHash = proof as Hex;
+
+  const client = createPublicClient({
+    chain: base,
+    transport: http('https://mainnet.base.org'),
+  });
+
+  // Fetch the transaction receipt
+  let receipt;
+  try {
+    receipt = await client.getTransactionReceipt({ hash: txHash });
+  } catch {
+    return { valid: false, reason: 'Transaction not found' };
+  }
+
+  if (!receipt || receipt.status === 'reverted') {
+    return { valid: false, reason: 'Transaction reverted or not found' };
+  }
+
+  // Check transaction age
+  let block;
+  try {
+    block = await client.getBlock({ blockNumber: receipt.blockNumber });
+  } catch {
+    return { valid: false, reason: 'Could not fetch block timestamp' };
+  }
+
+  const txAgeMs = Date.now() - Number(block.timestamp) * 1000;
+  if (txAgeMs > MAX_PROOF_AGE_MS) {
+    return { valid: false, reason: 'Payment proof expired (older than 5 minutes)' };
+  }
+
+  // Check for PaymentRouted event from the Router contract
+  const routerAddress = input.routerAddress.toLowerCase();
+  for (const log of receipt.logs) {
+    if (log.address.toLowerCase() !== routerAddress) continue;
+
+    if (log.topics[0] === PAYMENT_ROUTED_TOPIC) {
+      return { valid: true, txHash: proof };
+    }
+  }
+
+  // Fallback: check for standard USDC transfer to vendor
+  // (for direct payments not routed through CommissionRouter)
+  const usdcAddress = PYRIMID_ADDRESSES.base.USDC.toLowerCase();
+  for (const log of receipt.logs) {
+    if (log.address.toLowerCase() !== usdcAddress) continue;
+
+    if (log.topics[0] === TRANSFER_TOPIC && log.topics.length >= 3) {
+      // ERC20 Transfer: topics[1]=from, topics[2]=to, data=value
+      try {
+        const value = BigInt(log.data);
+        if (value >= BigInt(input.price)) {
+          return { valid: true, txHash: proof };
+        }
+      } catch {
+        // data parse failed, skip
+      }
+    }
+  }
+
+  return { valid: false, reason: 'No PaymentRouted event or valid USDC transfer found in transaction' };
 }
 
 export type { PaymentReceipt };
