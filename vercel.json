@@ -1,0 +1,26 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "outputDirectory": ".next",
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, X-Affiliate-ID" },
+        { "key": "Cache-Control", "value": "public, s-maxage=60, stale-while-revalidate=30" }
+      ]
+    },
+    {
+      "source": "/docs/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, s-maxage=3600, stale-while-revalidate=300" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/v1/catalog", "destination": "/api/v1/catalog" },
+    { "source": "/v1/stats", "destination": "/api/v1/stats" }
+  ]
+}

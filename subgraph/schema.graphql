@@ -1,0 +1,128 @@
+"""
+Global protocol stats — single entity, ID "global"
+"""
+type ProtocolStats @entity {
+  id: String!
+  totalVolumeUsdc: BigInt!
+  totalTransactions: BigInt!
+  totalAffiliates: BigInt!
+  totalVendors: BigInt!
+  totalProducts: BigInt!
+  treasuryBalance: BigInt!
+  totalAffiliatePayouts: BigInt!
+  totalProtocolFees: BigInt!
+  updatedAt: BigInt!
+}
+
+"""
+Registered affiliate agent — ID is bytes16 hex
+"""
+type Affiliate @entity {
+  id: Bytes!                # bytes16 affiliateId
+  wallet: Bytes!
+  referredBy: Bytes         # bytes16 or null
+  erc8004Linked: Boolean!
+  erc8004AgentId: BigInt
+  salesCount: BigInt!
+  totalVolume: BigInt!
+  totalEarnings: BigInt!
+  uniqueBuyers: BigInt!
+  vendorsServed: BigInt!
+  reputationScore: BigInt!
+  sales: [PaymentRoutedEvent!]! @derivedFrom(field: "affiliate")
+  registeredAt: BigInt!
+}
+
+"""
+Registered vendor — ID is bytes16 hex
+"""
+type Vendor @entity {
+  id: Bytes!                # bytes16 vendorId
+  wallet: Bytes!
+  name: String!
+  payoutAddress: Bytes!
+  active: Boolean!
+  erc8004Linked: Boolean!
+  productsCount: BigInt!
+  totalVolume: BigInt!
+  totalSales: BigInt!
+  uniqueAffiliates: BigInt!
+  affiliatePayouts: BigInt!
+  products: [Product!]! @derivedFrom(field: "vendor")
+  sales: [PaymentRoutedEvent!]! @derivedFrom(field: "vendor")
+  registeredAt: BigInt!
+}
+
+"""
+Listed product — ID is keccak256(vendorId, productId)
+"""
+type Product @entity {
+  id: Bytes!                # bytes32 composite key
+  vendor: Vendor!
+  productId: BigInt!        # uint256
+  endpoint: String!
+  priceUsdc: BigInt!
+  affiliateBps: Int!        # uint16
+  active: Boolean!
+  totalSales: BigInt!
+  totalVolume: BigInt!
+  sales: [PaymentRoutedEvent!]! @derivedFrom(field: "product")
+  createdAt: BigInt!
+  updatedAt: BigInt!
+}
+
+"""
+Commission split payment event (immutable)
+"""
+type PaymentRoutedEvent @entity(immutable: true) {
+  id: String!
+  vendor: Vendor!
+  product: Product!
+  affiliate: Affiliate!
+  buyer: Bytes!
+  amount: BigInt!
+  platformFee: BigInt!
+  affiliateCommission: BigInt!
+  vendorShare: BigInt!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AffiliateRegisteredEvent @entity(immutable: true) {
+  id: String!
+  affiliateId: Bytes!
+  wallet: Bytes!
+  referredBy: Bytes
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VendorRegisteredEvent @entity(immutable: true) {
+  id: String!
+  vendorId: Bytes!
+  wallet: Bytes!
+  name: String!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ProductListedEvent @entity(immutable: true) {
+  id: String!
+  vendorId: Bytes!
+  productId: BigInt!
+  priceUsdc: BigInt!
+  affiliateBps: Int!
+  endpoint: String!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AllocationEvent @entity(immutable: true) {
+  id: String!
+  to: Bytes!
+  amount: BigInt!
+  purpose: String!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

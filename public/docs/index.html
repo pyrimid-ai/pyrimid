@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pyrimid — Developer Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-deep: #08090c;
+      --bg-surface: #0d0f14;
+      --bg-elevated: #13161d;
+      --bg-code: #0a0c10;
+      --border: #1e2230;
+      --border-bright: #2a2f42;
+      --text-primary: #e8eaf0;
+      --text-secondary: #8b90a5;
+      --text-muted: #5a5f74;
+      --accent: #5eead4;
+      --accent-dim: #2dd4bf20;
+      --accent-hover: #99f6e4;
+      --orange: #fb923c;
+      --orange-dim: #fb923c18;
+      --purple: #c084fc;
+      --purple-dim: #c084fc15;
+      --pink: #f472b6;
+      --blue: #60a5fa;
+      --red: #f87171;
+      --green: #4ade80;
+      --yellow: #fbbf24;
+      --sidebar-w: 260px;
+      --header-h: 56px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Instrument Sans', -apple-system, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: var(--bg-deep);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 24px;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-weight: 700; font-size: 18px; letter-spacing: -0.5px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .logo .mark {
+      width: 24px; height: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+    .logo span { color: var(--text-primary); }
+    .logo .ver {
+      font-size: 11px; font-weight: 500; color: var(--accent);
+      background: var(--accent-dim); padding: 2px 8px; border-radius: 20px;
+      margin-left: 6px;
+    }
+    .header-links {
+      margin-left: auto; display: flex; gap: 20px; align-items: center;
+    }
+    .header-links a {
+      color: var(--text-secondary); text-decoration: none; font-size: 13px;
+      font-weight: 500; transition: color 0.15s;
+    }
+    .header-links a:hover { color: var(--text-primary); }
+    .header-links .cta {
+      background: var(--accent); color: var(--bg-deep); padding: 6px 14px;
+      border-radius: 6px; font-weight: 600;
+    }
+    .header-links .cta:hover { background: var(--accent-hover); color: var(--bg-deep); }
+
+    /* ── SIDEBAR ────────────────────────────────────────── */
+    aside {
+      position: fixed; top: var(--header-h); left: 0; bottom: 0;
+      width: var(--sidebar-w); padding: 20px 0 40px;
+      overflow-y: auto; border-right: 1px solid var(--border);
+      background: var(--bg-deep);
+    }
+    aside::-webkit-scrollbar { width: 0; }
+    .nav-group { margin-bottom: 24px; }
+    .nav-group-title {
+      font-size: 10px; font-weight: 600; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--text-muted);
+      padding: 0 24px; margin-bottom: 6px;
+    }
+    .nav-link {
+      display: block; padding: 6px 24px; font-size: 13.5px;
+      color: var(--text-secondary); text-decoration: none;
+      border-left: 2px solid transparent; transition: all 0.15s;
+    }
+    .nav-link:hover { color: var(--text-primary); background: var(--bg-elevated); }
+    .nav-link.active {
+      color: var(--accent); border-left-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .nav-link .badge {
+      font-size: 10px; background: var(--orange-dim); color: var(--orange);
+      padding: 1px 6px; border-radius: 3px; margin-left: 6px; font-weight: 600;
+    }
+
+    /* ── MAIN CONTENT ───────────────────────────────────── */
+    main {
+      margin-left: var(--sidebar-w); margin-top: var(--header-h);
+      max-width: 820px; padding: 48px 56px 120px;
+    }
+
+    h1 {
+      font-size: 36px; font-weight: 700; letter-spacing: -1px;
+      margin-bottom: 12px; line-height: 1.2;
+    }
+    h1 .gradient {
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      font-size: 17px; color: var(--text-secondary); margin-bottom: 40px;
+      max-width: 560px; line-height: 1.6;
+    }
+
+    h2 {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+      margin-top: 56px; margin-bottom: 16px;
+      padding-top: 24px; border-top: 1px solid var(--border);
+    }
+    h2:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+
+    h3 {
+      font-size: 16px; font-weight: 600; margin-top: 32px; margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    p { color: var(--text-secondary); margin-bottom: 16px; font-size: 15px; }
+    p strong { color: var(--text-primary); font-weight: 600; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── CODE BLOCKS ────────────────────────────────────── */
+    pre {
+      background: var(--bg-code); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 24px; margin: 16px 0 24px;
+      overflow-x: auto; position: relative;
+    }
+    pre code {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      line-height: 1.7; color: var(--text-secondary);
+    }
+    pre .lang-tag {
+      position: absolute; top: 10px; right: 14px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+      color: var(--text-muted); text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    code:not(pre code) {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      padding: 2px 6px; border-radius: 4px; color: var(--accent);
+    }
+
+    /* Syntax colors */
+    .kw { color: var(--purple); }
+    .str { color: var(--green); }
+    .num { color: var(--orange); }
+    .cm { color: var(--text-muted); font-style: italic; }
+    .fn { color: var(--blue); }
+    .ty { color: var(--accent); }
+    .op { color: var(--text-muted); }
+    .prop { color: var(--pink); }
+
+    /* ── CALLOUT BOXES ──────────────────────────────────── */
+    .callout {
+      border-radius: 10px; padding: 16px 20px; margin: 20px 0;
+      border-left: 3px solid;
+    }
+    .callout p { margin-bottom: 0; font-size: 14px; }
+    .callout-title {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.5px;
+      text-transform: uppercase; margin-bottom: 6px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .callout.tip {
+      background: var(--accent-dim); border-color: var(--accent);
+    }
+    .callout.tip .callout-title { color: var(--accent); }
+    .callout.warn {
+      background: var(--orange-dim); border-color: var(--orange);
+    }
+    .callout.warn .callout-title { color: var(--orange); }
+    .callout.info {
+      background: var(--purple-dim); border-color: var(--purple);
+    }
+    .callout.info .callout-title { color: var(--purple); }
+
+    /* ── TABLES ─────────────────────────────────────────── */
+    table {
+      width: 100%; border-collapse: collapse; margin: 16px 0 24px;
+      font-size: 13.5px;
+    }
+    th {
+      text-align: left; padding: 10px 14px; font-weight: 600;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--text-muted); border-bottom: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    td {
+      padding: 10px 14px; border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    td code {
+      font-size: 12px; padding: 1px 5px;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    /* ── PATH CARDS ─────────────────────────────────────── */
+    .path-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+      margin: 20px 0 32px;
+    }
+    .path-card {
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .path-card:hover {
+      border-color: var(--accent); transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .path-card .path-num {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      font-family: 'JetBrains Mono', monospace; margin-bottom: 8px;
+    }
+    .path-card h4 {
+      font-size: 14px; font-weight: 600; margin-bottom: 6px;
+    }
+    .path-card p {
+      font-size: 12.5px; color: var(--text-muted); margin: 0; line-height: 1.5;
+    }
+
+    /* ── SPLIT DIAGRAM ──────────────────────────────────── */
+    .split-diagram {
+      background: var(--bg-code); border: 1px solid var(--border);
+      border-radius: 10px; padding: 24px; margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    }
+    .split-row {
+      display: flex; align-items: center; gap: 12px; margin: 8px 0;
+    }
+    .split-bar {
+      height: 8px; border-radius: 4px; transition: width 0.5s ease;
+    }
+    .split-label { color: var(--text-muted); min-width: 90px; font-size: 12px; }
+    .split-value { color: var(--text-primary); min-width: 60px; text-align: right; font-size: 12px; }
+
+    /* ── CONTRACT ADDRESS ───────────────────────────────── */
+    .addr {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--bg-code); border: 1px solid var(--border);
+      border-radius: 6px; padding: 3px 10px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: var(--text-secondary); cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .addr:hover { border-color: var(--accent); }
+    .addr .copy-icon { opacity: 0.4; font-size: 10px; }
+    .addr:hover .copy-icon { opacity: 1; }
+
+    /* ── ENDPOINT BLOCK ─────────────────────────────────── */
+    .endpoint {
+      background: var(--bg-code); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 20px; margin: 16px 0;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .method {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      font-weight: 700; padding: 3px 8px; border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .method.get { background: var(--accent-dim); color: var(--accent); }
+    .method.post { background: var(--orange-dim); color: var(--orange); }
+    .endpoint-url {
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ── TABS ───────────────────────────────────────────── */
+    .tabs {
+      display: flex; gap: 0; border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+    .tab {
+      padding: 8px 16px; font-size: 13px; font-weight: 500;
+      color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent;
+      transition: all 0.15s; background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── MOBILE ─────────────────────────────────────────── */
+    .menu-toggle { display: none; background: none; border: none; color: var(--text-primary); cursor: pointer; padding: 8px; }
+    @media (max-width: 900px) {
+      aside { transform: translateX(-100%); transition: transform 0.25s; z-index: 99; }
+      aside.open { transform: translateX(0); box-shadow: 20px 0 40px rgba(0,0,0,0.5); }
+      main { margin-left: 0; padding: 32px 20px 80px; }
+      .path-grid { grid-template-columns: 1fr; }
+      .menu-toggle { display: block; }
+    }
+
+    /* ── COPY TOAST ─────────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px);
+      background: var(--accent); color: var(--bg-deep); padding: 8px 20px;
+      border-radius: 8px; font-size: 13px; font-weight: 600;
+      opacity: 0; transition: all 0.3s ease; z-index: 200; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── FILE TREE ──────────────────────────────────────── */
+    .file-tree {
+      background: var(--bg-code); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px 24px; margin: 16px 0;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      color: var(--text-muted); line-height: 1.9;
+    }
+    .file-tree .dir { color: var(--blue); }
+    .file-tree .file { color: var(--text-secondary); }
+    .file-tree .hl { color: var(--accent); font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <button class="menu-toggle" onclick="document.querySelector('aside').classList.toggle('open')">☰</button>
+  <div class="logo">
+    <div class="mark"></div>
+    <span>Pyrimid</span>
+    <span class="ver">v0.2</span>
+  </div>
+  <div class="header-links">
+    <a href="#api-reference">API</a>
+    <a href="#contracts">Contracts</a>
+    <a href="https://basescan.org/address/0x2263852363Bce16791A059c6F6fBb590f0b98c89" target="_blank">BaseScan</a>
+    <a href="https://github.com/pyrimid/sdk" target="_blank">GitHub</a>
+    <a href="#quickstart" class="cta">Get Started</a>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside>
+  <nav>
+    <div class="nav-group">
+      <div class="nav-group-title">Getting Started</div>
+      <a class="nav-link active" href="#overview">Overview</a>
+      <a class="nav-link" href="#quickstart">Quick Start</a>
+      <a class="nav-link" href="#install">Installation</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">SDK</div>
+      <a class="nav-link" href="#resolver">PyrimidResolver</a>
+      <a class="nav-link" href="#mcp-server">MCP Server</a>
+      <a class="nav-link" href="#middleware">Vendor Middleware</a>
+      <a class="nav-link" href="#withpyrimid">withPyrimid (Next.js)</a>
+      <a class="nav-link" href="#types">Types & Constants</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">API</div>
+      <a class="nav-link" href="#api-reference">API Reference</a>
+      <a class="nav-link" href="#api-catalog">GET /v1/catalog</a>
+      <a class="nav-link" href="#api-stats">GET /v1/stats</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Protocol</div>
+      <a class="nav-link" href="#contracts">Contracts</a>
+      <a class="nav-link" href="#commission-split">Commission Split</a>
+      <a class="nav-link" href="#reputation">Reputation System</a>
+      <a class="nav-link" href="#erc8004">ERC-8004 Identity</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Resources</div>
+      <a class="nav-link" href="#spec">Specification <span class="badge">PDF</span></a>
+      <a class="nav-link" href="#sdk-source">SDK Source</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main>
+
+<!-- ═════ OVERVIEW ═════ -->
+<section id="overview">
+  <h1><span class="gradient">Pyrimid</span> Documentation</h1>
+  <p class="subtitle">Onchain monetization infrastructure for agent-to-agent commerce. One-layer affiliate distribution protocol on Base. Payments settle instantly in USDC.</p>
+
+  <div class="path-grid">
+    <a class="path-card" href="#resolver" style="text-decoration:none; color:inherit;">
+      <div class="path-num">PATH 1</div>
+      <h4>Embedded Resolver</h4>
+      <p>Embed in your agent framework. Every agent on your stack earns you commissions.</p>
+    </a>
+    <a class="path-card" href="#mcp-server" style="text-decoration:none; color:inherit;">
+      <div class="path-num">PATH 2</div>
+      <h4>MCP Server</h4>
+      <p>Deploy a catalog recommender. Other agents connect and buy through you.</p>
+    </a>
+    <a class="path-card" href="#middleware" style="text-decoration:none; color:inherit;">
+      <div class="path-num">PATH 3</div>
+      <h4>Vendor Middleware</h4>
+      <p>10 lines to activate affiliate distribution on your existing API.</p>
+    </a>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">How it works</div>
+    <p>Vendors list products. Agents earn commissions by distributing them. Every transaction splits automatically: <strong>1% protocol</strong>, <strong>5–50% affiliate</strong>, <strong>remainder to vendor</strong>. No affiliate? Vendor gets 99%.</p>
+  </div>
+</section>
+
+<!-- ═════ QUICKSTART ═════ -->
+<section id="quickstart">
+  <h2>Quick Start</h2>
+
+  <h3 id="install">Installation</h3>
+  <pre><code><span class="cm">$ </span><span class="fn">npm install</span> <span class="str">@pyrimid/sdk</span></code><span class="lang-tag">bash</span></pre>
+
+  <p>Peer dependencies (install what you need):</p>
+  <pre><code><span class="cm"># For MCP Server path</span>
+<span class="fn">npm install</span> <span class="str">@modelcontextprotocol/sdk zod</span>
+
+<span class="cm"># For purchase flow</span>
+<span class="fn">npm install</span> <span class="str">@x402/fetch</span></code><span class="lang-tag">bash</span></pre>
+
+  <h3>Fastest integration — 3 lines</h3>
+  <pre><code><span class="kw">import</span> { <span class="ty">PyrimidResolver</span> } <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;
+
+<span class="kw">const</span> resolver = <span class="kw">new</span> <span class="ty">PyrimidResolver</span>({ <span class="prop">affiliateId</span>: <span class="str">'af_your_id'</span> });
+<span class="kw">const</span> product = <span class="kw">await</span> resolver.<span class="fn">findProduct</span>(<span class="str">"btc trading signal"</span>);</code><span class="lang-tag">typescript</span></pre>
+</section>
+
+<!-- ═════ RESOLVER ═════ -->
+<section id="resolver">
+  <h2>PyrimidResolver</h2>
+  <p><strong>Path 1: Embedded Distribution</strong> — Highest leverage. Embed this in your agent framework and every agent on your stack routes purchases through Pyrimid with your affiliate ID. One integration, thousands of passive attributed purchases.</p>
+
+  <h3>Constructor</h3>
+  <pre><code><span class="kw">const</span> resolver = <span class="kw">new</span> <span class="ty">PyrimidResolver</span>({
+  <span class="prop">affiliateId</span>: <span class="str">'af_your_id'</span>,          <span class="cm">// Required — your affiliate ID</span>
+  <span class="prop">catalogUrl</span>: <span class="str">'https://api.pyrimid.xyz/v1/catalog'</span>,  <span class="cm">// Optional</span>
+  <span class="prop">cacheTtlMs</span>: <span class="num">300_000</span>,               <span class="cm">// Cache TTL (default 5 min)</span>
+  <span class="prop">preferVerifiedVendors</span>: <span class="kw">true</span>,       <span class="cm">// ERC-8004 verified first</span>
+  <span class="prop">maxPriceUsdc</span>: <span class="num">10_000_000</span>,          <span class="cm">// $10 max per call</span>
+});</code><span class="lang-tag">typescript</span></pre>
+
+  <h3>Methods</h3>
+
+  <table>
+    <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>findProduct(need)</code></td><td><code>PyrimidProduct | null</code></td><td>Best match for a natural language need</td></tr>
+      <tr><td><code>findProducts(need, limit?)</code></td><td><code>PyrimidProduct[]</code></td><td>Multiple matches, sorted by relevance + trust</td></tr>
+      <tr><td><code>findByCategory(category)</code></td><td><code>PyrimidProduct[]</code></td><td>All products in a category</td></tr>
+      <tr><td><code>purchase(product, wallet)</code></td><td><code>PurchaseResult</code></td><td>Full x402 payment flow with affiliate attribution</td></tr>
+      <tr><td><code>getCatalog()</code></td><td><code>PyrimidProduct[]</code></td><td>Full catalog (cached)</td></tr>
+      <tr><td><code>getStats()</code></td><td><code>AffiliateStats</code></td><td>Your affiliate performance stats</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Full purchase flow</h3>
+  <pre><code><span class="kw">import</span> { <span class="ty">PyrimidResolver</span> } <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;
+
+<span class="kw">const</span> resolver = <span class="kw">new</span> <span class="ty">PyrimidResolver</span>({ <span class="prop">affiliateId</span>: <span class="str">'af_your_id'</span> });
+
+<span class="cm">// 1. Agent needs a capability → search</span>
+<span class="kw">const</span> product = <span class="kw">await</span> resolver.<span class="fn">findProduct</span>(<span class="str">"btc perpetual futures signal"</span>);
+
+<span class="kw">if</span> (product) {
+  console.<span class="fn">log</span>(product.vendor_name, product.price_display);
+  <span class="cm">// "Trading Brain" "$0.25"</span>
+
+  <span class="cm">// 2. Purchase with x402 payment</span>
+  <span class="kw">const</span> receipt = <span class="kw">await</span> resolver.<span class="fn">purchase</span>(product, agentWallet);
+
+  console.<span class="fn">log</span>(receipt.tx_hash);            <span class="cm">// onchain tx</span>
+  console.<span class="fn">log</span>(receipt.affiliate_earned);     <span class="cm">// your cut</span>
+  console.<span class="fn">log</span>(receipt.data);                 <span class="cm">// product data</span>
+}</code><span class="lang-tag">typescript</span></pre>
+</section>
+
+<!-- ═════ MCP SERVER ═════ -->
+<section id="mcp-server">
+  <h2>MCP Server</h2>
+  <p><strong>Path 2: MCP Recommender</strong> — Deploy a catalog server that other agents connect to as a tool. Every purchase through your server earns your affiliate commission.</p>
+
+  <h3>Three deployment modes</h3>
+  <pre><code><span class="kw">import</span> { <span class="fn">createPyrimidMcpServer</span> } <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;
+
+<span class="cm">// Mode 1: Official (treasury affiliate)</span>
+<span class="kw">const</span> official = <span class="fn">createPyrimidMcpServer</span>();
+
+<span class="cm">// Mode 2: Custom affiliate (your earnings)</span>
+<span class="kw">const</span> mine = <span class="fn">createPyrimidMcpServer</span>({
+  <span class="prop">affiliateId</span>: <span class="str">'af_your_id'</span>,
+  <span class="prop">serverName</span>: <span class="str">'my-recommender'</span>,
+});
+
+<span class="cm">// Mode 3: Specialized vertical</span>
+<span class="kw">const</span> trading = <span class="fn">createPyrimidMcpServer</span>({
+  <span class="prop">affiliateId</span>: <span class="str">'af_your_id'</span>,
+  <span class="prop">serverName</span>: <span class="str">'trading-signals-recommender'</span>,
+});</code><span class="lang-tag">typescript</span></pre>
+
+  <h3>Exposed MCP tools</h3>
+  <table>
+    <thead><tr><th>Tool</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>pyrimid_browse</code></td><td>Search catalog by query, price, verified status</td></tr>
+      <tr><td><code>pyrimid_buy</code></td><td>Purchase a product with x402 payment</td></tr>
+      <tr><td><code>pyrimid_preview</code></td><td>Preview payment split without buying</td></tr>
+      <tr><td><code>pyrimid_categories</code></td><td>List all categories with counts</td></tr>
+      <tr><td><code>pyrimid_register_affiliate</code></td><td>Register as an affiliate (free)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═════ MIDDLEWARE ═════ -->
+<section id="middleware">
+  <h2>Vendor Middleware</h2>
+  <p><strong>Path 3: Payment Integration</strong> — Add Pyrimid to your existing API. 10 lines activates affiliate-attributed commission splitting on every sale.</p>
+
+  <h3>Express / Connect</h3>
+  <pre><code><span class="kw">import</span> { <span class="fn">pyrimidMiddleware</span> } <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;
+
+app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
+  <span class="prop">vendorId</span>: <span class="str">'vn_your_id'</span>,
+  <span class="prop">products</span>: {
+    <span class="str">'/api/signals/latest'</span>: {
+      <span class="prop">productId</span>: <span class="str">'signals_latest'</span>,
+      <span class="prop">price</span>: <span class="num">250_000</span>,       <span class="cm">// $0.25 (USDC atomic)</span>
+      <span class="prop">affiliateBps</span>: <span class="num">2000</span>,   <span class="cm">// 20% commission</span>
+    },
+    <span class="str">'/api/indicators/supertrend'</span>: {
+      <span class="prop">productId</span>: <span class="str">'indicator_supertrend'</span>,
+      <span class="prop">price</span>: <span class="num">5_000_000</span>,     <span class="cm">// $5.00</span>
+      <span class="prop">affiliateBps</span>: <span class="num">2000</span>,
+    },
+  },
+}));</code><span class="lang-tag">typescript</span></pre>
+
+  <div class="callout info">
+    <div class="callout-title">How it works</div>
+    <p>The middleware intercepts requests to configured endpoints. No <code>X-PAYMENT-RESPONSE</code> header? Returns <strong>402</strong> with x402 payment requirements. Valid payment proof? Verifies via CommissionRouter and passes through to your handler.</p>
+  </div>
+
+  <h3 id="withpyrimid">Next.js App Router</h3>
+  <pre><code><span class="kw">import</span> { <span class="fn">withPyrimid</span> } <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;
+
+<span class="kw">export const</span> GET = <span class="fn">withPyrimid</span>({
+  <span class="prop">vendorId</span>: <span class="str">'vn_your_id'</span>,
+  <span class="prop">productId</span>: <span class="str">'signals_latest'</span>,
+  <span class="prop">price</span>: <span class="num">250_000</span>,
+  <span class="prop">affiliateBps</span>: <span class="num">2000</span>,
+}, <span class="kw">async</span> (req, receipt) => {
+  <span class="cm">// receipt.verified === true</span>
+  <span class="cm">// receipt.split contains the full breakdown</span>
+  <span class="kw">return</span> Response.<span class="fn">json</span>({
+    <span class="prop">signal</span>: <span class="str">'BTC LONG'</span>,
+    <span class="prop">confidence</span>: <span class="num">0.82</span>,
+    <span class="prop">entry</span>: <span class="num">67450</span>,
+  });
+});</code><span class="lang-tag">typescript</span></pre>
+</section>
+
+<!-- ═════ TYPES ═════ -->
+<section id="types">
+  <h2>Types & Constants</h2>
+
+  <h3>Contract addresses</h3>
+  <pre><code><span class="kw">import</span> { <span class="ty">PYRIMID_ADDRESSES</span> } <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;
+
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">REGISTRY</span>  <span class="cm">// 0x2263...c89</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">CATALOG</span>   <span class="cm">// 0x1ae8...E74</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">ROUTER</span>    <span class="cm">// 0x6594...FC8</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">TREASURY</span>  <span class="cm">// 0xdF29...908</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">USDC</span>      <span class="cm">// 0x8335...913</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">ERC_8004</span>  <span class="cm">// 0x8004...432</span></code><span class="lang-tag">typescript</span></pre>
+
+  <h3>ABI fragments</h3>
+  <p>Minimal ABIs for direct contract interaction:</p>
+  <pre><code><span class="kw">import</span> {
+  <span class="ty">ROUTER_ABI</span>,
+  <span class="ty">REGISTRY_ABI</span>,
+  <span class="ty">CATALOG_ABI</span>,
+  <span class="ty">TREASURY_ABI</span>,
+} <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;</code><span class="lang-tag">typescript</span></pre>
+
+  <h3>Exported types</h3>
+  <pre><code><span class="kw">import type</span> {
+  <span class="ty">PyrimidProduct</span>,     <span class="cm">// Product listing</span>
+  <span class="ty">PurchaseResult</span>,     <span class="cm">// Purchase receipt</span>
+  <span class="ty">PaymentSplit</span>,       <span class="cm">// Commission breakdown</span>
+  <span class="ty">AffiliateStats</span>,     <span class="cm">// Affiliate performance</span>
+  <span class="ty">VendorStats</span>,        <span class="cm">// Vendor analytics</span>
+  <span class="ty">ProtocolStats</span>,      <span class="cm">// Network-wide stats</span>
+  <span class="ty">CatalogResponse</span>,    <span class="cm">// API response shape</span>
+  <span class="ty">CatalogQueryParams</span>, <span class="cm">// Query parameters</span>
+  <span class="ty">ResolverConfig</span>,     <span class="cm">// Resolver constructor</span>
+  <span class="ty">McpServerConfig</span>,    <span class="cm">// MCP server factory</span>
+  <span class="ty">VendorMiddlewareConfig</span>, <span class="cm">// Middleware setup</span>
+  <span class="ty">PaymentReceipt</span>,     <span class="cm">// Payment verification</span>
+} <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;</code><span class="lang-tag">typescript</span></pre>
+</section>
+
+<!-- ═════ API REFERENCE ═════ -->
+<section id="api-reference">
+  <h2>API Reference</h2>
+  <p>Base URL: <code>https://api.pyrimid.xyz</code></p>
+
+  <h3 id="api-catalog">GET /v1/catalog</h3>
+  <p>Aggregated product catalog from all sources (onchain, Bazaar, MCPize, MCP Hive, Apify).</p>
+
+  <div class="endpoint">
+    <span class="method get">GET</span>
+    <span class="endpoint-url">https://api.pyrimid.xyz/v1/catalog</span>
+  </div>
+
+  <table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>query</code></td><td>string</td><td>—</td><td>Keyword search across descriptions, tags, categories</td></tr>
+      <tr><td><code>category</code></td><td>string</td><td>—</td><td>Filter by category</td></tr>
+      <tr><td><code>max_price</code></td><td>number</td><td>—</td><td>Max price in USD</td></tr>
+      <tr><td><code>verified_only</code></td><td>boolean</td><td>false</td><td>Only ERC-8004 verified vendors</td></tr>
+      <tr><td><code>limit</code></td><td>number</td><td>50</td><td>Results per page (max 200)</td></tr>
+      <tr><td><code>offset</code></td><td>number</td><td>0</td><td>Pagination offset</td></tr>
+      <tr><td><code>sort</code></td><td>string</td><td>relevance</td><td>relevance, price_asc, price_desc, volume, newest</td></tr>
+    </tbody>
+  </table>
+
+  <pre><code><span class="cm">// Response</span>
+{
+  <span class="str">"products"</span>: [
+    {
+      <span class="str">"vendor_id"</span>: <span class="str">"vn_trading_brain"</span>,
+      <span class="str">"vendor_name"</span>: <span class="str">"Trading Brain"</span>,
+      <span class="str">"vendor_erc8004"</span>: <span class="kw">true</span>,
+      <span class="str">"product_id"</span>: <span class="str">"signals_latest"</span>,
+      <span class="str">"description"</span>: <span class="str">"BTC perpetual futures trading signal"</span>,
+      <span class="str">"price_usdc"</span>: <span class="num">250000</span>,
+      <span class="str">"price_display"</span>: <span class="str">"$0.25"</span>,
+      <span class="str">"affiliate_bps"</span>: <span class="num">2000</span>,
+      <span class="str">"source"</span>: <span class="str">"onchain"</span>,
+      <span class="str">"sdk_integrated"</span>: <span class="kw">true</span>
+    }
+  ],
+  <span class="str">"total"</span>: <span class="num">347</span>,
+  <span class="str">"sources"</span>: { <span class="str">"onchain"</span>: <span class="num">12</span>, <span class="str">"bazaar"</span>: <span class="num">251</span>, <span class="str">"mcpize"</span>: <span class="num">84</span> }
+}</code><span class="lang-tag">json</span></pre>
+
+  <h3 id="api-stats">GET /v1/stats</h3>
+  <p>Protocol-level or entity-specific statistics.</p>
+
+  <div class="endpoint">
+    <span class="method get">GET</span>
+    <span class="endpoint-url">https://api.pyrimid.xyz/v1/stats</span>
+  </div>
+
+  <table>
+    <thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>type</code></td><td>string</td><td>protocol</td><td>protocol, affiliate, vendor</td></tr>
+      <tr><td><code>id</code></td><td>string</td><td>—</td><td>Entity ID (required for affiliate/vendor)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab(event, 'stats-protocol')">Protocol</button>
+    <button class="tab" onclick="switchTab(event, 'stats-affiliate')">Affiliate</button>
+    <button class="tab" onclick="switchTab(event, 'stats-vendor')">Vendor</button>
+  </div>
+
+  <div id="stats-protocol" class="tab-content active">
+    <pre><code><span class="cm">// GET /v1/stats?type=protocol</span>
+{
+  <span class="str">"protocol"</span>: {
+    <span class="str">"total_volume_usdc"</span>: <span class="num">5420000000</span>,
+    <span class="str">"total_volume_display"</span>: <span class="str">"$5.4K"</span>,
+    <span class="str">"total_transactions"</span>: <span class="num">847</span>,
+    <span class="str">"total_affiliates"</span>: <span class="num">23</span>,
+    <span class="str">"total_vendors"</span>: <span class="num">5</span>,
+    <span class="str">"treasury_balance_usdc"</span>: <span class="num">54200000</span>
+  },
+  <span class="str">"catalog"</span>: { <span class="str">"total_products"</span>: <span class="num">347</span> },
+  <span class="str">"recent_transactions"</span>: [...]
+}</code><span class="lang-tag">json</span></pre>
+  </div>
+  <div id="stats-affiliate" class="tab-content">
+    <pre><code><span class="cm">// GET /v1/stats?type=affiliate&id=af_xxx</span>
+{
+  <span class="str">"affiliate"</span>: {
+    <span class="str">"reputation_score"</span>: <span class="num">4200</span>,
+    <span class="str">"total_earnings_display"</span>: <span class="str">"$127.50"</span>,
+    <span class="str">"sales_count"</span>: <span class="num">89</span>,
+    <span class="str">"unique_buyers"</span>: <span class="num">34</span>,
+    <span class="str">"erc8004_linked"</span>: <span class="kw">true</span>
+  },
+  <span class="str">"recent_sales"</span>: [...]
+}</code><span class="lang-tag">json</span></pre>
+  </div>
+  <div id="stats-vendor" class="tab-content">
+    <pre><code><span class="cm">// GET /v1/stats?type=vendor&id=vn_xxx</span>
+{
+  <span class="str">"vendor"</span>: {
+    <span class="str">"total_volume_display"</span>: <span class="str">"$2.1K"</span>,
+    <span class="str">"total_sales"</span>: <span class="num">312</span>,
+    <span class="str">"unique_affiliates"</span>: <span class="num">8</span>,
+    <span class="str">"affiliate_payouts_usdc"</span>: <span class="num">420000000</span>
+  },
+  <span class="str">"recent_sales"</span>: [...]
+}</code><span class="lang-tag">json</span></pre>
+  </div>
+</section>
+
+<!-- ═════ CONTRACTS ═════ -->
+<section id="contracts">
+  <h2>Contracts</h2>
+  <p>Four contracts on Base mainnet. Forked from Fluencr with major simplifications — Gold tier removed, multi-stablecoin reduced to USDC-only, vendor self-service added, ERC-8004 integration added.</p>
+
+  <table>
+    <thead><tr><th>Contract</th><th>Address</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>PyrimidRegistry</strong></td>
+        <td><span class="addr" onclick="copyAddr(this)">0x2263852363Bce16791A059c6F6fBb590f0b98c89<span class="copy-icon">⧉</span></span></td>
+        <td>Affiliate + vendor registration, ERC-8004, reputation</td>
+      </tr>
+      <tr>
+        <td><strong>PyrimidCatalog</strong></td>
+        <td><span class="addr" onclick="copyAddr(this)">0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74<span class="copy-icon">⧉</span></span></td>
+        <td>Product listings, pricing, commission rates</td>
+      </tr>
+      <tr>
+        <td><strong>PyrimidRouter</strong></td>
+        <td><span class="addr" onclick="copyAddr(this)">0x6594A6B2785b1f8505b291bDc50E017b5599aFC8<span class="copy-icon">⧉</span></span></td>
+        <td>Commission splitting engine</td>
+      </tr>
+      <tr>
+        <td><strong>PyrimidTreasury</strong></td>
+        <td><span class="addr" onclick="copyAddr(this)">0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908<span class="copy-icon">⧉</span></span></td>
+        <td>Protocol operations fund (1% accumulator)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <div class="callout-title">External dependencies</div>
+    <p>USDC on Base: <code>0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</code><br>ERC-8004 Identity Registry: <code>0x8004A169FB4a3325136EB29fA0ceB6D2e539a432</code></p>
+  </div>
+</section>
+
+<!-- ═════ COMMISSION SPLIT ═════ -->
+<section id="commission-split">
+  <h2>Commission Split</h2>
+  <p>Every transaction splits automatically in a single onchain call through the <code>PyrimidRouter</code>.</p>
+
+  <div class="split-diagram">
+    <div style="font-weight:600; margin-bottom: 16px; color: var(--text-primary);">Example: $0.25 signal, 20% affiliate commission</div>
+    <div class="split-row">
+      <span class="split-label">Protocol</span>
+      <div class="split-bar" style="width: 30px; background: var(--purple);"></div>
+      <span class="split-value">$0.0025</span>
+      <span style="color: var(--text-muted);">1%</span>
+    </div>
+    <div class="split-row">
+      <span class="split-label">Affiliate</span>
+      <div class="split-bar" style="width: 160px; background: var(--accent);"></div>
+      <span class="split-value">$0.0495</span>
+      <span style="color: var(--text-muted);">19.8%</span>
+    </div>
+    <div class="split-row">
+      <span class="split-label">Vendor</span>
+      <div class="split-bar" style="width: 400px; background: var(--orange);"></div>
+      <span class="split-value">$0.1980</span>
+      <span style="color: var(--text-muted);">79.2%</span>
+    </div>
+  </div>
+
+  <pre><code><span class="kw">import</span> { <span class="fn">calculateSplit</span> } <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;
+
+<span class="kw">const</span> split = <span class="fn">calculateSplit</span>(<span class="num">250_000</span>, <span class="num">2000</span>); <span class="cm">// $0.25, 20% affiliate</span>
+<span class="cm">// { total_usdc: 250000, protocol_fee: 2500,</span>
+<span class="cm">//   affiliate_commission: 49500, vendor_share: 198000 }</span></code><span class="lang-tag">typescript</span></pre>
+
+  <div class="callout warn">
+    <div class="callout-title">Commission range</div>
+    <p>Enforced by contract: minimum <strong>500 bps (5%)</strong>, maximum <strong>5000 bps (50%)</strong>. Vendors set per-product. No affiliate attributed → vendor gets 99%.</p>
+  </div>
+</section>
+
+<!-- ═════ REPUTATION ═════ -->
+<section id="reputation">
+  <h2>Reputation System</h2>
+  <p>Onchain score (0–10,000) updated on every sale. Higher reputation = better catalog placement = better commission offers from vendors.</p>
+
+  <table>
+    <thead><tr><th>Factor</th><th>Points</th><th>Max</th></tr></thead>
+    <tbody>
+      <tr><td>Sales count</td><td>30 per sale</td><td>3,000</td></tr>
+      <tr><td>Unique buyers</td><td>50 per buyer</td><td>2,500</td></tr>
+      <tr><td>Vendor diversity</td><td>300 per vendor served</td><td>1,500</td></tr>
+      <tr><td>ERC-8004 verified</td><td>Flat bonus</td><td>2,000</td></tr>
+      <tr><td>Volume bonus</td><td>1 per $10 volume</td><td>1,000</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═════ ERC-8004 ═════ -->
+<section id="erc8004">
+  <h2>ERC-8004 Identity</h2>
+  <p>Optional but strongly incentivized. Link your ERC-8004 agent identity for +2,000 reputation, priority catalog placement, and composable identity across the agent ecosystem.</p>
+
+  <pre><code><span class="cm">// Link via contract call</span>
+registry.<span class="fn">linkERC8004Identity</span>(agentId);
+
+<span class="cm">// Or via MCP tool</span>
+<span class="cm">// pyrimid_register_affiliate({ wallet_address, ... })</span></code><span class="lang-tag">typescript</span></pre>
+
+  <p><strong>Roadmap:</strong> Optional at launch → increasingly advantageous → eventually required for affiliate registration.</p>
+</section>
+
+<!-- ═════ SPEC ═════ -->
+<section id="spec">
+  <h2>Specification</h2>
+  <p>The full Pyrimid v0.2 master specification covers architecture, contract design, SDK, distribution model, revenue projections, anti-gaming, and go-to-market strategy.</p>
+
+  <div class="callout info">
+    <div class="callout-title">Attached files</div>
+    <p>
+      <strong>pyrimid-spec-v0.2.md</strong> — Master specification (single source of truth)<br>
+      <strong>pyrimid-sdk-mcp-server.ts</strong> — MCP server factory source<br>
+      <strong>pyrimid-sdk-resolver.ts</strong> — PyrimidResolver source
+    </p>
+  </div>
+</section>
+
+<!-- ═════ SDK SOURCE ═════ -->
+<section id="sdk-source">
+  <h2>SDK Source</h2>
+  <p>Package structure for <code>@pyrimid/sdk</code>:</p>
+
+  <div class="file-tree">
+    <span class="dir">@pyrimid/sdk/</span><br>
+    ├── <span class="file">package.json</span><br>
+    ├── <span class="file">tsconfig.json</span><br>
+    ├── <span class="file">README.md</span><br>
+    └── <span class="dir">src/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="hl">index.ts</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm" style="color:var(--text-muted)">← barrel export</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="hl">types.ts</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm" style="color:var(--text-muted)">← addresses, ABIs, interfaces</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="hl">resolver.ts</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm" style="color:var(--text-muted)">← PyrimidResolver class</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="hl">mcp-server.ts</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm" style="color:var(--text-muted)">← createPyrimidMcpServer()</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="hl">middleware.ts</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm" style="color:var(--text-muted)">← pyrimidMiddleware + withPyrimid</span>
+  </div>
+</section>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Copied</div>
+
+<script>
+  // Tab switching
+  function switchTab(e, id) {
+    const parent = e.target.closest('section');
+    parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Copy address
+  function copyAddr(el) {
+    const text = el.textContent.replace('⧉', '').trim();
+    navigator.clipboard.writeText(text);
+    const toast = document.getElementById('toast');
+    toast.textContent = 'Copied ' + text.slice(0, 6) + '...' + text.slice(-4);
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1500);
+  }
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Close mobile sidebar on nav click
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('aside').classList.remove('open');
+    });
+  });
+</script>
+
+</body>
+</html>

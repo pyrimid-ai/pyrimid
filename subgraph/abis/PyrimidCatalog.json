@@ -1,0 +1,32 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes16", "name": "vendorId", "type": "bytes16" },
+      { "indexed": true, "internalType": "uint256", "name": "productId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "priceUsdc", "type": "uint256" },
+      { "indexed": false, "internalType": "uint16", "name": "affiliateBps", "type": "uint16" },
+      { "indexed": false, "internalType": "string", "name": "endpoint", "type": "string" }
+    ],
+    "name": "ProductListed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes16", "name": "vendorId", "type": "bytes16" },
+      { "indexed": true, "internalType": "uint256", "name": "productId", "type": "uint256" }
+    ],
+    "name": "ProductUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes16", "name": "vendorId", "type": "bytes16" },
+      { "indexed": true, "internalType": "uint256", "name": "productId", "type": "uint256" }
+    ],
+    "name": "ProductDeactivated",
+    "type": "event"
+  }
+]

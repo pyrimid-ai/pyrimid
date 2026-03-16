@@ -1,0 +1,40 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes16", "name": "affiliateId", "type": "bytes16" },
+      { "indexed": true, "internalType": "address", "name": "wallet", "type": "address" },
+      { "indexed": false, "internalType": "bytes16", "name": "referredBy", "type": "bytes16" }
+    ],
+    "name": "AffiliateRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes16", "name": "vendorId", "type": "bytes16" },
+      { "indexed": true, "internalType": "address", "name": "wallet", "type": "address" },
+      { "indexed": false, "internalType": "string", "name": "name", "type": "string" }
+    ],
+    "name": "VendorRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes16", "name": "vendorId", "type": "bytes16" }
+    ],
+    "name": "VendorUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "bytes16", "name": "affiliateOrVendorId", "type": "bytes16" },
+      { "indexed": true, "internalType": "uint256", "name": "agentId", "type": "uint256" },
+      { "indexed": true, "internalType": "address", "name": "wallet", "type": "address" }
+    ],
+    "name": "ERC8004Linked",
+    "type": "event"
+  }
+]

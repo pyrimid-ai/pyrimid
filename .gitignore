@@ -1,0 +1,15 @@
+node_modules/
+.next/
+.env
+.env.local
+dist/
+out/
+*.tsbuildinfo
+.vercel
+
+# Subgraph
+subgraph/generated/
+subgraph/build/
+
+# SDK
+sdk/dist/
