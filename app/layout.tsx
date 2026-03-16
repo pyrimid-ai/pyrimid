@@ -4,10 +4,10 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Pyrimid — Monetization Infrastructure for Agent-to-Agent Commerce',
   description: 'Onchain monetization infrastructure for agent-to-agent commerce. One MCP server. Aggregated catalog. Onchain commission splits. Plug in with 5 lines.',
+  metadataBase: new URL('https://pyrimid.ai'),
   openGraph: {
     title: 'Pyrimid — Monetization Infrastructure for Agent-to-Agent Commerce',
     description: 'Onchain monetization infrastructure for agent-to-agent commerce on Base.',
-    images: ['/og-image.png'],
     type: 'website',
   },
   icons: {
