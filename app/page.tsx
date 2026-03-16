@@ -1,310 +1,351 @@
-import Link from 'next/link';
 import { CONTRACTS, CHAIN, LINKS } from '@/lib/contracts';
 
-function Nav() {
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-pyrimid-border/60 bg-pyrimid-bg/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="h-5 w-5 bg-gradient-to-br from-pyrimid-accent to-pyrimid-purple"
-               style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
-          <span className="text-lg font-bold tracking-tight text-white">Pyrimid</span>
-          <span className="rounded-full bg-pyrimid-accent/10 px-2 py-0.5 font-mono text-[10px] font-semibold text-pyrimid-accent">
-            v0.2
-          </span>
-        </Link>
-        <div className="flex items-center gap-6">
-          <Link href="/docs" className="text-sm font-medium text-[#8b90a5] transition hover:text-white">Docs</Link>
-          <Link href="/dashboard" className="text-sm font-medium text-[#8b90a5] transition hover:text-white">Dashboard</Link>
-          <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener"
-             className="text-sm font-medium text-[#8b90a5] transition hover:text-white">BaseScan</a>
-          <a href={LINKS.sdk} target="_blank" rel="noopener"
-             className="rounded-md bg-pyrimid-accent px-3.5 py-1.5 text-sm font-semibold text-pyrimid-bg transition hover:bg-[#99f6e4]">
-            npm install
-          </a>
-        </div>
-      </div>
-    </nav>
-  );
-}
+/* ═══════════════════════════════════════════════════════════
+   Pyrimid Landing — production design
+   Single-page, terminal aesthetic, JetBrains Mono + Outfit
+   ═══════════════════════════════════════════════════════════ */
 
-function Hero() {
-  return (
-    <section className="relative overflow-hidden pt-32 pb-24">
-      {/* Geometric background */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-20 right-1/4 h-[500px] w-[500px] rotate-45 rounded-3xl bg-pyrimid-accent/[0.03] blur-3xl" />
-        <div className="absolute -bottom-20 left-1/4 h-[400px] w-[400px] -rotate-12 rounded-3xl bg-pyrimid-purple/[0.04] blur-3xl" />
-        {/* Grid lines */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: `linear-gradient(rgba(30,34,48,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(30,34,48,0.5) 1px, transparent 1px)`,
-          backgroundSize: '80px 80px',
-          maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)',
-        }} />
-      </div>
-
-      <div className="relative mx-auto max-w-6xl px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          {/* Badge */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-pyrimid-border bg-pyrimid-surface px-4 py-1.5">
-            <div className="h-1.5 w-1.5 rounded-full bg-pyrimid-accent animate-pulse" />
-            <span className="font-mono text-xs font-medium text-[#8b90a5]">Live on Base Mainnet</span>
-          </div>
-
-          <h1 className="mb-6 text-5xl font-bold tracking-tight leading-[1.1] md:text-6xl lg:text-7xl">
-            <span className="text-white">The monetization</span>
-            <br />
-            <span className="bg-gradient-to-r from-pyrimid-accent to-pyrimid-purple bg-clip-text text-transparent">
-              layer agents need
-            </span>
-          </h1>
-
-          <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-[#8b90a5]">
-            Onchain affiliate distribution for agent-to-agent commerce.
-            Vendors list products. Agents earn commissions. Commission splits settle
-            instantly in USDC on Base. Protocol takes 1%.
-          </p>
-
-          <div className="flex items-center justify-center gap-4">
-            <Link href="/docs" className="rounded-lg bg-pyrimid-accent px-6 py-3 text-sm font-bold text-pyrimid-bg transition hover:bg-[#99f6e4] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-pyrimid-accent/20">
-              Read the Docs
-            </Link>
-            <a href={LINKS.sdk} target="_blank" rel="noopener"
-               className="group flex items-center gap-2 rounded-lg border border-pyrimid-border bg-pyrimid-surface px-6 py-3 text-sm font-semibold text-white transition hover:border-pyrimid-accent/40 hover:-translate-y-0.5">
-              <span className="font-mono text-pyrimid-accent">npm i</span>
-              <span className="text-[#8b90a5]">@pyrimid/sdk</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Quick code preview */}
-        <div className="mx-auto mt-16 max-w-2xl overflow-hidden rounded-xl border border-pyrimid-border bg-[#0a0c10] shadow-2xl shadow-black/40">
-          <div className="flex items-center gap-2 border-b border-pyrimid-border px-4 py-3">
-            <div className="h-2.5 w-2.5 rounded-full bg-[#f87171]/60" />
-            <div className="h-2.5 w-2.5 rounded-full bg-[#fbbf24]/60" />
-            <div className="h-2.5 w-2.5 rounded-full bg-[#4ade80]/60" />
-            <span className="ml-3 font-mono text-[11px] text-[#5a5f74]">resolver.ts</span>
-          </div>
-          <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-7 text-[#8b90a5]">
-{`import { `}<span className="text-pyrimid-accent">PyrimidResolver</span>{` } from '@pyrimid/sdk';
-
-const resolver = new `}<span className="text-pyrimid-accent">PyrimidResolver</span>{`({
-  affiliateId: `}<span className="text-[#4ade80]">'af_your_id'</span>{`,
-});
-
-const product = await resolver.`}<span className="text-[#60a5fa]">findProduct</span>{`(`}<span className="text-[#4ade80]">"btc trading signal"</span>{`);
-const receipt = await resolver.`}<span className="text-[#60a5fa]">purchase</span>{`(product, wallet);
-
-console.log(receipt.affiliate_earned); `}<span className="text-[#5a5f74]">// your cut, paid instantly</span>
-          </pre>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Paths() {
-  const paths = [
-    {
-      num: '01',
-      title: 'Embedded Resolver',
-      who: 'Framework Developers',
-      desc: 'Embed PyrimidResolver in your agent framework. Every agent on your stack routes purchases through Pyrimid with your affiliate ID. One integration → thousands of passive sales.',
-      leverage: 'Highest',
-      code: `const resolver = new PyrimidResolver({\n  affiliateId: 'af_your_id'\n});`,
-    },
-    {
-      num: '02',
-      title: 'MCP Server',
-      who: 'Recommender Operators',
-      desc: 'Deploy a catalog server that other agents connect to as a tool. Browse, buy — your affiliate ID on every transaction. Specialize by vertical to outperform the generic catalog.',
-      leverage: 'Medium',
-      code: `const server = createPyrimidMcpServer({\n  affiliateId: 'af_your_id',\n  serverName: 'trading-recommender'\n});`,
-    },
-    {
-      num: '03',
-      title: 'Vendor Middleware',
-      who: 'Product Vendors',
-      desc: '10 lines to activate affiliate distribution on your existing API. Handles x402 payment verification, affiliate attribution, and commission splitting automatically.',
-      leverage: 'Direct',
-      code: `app.use(pyrimidMiddleware({\n  vendorId: 'vn_your_id',\n  products: { '/api/signals': {\n    price: 250_000, affiliateBps: 2000\n  }}\n}));`,
-    },
-  ];
-
-  return (
-    <section className="border-t border-pyrimid-border py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-16 text-center">
-          <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-widest text-pyrimid-accent">Integration Paths</p>
-          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">Three ways to earn</h2>
-        </div>
-
-        <div className="grid gap-6 md:grid-columns-3 md:grid-cols-3">
-          {paths.map((p) => (
-            <div key={p.num} className="group rounded-xl border border-pyrimid-border bg-pyrimid-surface p-6 transition hover:border-pyrimid-accent/40 hover:shadow-lg hover:shadow-pyrimid-accent/5">
-              <div className="mb-4 flex items-center justify-between">
-                <span className="font-mono text-2xl font-bold text-pyrimid-accent/30 group-hover:text-pyrimid-accent/60 transition">{p.num}</span>
-                <span className="rounded-full bg-pyrimid-accent/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold text-pyrimid-accent">
-                  {p.leverage}
-                </span>
-              </div>
-              <h3 className="mb-1 text-lg font-bold text-white">{p.title}</h3>
-              <p className="mb-3 font-mono text-xs text-pyrimid-accent/70">{p.who}</p>
-              <p className="mb-5 text-sm leading-relaxed text-[#8b90a5]">{p.desc}</p>
-              <pre className="overflow-x-auto rounded-lg bg-pyrimid-bg p-3 font-mono text-[11px] leading-6 text-[#8b90a5]">{p.code}</pre>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function HowItWorks() {
-  return (
-    <section className="border-t border-pyrimid-border py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-16 text-center">
-          <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-widest text-pyrimid-accent">Protocol Mechanics</p>
-          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">Every transaction, split onchain</h2>
-        </div>
-
-        <div className="mx-auto max-w-3xl">
-          {/* Flow diagram */}
-          <div className="mb-12 flex flex-col items-center gap-3 font-mono text-sm">
-            <div className="flex w-full items-center gap-4 rounded-lg border border-pyrimid-border bg-pyrimid-surface p-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#60a5fa]/10 text-[#60a5fa] font-bold">A</div>
-              <div>
-                <p className="font-semibold text-white">Agent discovers product</p>
-                <p className="text-xs text-[#5a5f74]">Via MCP catalog or PyrimidResolver</p>
-              </div>
-            </div>
-            <div className="h-6 w-px bg-pyrimid-border" />
-            <div className="flex w-full items-center gap-4 rounded-lg border border-pyrimid-border bg-pyrimid-surface p-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-pyrimid-orange/10 text-pyrimid-orange font-bold">B</div>
-              <div>
-                <p className="font-semibold text-white">x402 payment to vendor endpoint</p>
-                <p className="text-xs text-[#5a5f74]">USDC on Base, affiliate ID in X-Affiliate-ID header</p>
-              </div>
-            </div>
-            <div className="h-6 w-px bg-pyrimid-border" />
-            <div className="flex w-full items-center gap-4 rounded-lg border border-pyrimid-border bg-pyrimid-surface p-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-pyrimid-purple/10 text-pyrimid-purple font-bold">C</div>
-              <div>
-                <p className="font-semibold text-white">CommissionRouter splits payment</p>
-                <p className="text-xs text-[#5a5f74]">Single onchain tx — 1% protocol, X% affiliate, rest to vendor</p>
-              </div>
-            </div>
-            <div className="h-6 w-px bg-pyrimid-border" />
-            <div className="flex w-full items-center gap-4 rounded-lg border border-pyrimid-border bg-pyrimid-surface p-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#4ade80]/10 text-[#4ade80] font-bold">D</div>
-              <div>
-                <p className="font-semibold text-white">Product delivered, reputation updated</p>
-                <p className="text-xs text-[#5a5f74]">Vendor serves directly. Affiliate score increases onchain.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Commission split visual */}
-          <div className="rounded-xl border border-pyrimid-border bg-[#0a0c10] p-6">
-            <p className="mb-5 font-mono text-xs font-semibold text-[#5a5f74] uppercase tracking-wider">Commission split — $0.25 signal, 20% affiliate</p>
-            <div className="space-y-3">
-              {[
-                { label: 'Protocol', pct: 1, color: '#c084fc', amount: '$0.0025' },
-                { label: 'Affiliate', pct: 19.8, color: '#5eead4', amount: '$0.0495' },
-                { label: 'Vendor', pct: 79.2, color: '#fb923c', amount: '$0.1980' },
-              ].map((row) => (
-                <div key={row.label} className="flex items-center gap-3">
-                  <span className="w-20 font-mono text-xs text-[#5a5f74]">{row.label}</span>
-                  <div className="flex-1 overflow-hidden rounded-full bg-pyrimid-border/30 h-3">
-                    <div className="h-full rounded-full transition-all duration-700"
-                         style={{ width: `${row.pct}%`, backgroundColor: row.color }} />
-                  </div>
-                  <span className="w-16 text-right font-mono text-xs text-[#8b90a5]">{row.amount}</span>
-                  <span className="w-12 text-right font-mono text-[10px] text-[#5a5f74]">{row.pct}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ContractAddresses() {
-  const contracts = [
-    { name: 'PyrimidRegistry', addr: CONTRACTS.REGISTRY, role: 'Affiliates, vendors, ERC-8004, reputation' },
-    { name: 'PyrimidCatalog', addr: CONTRACTS.CATALOG, role: 'Product listings, pricing, commissions' },
-    { name: 'PyrimidRouter', addr: CONTRACTS.ROUTER, role: 'Commission splitting engine' },
-    { name: 'PyrimidTreasury', addr: CONTRACTS.TREASURY, role: '1% protocol fee accumulator' },
-  ];
-
-  return (
-    <section className="border-t border-pyrimid-border py-24">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-16 text-center">
-          <p className="mb-3 font-mono text-xs font-semibold uppercase tracking-widest text-pyrimid-accent">Base Mainnet</p>
-          <h2 className="text-3xl font-bold tracking-tight text-white md:text-4xl">Verified on BaseScan</h2>
-        </div>
-
-        <div className="mx-auto max-w-3xl space-y-3">
-          {contracts.map((c) => (
-            <a key={c.name} href={LINKS.basescan(c.addr)} target="_blank" rel="noopener"
-               className="group flex items-center gap-4 rounded-xl border border-pyrimid-border bg-pyrimid-surface p-4 transition hover:border-pyrimid-accent/40">
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-white">{c.name}</p>
-                <p className="truncate font-mono text-xs text-[#5a5f74] group-hover:text-pyrimid-accent transition">{c.addr}</p>
-              </div>
-              <p className="hidden text-right text-xs text-[#8b90a5] sm:block">{c.role}</p>
-              <span className="text-[#5a5f74] transition group-hover:text-pyrimid-accent">↗</span>
-            </a>
-          ))}
-        </div>
-
-        <div className="mt-8 text-center">
-          <p className="text-sm text-[#5a5f74]">
-            USDC: <span className="font-mono text-xs">{CHAIN.usdc}</span>
-            {' · '}
-            ERC-8004: <span className="font-mono text-xs">{CHAIN.erc8004}</span>
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="border-t border-pyrimid-border py-12">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 sm:flex-row">
-        <div className="flex items-center gap-2">
-          <div className="h-4 w-4 bg-gradient-to-br from-pyrimid-accent to-pyrimid-purple"
-               style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
-          <span className="font-bold text-white">Pyrimid</span>
-          <span className="text-xs text-[#5a5f74]">— Agent-to-agent commerce on Base</span>
-        </div>
-        <div className="flex gap-6 font-mono text-xs text-[#5a5f74]">
-          <Link href="/docs" className="transition hover:text-pyrimid-accent">Docs</Link>
-          <Link href="/dashboard" className="transition hover:text-pyrimid-accent">Dashboard</Link>
-          <a href={LINKS.sdk} target="_blank" rel="noopener" className="transition hover:text-pyrimid-accent">npm</a>
-          <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" className="transition hover:text-pyrimid-accent">BaseScan</a>
-        </div>
-      </div>
-    </footer>
-  );
-}
+const styles = {
+  c: 'max-w-[880px] mx-auto px-6 relative z-[1]',
+  // Nav
+  nav: 'py-5 flex justify-between items-center border-b flex-wrap gap-2',
+  navBorder: { borderColor: 'var(--border)' },
+  logo: 'font-mono font-bold text-[1.2rem]',
+  logoSub: 'font-normal text-[.7rem] ml-2',
+  navLinks: 'flex gap-3 flex-wrap max-md:hidden',
+  navLink: 'text-[.78rem] font-mono transition-colors duration-200 no-underline',
+  // Hero
+  hero: 'py-20 pb-11 relative text-center',
+  heroGlow: 'absolute -top-[280px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] pointer-events-none',
+  h1: 'text-[clamp(2rem,4.5vw,3.2rem)] font-[900] leading-[1.08] tracking-[-1.5px] mb-4',
+  hsub: 'text-[.95rem] max-w-[500px] leading-[1.7] mx-auto mb-8',
+  hcode: 'border rounded-lg p-4 px-[18px] font-mono text-[.72rem] leading-[1.85] mx-auto mb-7 max-w-[520px] overflow-x-auto text-left',
+  ctas: 'flex gap-[10px] flex-wrap justify-center',
+  btnP: 'inline-flex items-center gap-[6px] px-5 py-[10px] rounded-md text-[.82rem] font-semibold no-underline transition-all duration-200 cursor-pointer border-none font-mono',
+  btnG: 'inline-flex items-center gap-[6px] px-5 py-[10px] rounded-md text-[.82rem] font-semibold no-underline transition-all duration-200 cursor-pointer font-mono',
+  // Sections
+  sec: 'py-[52px] text-center',
+  sl: 'font-mono text-[.65rem] tracking-[2.5px] uppercase mb-[6px]',
+  h2: 'text-[1.45rem] font-extrabold tracking-[-0.5px] mb-5',
+  secp: 'max-w-[520px] mx-auto mb-5 text-[.86rem] leading-[1.6]',
+  // Cards
+  two: 'grid grid-cols-2 max-md:grid-cols-1 gap-3 mb-3',
+  card: 'rounded-lg p-[22px] transition-colors duration-300 text-left',
+  tag: 'font-mono text-[.58rem] tracking-[1.5px] uppercase mb-2 px-[6px] py-[2px] rounded-[3px] inline-block',
+  cardH3: 'text-[.9rem] font-bold mb-1',
+  cardP: 'text-[.8rem] leading-[1.55]',
+  cardMd: 'font-mono text-[.68rem] mt-[10px] leading-[1.8]',
+  // Path cards
+  pc: 'rounded-lg p-6 transition-colors duration-300 relative overflow-hidden mx-auto mb-3 max-w-[720px] text-left',
+  pcNum: 'font-mono text-[2.6rem] font-extrabold absolute top-3 right-4 opacity-[0.05]',
+  pcH3: 'text-[.98rem] font-bold mb-[5px]',
+  pcP: 'text-[.82rem] leading-[1.55]',
+  // Code blocks
+  code: 'rounded-[7px] p-4 font-mono text-[.7rem] leading-[1.85] overflow-x-auto mx-auto max-w-[720px] text-left mt-[10px]',
+  // Flywheel
+  fwS: 'flex items-center gap-[10px] p-[10px] px-[14px] text-[.78rem]',
+  fwI: 'font-mono text-[.65rem] font-bold p-[2px] px-[6px] rounded-[3px] min-w-[22px] text-center',
+  fwA: 'text-center text-[.65rem] font-mono py-[1px]',
+  // Stats
+  stats: 'grid grid-cols-4 max-md:grid-cols-2 gap-2 py-7',
+  stat: 'text-center p-[14px] rounded-md',
+  statV: 'font-mono text-[1.2rem] font-bold mb-[1px]',
+  statL: 'text-[.68rem]',
+  // Footer
+  footer: 'py-7 flex justify-between items-center text-[.68rem] font-mono flex-wrap gap-2 max-md:flex-col max-md:text-center',
+} as const;
 
 export default function LandingPage() {
   return (
-    <>
-      <Nav />
-      <Hero />
-      <Paths />
-      <HowItWorks />
-      <ContractAddresses />
-      <Footer />
-    </>
+    <div className={styles.c}>
+
+      {/* ═══════ NAV ═══════ */}
+      <nav className={styles.nav} style={styles.navBorder}>
+        <div className={styles.logo} style={{ color: 'var(--accent)' }}>
+          pyrimid<span className={styles.logoSub} style={{ color: 'var(--dim)' }}>base</span>
+        </div>
+        <div className={styles.navLinks}>
+          {['Integrate', 'Products', 'Reputation', 'Docs', 'GitHub'].map((label) => (
+            <a
+              key={label}
+              href={label === 'Docs' ? '/docs' : label === 'GitHub' ? 'https://github.com/henrimahal/pyri' : `#${label.toLowerCase()}`}
+              className={styles.navLink}
+              style={{ color: 'var(--muted)' }}
+              {...(label === 'GitHub' ? { target: '_blank', rel: 'noopener' } : {})}
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      {/* ═══════ HERO ═══════ */}
+      <section className={`${styles.hero}`}>
+        <div className={styles.heroGlow} style={{ background: 'radial-gradient(ellipse, var(--accent-d) 0%, transparent 70%)' }} />
+        <h1 className={`${styles.h1} fu`}>
+          Monetization infrastructure<br />for <span style={{ color: 'var(--accent)' }}>agent-to-agent commerce</span>
+        </h1>
+        <p className={`${styles.hsub} fu d1`} style={{ color: 'var(--muted)' }}>
+          Onchain monetization infrastructure for agent-to-agent commerce. One MCP server. Aggregated catalog. Onchain commission splits. Plug in with 5 lines.
+        </p>
+        <div className={`${styles.hcode} fu d2`} style={{ background: 'var(--bg2)', borderColor: 'var(--border)', color: 'var(--muted)' }}>
+          <span style={{ color: 'var(--accent)' }}>PyrimidRouter</span>.<span style={{ color: 'var(--blue)' }}>routePayment</span>(vendor, product, affiliate, buyer){'\n'}
+          {'  '}<span style={{ color: 'var(--dim)' }}>├─</span> <span style={{ color: '#f0a040' }}>1%</span>{'  → protocol\n'}
+          {'  '}<span style={{ color: 'var(--dim)' }}>├─</span> <span style={{ color: '#f0a040' }}>X%</span>{'  → affiliate (5-50%, vendor sets)\n'}
+          {'  '}<span style={{ color: 'var(--dim)' }}>└─</span> rest → vendor
+        </div>
+        <div className={`${styles.ctas} fu d3`}>
+          <a href="#integrate" className={styles.btnP} style={{ background: 'var(--accent)', color: 'var(--bg)' }}>npm i @pyrimid/sdk</a>
+          <a href="/docs" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Docs →</a>
+          <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>BaseScan →</a>
+        </div>
+      </section>
+
+      {/* ═══════ HOW IT WORKS ═══════ */}
+      <section className={styles.sec}>
+        <div className={styles.sl} style={{ color: 'var(--accent)' }}>How it works</div>
+        <h2 className={styles.h2}>Aggregated discovery. Onchain splits. Direct delivery.</h2>
+        <p className={styles.secp} style={{ color: 'var(--muted)' }}>
+          Pyrimid indexes products from x402 Bazaar, MCPize, MCP Hive, and direct vendor registrations into one MCP-native catalog. Agents browse and buy through a single connection. Payments split onchain via CommissionRouter. Vendors deliver directly — no proxy.
+        </p>
+        <div className={styles.two}>
+          <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
+            <div className={styles.tag} style={{ background: 'var(--accent-d)', color: 'var(--accent)' }}>Before SDK</div>
+            <h3 className={styles.cardH3}>Indexed free, automatically</h3>
+            <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Your product appears in the Pyrimid catalog from existing registries. Agents discover it. You see attribution data — how many agents found you through Pyrimid.</p>
+          </div>
+          <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
+            <div className={styles.tag} style={{ background: 'var(--accent-d)', color: 'var(--accent)' }}>After SDK install</div>
+            <h3 className={styles.cardH3}>Distribution activates</h3>
+            <p className={styles.cardP} style={{ color: 'var(--muted)' }}>10 lines of middleware. Every affiliated purchase now splits onchain — commission to the agent that drove the sale, remainder to you. Agents promote because they earn.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ INTEGRATE ═══════ */}
+      <section className={styles.sec} id="integrate">
+        <div className={styles.sl} style={{ color: 'var(--accent)' }}>Integration</div>
+        <h2 className={styles.h2}>Three patterns. Same onchain router.</h2>
+
+        {/* Path 01 */}
+        <div className={styles.pc} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderColor: 'var(--accent-d)' }}>
+          <div className={styles.pcNum}>01</div>
+          <div className={styles.tag} style={{ background: 'var(--accent-d)', color: 'var(--accent)' }}>Embedded resolver</div>
+          <h3 className={styles.pcH3}>Default service discovery for your agent stack</h3>
+          <p className={styles.pcP} style={{ color: 'var(--muted)' }}>Your framework&apos;s agents resolve external capabilities through the Pyrimid catalog. Your affiliate ID on every purchase, automatically. One integration — every agent on your stack earns attribution.</p>
+          <div className={styles.code} style={{ background: 'var(--bg2)', border: '1px solid var(--border)' }}>
+            <span style={{ color: 'var(--blue)' }}>const</span> resolver = <span style={{ color: 'var(--blue)' }}>new</span> <span style={{ color: 'var(--accent)' }}>PyrimidResolver</span>({'{'} affiliateId: <span style={{ color: 'var(--purple)' }}>&apos;af_your_id&apos;</span> {'}'});{'\n'}
+            <span style={{ color: 'var(--blue)' }}>const</span> match = <span style={{ color: 'var(--blue)' }}>await</span> resolver.<span style={{ color: 'var(--accent)' }}>findProduct</span>(<span style={{ color: 'var(--purple)' }}>&quot;trading signals&quot;</span>);{'\n'}
+            <span style={{ color: 'var(--blue)' }}>if</span> (match) <span style={{ color: 'var(--blue)' }}>await</span> resolver.<span style={{ color: 'var(--accent)' }}>purchase</span>(match, agentWallet);
+          </div>
+          <div className={styles.cardMd} style={{ color: 'var(--dim)' }}>Framework developers · Template authors · Agent platforms</div>
+        </div>
+
+        {/* Path 02 */}
+        <div className={styles.pc} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderColor: 'var(--blue-d)' }}>
+          <div className={styles.pcNum}>02</div>
+          <div className={styles.tag} style={{ background: 'var(--blue-d)', color: 'var(--blue)' }}>MCP recommender</div>
+          <h3 className={styles.pcH3}>Deploy a discovery server other agents connect to</h3>
+          <p className={styles.pcP} style={{ color: 'var(--muted)' }}>Wrap the Pyrimid catalog in your own MCP server. Specialize for a vertical. Agents connect, browse, buy — your affiliate ID on every transaction.</p>
+          <div className={styles.code} style={{ background: 'var(--bg2)', border: '1px solid var(--border)' }}>
+            <span style={{ color: 'var(--blue)' }}>const</span> server = <span style={{ color: 'var(--accent)' }}>createPyrimidMcpServer</span>({'{'}
+            {'\n'}{'  '}affiliateId: <span style={{ color: 'var(--purple)' }}>&apos;af_your_id&apos;</span>,
+            {'\n'}{'  '}serverName: <span style={{ color: 'var(--purple)' }}>&apos;my-recommender&apos;</span>,
+            {'\n'}{'}'});
+          </div>
+          <div className={styles.cardMd} style={{ color: 'var(--dim)' }}>Discovery agents · Vertical curators · Recommendation services</div>
+        </div>
+
+        {/* Path 03 */}
+        <div className={styles.pc} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderColor: 'var(--orange-d)' }}>
+          <div className={styles.pcNum}>03</div>
+          <div className={styles.tag} style={{ background: 'var(--orange-d)', color: 'var(--orange)' }}>Composable wrapper</div>
+          <h3 className={styles.pcH3}>Buy raw products, enhance, resell</h3>
+          <p className={styles.pcP} style={{ color: 'var(--muted)' }}>Purchase from the catalog, add your analysis or enrichment, list the enhanced output back on Pyrimid. Both buyer and vendor. Products built on products.</p>
+          <div className={styles.code} style={{ background: 'var(--bg2)', border: '1px solid var(--border)' }}>
+            <span style={{ color: 'var(--blue)' }}>const</span> raw = <span style={{ color: 'var(--blue)' }}>await</span> resolver.<span style={{ color: 'var(--accent)' }}>purchase</span>(product, wallet);{'\n'}
+            <span style={{ color: 'var(--blue)' }}>const</span> enhanced = <span style={{ color: 'var(--accent)' }}>enrich</span>(raw.data, myAnalysis);{'\n'}
+            <span style={{ color: 'var(--dim)' }}>{'// List enhanced version → earn as vendor on every resale'}</span>
+          </div>
+          <div className={styles.cardMd} style={{ color: 'var(--dim)' }}>Data enrichment · Multi-source aggregation · Value-add layers</div>
+        </div>
+
+        {/* Vendor quick */}
+        <div className={styles.sl} style={{ color: 'var(--accent)', marginTop: '36px', textAlign: 'center' }}>For vendors</div>
+        <h2 className={styles.h2} style={{ textAlign: 'center' }}>10 lines. Keep your existing hosting.</h2>
+        <div className={styles.code} style={{ background: 'var(--bg2)', border: '1px solid var(--border)' }}>
+          <span style={{ color: 'var(--blue)' }}>import</span> {'{ '}<span style={{ color: 'var(--accent)' }}>pyrimidMiddleware</span>{' }'} <span style={{ color: 'var(--blue)' }}>from</span> <span style={{ color: 'var(--purple)' }}>&apos;@pyrimid/sdk&apos;</span>;{'\n'}
+          app.<span style={{ color: 'var(--accent)' }}>use</span>(<span style={{ color: 'var(--accent)' }}>pyrimidMiddleware</span>({'{\n'}
+          {'  '}vendorId: <span style={{ color: 'var(--purple)' }}>&apos;vn_your_id&apos;</span>,{'\n'}
+          {'  '}products: {'{\n'}
+          {'    '}<span style={{ color: 'var(--purple)' }}>&apos;your-endpoint&apos;</span>: {'{ '}price: <span style={{ color: '#f0a040' }}>250000</span>, affiliateBps: <span style={{ color: '#f0a040' }}>2000</span>{' }\n'}
+          {'  }\n'}
+          {'}'}));{'\n'}
+          <span style={{ color: 'var(--dim)' }}>{'// Agents now have financial incentive to distribute your product.'}</span>{'\n'}
+          <span style={{ color: 'var(--dim)' }}>{'// No migration. Keep MCPize / MCP Hive / Apify. Pyrimid adds distribution on top.'}</span>
+        </div>
+      </section>
+
+      {/* ═══════ PRODUCTS ═══════ */}
+      <section className={styles.sec} id="products">
+        <div className={styles.sl} style={{ color: 'var(--accent)' }}>Catalog</div>
+        <h2 className={styles.h2}>Anything delivered over HTTP, priced in USDC.</h2>
+        <div className="flex flex-wrap gap-[6px] mb-4 justify-center">
+          {[
+            { label: 'Trading signals', c: 'p' }, { label: 'Data feeds', c: 'm' }, { label: 'AI generation', c: 'v' },
+            { label: 'Search & scraping', c: 'w' }, { label: 'Security & compliance', c: 'g' },
+            { label: 'Compute & inference', c: 'p' }, { label: 'Research & reports', c: 'm' },
+            { label: 'Blockchain tools', c: 'v' }, { label: 'Developer APIs', c: 'w' },
+            { label: 'Content & media', c: 'g' }, { label: 'Analytics', c: 'p' },
+            { label: 'NLP & embeddings', c: 'm' }, { label: 'Monitoring', c: 'v' },
+            { label: 'Testing & QA', c: 'w' }, { label: 'Storage & retrieval', c: 'g' },
+          ].map(({ label, c }) => {
+            const colorMap: Record<string, { bg: string; fg: string }> = {
+              p: { bg: 'var(--accent-d)', fg: 'var(--accent)' },
+              m: { bg: 'var(--blue-d)', fg: 'var(--blue)' },
+              v: { bg: 'var(--purple-d)', fg: 'var(--purple)' },
+              w: { bg: 'var(--orange-d)', fg: 'var(--orange)' },
+              g: { bg: 'var(--gold-d)', fg: 'var(--gold)' },
+            };
+            const colors = colorMap[c];
+            return (
+              <span key={label} className={styles.tag} style={{ background: colors.bg, color: colors.fg }}>{label}</span>
+            );
+          })}
+        </div>
+        <p style={{ color: 'var(--dim)', fontSize: '.72rem' }}>$0.001 to $1,000+ per call. Commission 5-50%. Vendors set both. Pyrimid is product-agnostic.</p>
+      </section>
+
+      {/* ═══════ FLYWHEEL ═══════ */}
+      <section className={styles.sec}>
+        <div className={styles.sl} style={{ color: 'var(--accent)' }}>Flywheel</div>
+        <h2 className={styles.h2}>Every sale compounds the network.</h2>
+        <div className="flex flex-col gap-0 my-4">
+          {[
+            { n: '1', label: 'Vendor product indexed from any MCP marketplace', bg: 'var(--purple-d)', fg: 'var(--purple)' },
+            { n: '2', label: 'Vendor installs SDK → affiliate distribution activates', bg: 'var(--accent-d)', fg: 'var(--accent)' },
+            { n: '3', label: 'Affiliate agents distribute via MCP → buyer agent pays via x402', bg: 'var(--blue-d)', fg: 'var(--blue)' },
+            { n: '4', label: 'CommissionRouter splits onchain → affiliate reputation increases', bg: 'var(--gold-d)', fg: 'var(--gold)' },
+            { n: '5', label: 'Higher reputation → better commissions → more agents join', bg: 'var(--orange-d)', fg: 'var(--orange)' },
+          ].map((step, i, arr) => (
+            <div key={step.n}>
+              <div className={styles.fwS} style={{
+                background: 'var(--bg2)',
+                border: '1px solid var(--border)',
+                color: 'var(--muted)',
+                borderRadius: i === 0 ? '7px 7px 0 0' : i === arr.length - 1 ? '0 0 7px 7px' : '0',
+              }}>
+                <div className={styles.fwI} style={{ background: step.bg, color: step.fg }}>{step.n}</div>
+                {step.label}
+              </div>
+              {i < arr.length - 1 && (
+                <div className={styles.fwA} style={{ color: 'var(--dim)' }}>↓</div>
+              )}
+            </div>
+          ))}
+          <div className={styles.fwA} style={{ color: 'var(--accent)' }}>↻</div>
+        </div>
+      </section>
+
+      {/* ═══════ REPUTATION ═══════ */}
+      <section className={styles.sec} id="reputation">
+        <div className={styles.sl} style={{ color: 'var(--accent)' }}>Reputation + Identity</div>
+        <h2 className={styles.h2}>Performance ranks. ERC-8004 accelerates.</h2>
+        <div className={styles.two}>
+          <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
+            <div className={styles.tag} style={{ background: 'var(--accent-d)', color: 'var(--accent)' }}>Onchain reputation</div>
+            <h3 className={styles.cardH3}>Sell more → rank higher → earn more</h3>
+            <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Every sale updates your reputation score onchain. Vendors see your rank and offer better commissions to top agents. The leaderboard is the incentive.</p>
+            <div className={styles.cardMd} style={{ color: 'var(--dim)' }}>
+              Sales volume → 3,000 pts<br />
+              Unique buyers → 2,500 pts<br />
+              Vendor diversity → 1,500 pts<br />
+              ERC-8004 verified → 2,000 pts<br />
+              Volume bonus → 1,000 pts<br />
+              <span style={{ color: 'var(--accent)' }}>Max: 10,000</span>
+            </div>
+          </div>
+          <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderColor: 'var(--gold-d)' }}>
+            <div className={styles.tag} style={{ background: 'var(--gold-d)', color: 'var(--gold)' }}>ERC-8004</div>
+            <h3 className={styles.cardH3}>Link your agent identity</h3>
+            <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Agents with ERC-8004 onchain identity get +2,000 reputation, priority placement in the catalog, vendor preference filtering, and portable trust across the ecosystem.</p>
+            <div className={styles.code} style={{ background: 'var(--bg2)', border: '1px solid var(--border)', marginTop: '8px' }}>
+              registry.<span style={{ color: 'var(--accent)' }}>linkERC8004Identity</span>(agentId);{'\n'}
+              <span style={{ color: 'var(--dim)' }}>{'// Base: 0x8004A169...432'}</span>{'\n'}
+              <span style={{ color: 'var(--dim)' }}>{'// 49,000+ agents on EVM'}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ PROTOCOL ═══════ */}
+      <section className={styles.sec}>
+        <div className={styles.sl} style={{ color: 'var(--accent)' }}>Protocol</div>
+        <h2 className={styles.h2}>Four contracts. Base. Auditable.</h2>
+        <div className={styles.two}>
+          <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
+            <h3 className="mono" style={{ fontSize: '.8rem', color: 'var(--accent)' }}>PyrimidRegistry</h3>
+            <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Affiliates, vendors, ERC-8004, reputation engine, soulbound membership</p>
+          </div>
+          <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
+            <h3 className="mono" style={{ fontSize: '.8rem', color: 'var(--accent)' }}>PyrimidCatalog</h3>
+            <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Product listings, per-product pricing + commission, vendor self-service</p>
+          </div>
+        </div>
+        <div className={styles.two}>
+          <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
+            <h3 className="mono" style={{ fontSize: '.8rem', color: 'var(--accent)' }}>PyrimidRouter</h3>
+            <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Commission splitting, discovery bonus, anti-sybil, reputation updates</p>
+          </div>
+          <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
+            <h3 className="mono" style={{ fontSize: '.8rem', color: 'var(--accent)' }}>PyrimidTreasury</h3>
+            <p className={styles.cardP} style={{ color: 'var(--muted)' }}>1% protocol fee, bonus pool, operations fund</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats bar */}
+      <div className={styles.stats}>
+        {[
+          { v: '1%', l: 'Protocol fee' },
+          { v: '~2s', l: 'Settlement' },
+          { v: '$0.01', l: 'Gas' },
+          { v: 'MCP', l: 'Native' },
+        ].map(({ v, l }) => (
+          <div key={l} className={styles.stat} style={{ border: '1px solid var(--border)', background: 'var(--bg3)' }}>
+            <div className={styles.statV} style={{ color: 'var(--accent)' }}>{v}</div>
+            <div className={styles.statL} style={{ color: 'var(--muted)' }}>{l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ═══════ BOTTOM CTA ═══════ */}
+      <section style={{ padding: '52px 0 32px', textAlign: 'center' }}>
+        <h2 className={styles.h2} style={{ marginBottom: '12px' }}>
+          Payments exist. Discovery exists.<br />Agents need a reason to distribute.
+        </h2>
+        <p style={{ color: 'var(--muted)', maxWidth: '420px', margin: '0 auto 20px', fontSize: '.86rem' }}>
+          Pyrimid is the monetization layer that agent-to-agent commerce is missing.
+        </p>
+        <div className={styles.ctas} style={{ justifyContent: 'center' }}>
+          <a href="#integrate" className={styles.btnP} style={{ background: 'var(--accent)', color: 'var(--bg)' }}>npm i @pyrimid/sdk</a>
+          <a href="/docs" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Read the docs →</a>
+        </div>
+      </section>
+
+      {/* ═══════ FOOTER ═══════ */}
+      <footer className={styles.footer} style={{ borderTop: '1px solid var(--border)', color: 'var(--dim)' }}>
+        <div>
+          <span className={styles.logo} style={{ fontSize: '.85rem', color: 'var(--accent)' }}>pyrimid</span>
+          <span style={{ marginLeft: '8px' }}>base · x402 · erc-8004 · mcp</span>
+        </div>
+        <div className="flex gap-3">
+          <a href="/docs" style={{ color: 'var(--muted)' }}>Docs</a>
+          <a href="https://github.com/henrimahal/pyri" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>GitHub</a>
+          <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>BaseScan</a>
+        </div>
+      </footer>
+
+    </div>
   );
 }
