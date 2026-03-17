@@ -28,10 +28,10 @@ import { type NextRequest, NextResponse } from 'next/server';
 // ═══════════════════════════════════════════════════════════
 
 const CONTRACTS = {
-  REGISTRY: '0x2263852363Bce16791A059c6F6fBb590f0b98c89',
-  CATALOG:  '0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74',
-  ROUTER:   '0x6594A6B2785b1f8505b291bDc50E017b5599aFC8',
-  TREASURY: '0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908',
+  REGISTRY: '0x34e22fc20D457095e2814CdFfad1e42980EEC389',
+  CATALOG:  '0xC935d6B73034dDDb97AD2a1BbD2106F34A977908',
+  ROUTER:   '0xc949AEa380D7b7984806143ddbfE519B03ABd68B',
+  TREASURY: '0x74A512F4f3F64aD479dEc4554a12855Ce943E12C',
 } as const;
 
 // ═══════════════════════════════════════════════════════════
@@ -209,7 +209,7 @@ async function fetchBazaarProducts(): Promise<Product[]> {
             tags: inferTags(description),
             price_usdc: priceAtomic,
             price_display: formatPrice(priceAtomic),
-            affiliate_bps: 1000, // Default 10% for non-SDK vendors
+            affiliate_bps: 0, // 0% default — vendor must set explicitly
             endpoint: resourceUrl,
             method: r.metadata?.method || accept.outputSchema?.input?.method || 'GET',
             output_schema: accept.outputSchema?.output || {},
@@ -252,7 +252,7 @@ async function fetchMcpizeProducts(): Promise<Product[]> {
         tags: s.tags || [],
         price_usdc: parsePrice(s.pricing?.price || s.price),
         price_display: formatPrice(parsePrice(s.pricing?.price || s.price)),
-        affiliate_bps: 1000,
+        affiliate_bps: 0, // 0% default — vendor must set explicitly
         endpoint: s.endpoint || s.url || '',
         method: 'GET',
         output_schema: {},
@@ -290,7 +290,7 @@ async function fetchMcpHiveProducts(): Promise<Product[]> {
       tags: s.tags || [],
       price_usdc: parsePrice(s.price),
       price_display: formatPrice(parsePrice(s.price)),
-      affiliate_bps: 1000,
+      affiliate_bps: 0, // 0% default — vendor must set explicitly
       endpoint: s.endpoint || '',
       method: s.method || 'GET',
       output_schema: {},
@@ -330,7 +330,7 @@ async function fetchApifyProducts(): Promise<Product[]> {
         tags: a.categories || [],
         price_usdc: parsePrice(a.pricing?.pricePerEvent),
         price_display: formatPrice(parsePrice(a.pricing?.pricePerEvent)),
-        affiliate_bps: 1000,
+        affiliate_bps: 0, // 0% default — vendor must set explicitly
         endpoint: `https://api.apify.com/v2/mcp/${a.id}`,
         method: 'POST',
         output_schema: {},

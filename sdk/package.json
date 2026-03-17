@@ -1,6 +1,6 @@
 {
   "name": "@pyrimid/sdk",
-  "version": "0.1.0",
+  "version": "0.2.3",
   "description": "Onchain monetization infrastructure for agent-to-agent commerce on Base",
   "type": "module",
   "main": "./dist/index.js",
@@ -54,12 +54,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/henrimahal/pyri"
+    "url": "https://pyrimid.ai"
   },
   "homepage": "https://pyrimid.ai/docs",
-  "bugs": {
-    "url": "https://github.com/henrimahal/pyri/issues"
-  },
   "engines": {
     "node": ">=18"
   },

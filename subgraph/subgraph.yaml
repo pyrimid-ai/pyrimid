@@ -9,9 +9,9 @@ dataSources:
     name: PyrimidRegistry
     network: base
     source:
-      address: "0x2263852363Bce16791A059c6F6fBb590f0b98c89"
+      address: "0x34e22fc20D457095e2814CdFfad1e42980EEC389"
       abi: PyrimidRegistry
-      startBlock: 43437586
+      startBlock: 43474113
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -41,9 +41,9 @@ dataSources:
     name: PyrimidCatalog
     network: base
     source:
-      address: "0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74"
+      address: "0xC935d6B73034dDDb97AD2a1BbD2106F34A977908"
       abi: PyrimidCatalog
-      startBlock: 43437593
+      startBlock: 43474113
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -70,9 +70,9 @@ dataSources:
     name: PyrimidRouter
     network: base
     source:
-      address: "0x6594A6B2785b1f8505b291bDc50E017b5599aFC8"
+      address: "0xc949AEa380D7b7984806143ddbfE519B03ABd68B"
       abi: PyrimidRouter
-      startBlock: 43437600
+      startBlock: 43474113
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -96,9 +96,9 @@ dataSources:
     name: PyrimidTreasury
     network: base
     source:
-      address: "0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908"
+      address: "0x74A512F4f3F64aD479dEc4554a12855Ce943E12C"
       abi: PyrimidTreasury
-      startBlock: 43437579
+      startBlock: 43474113
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9

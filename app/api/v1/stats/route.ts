@@ -18,10 +18,10 @@ import { type NextRequest, NextResponse } from 'next/server';
 // ═══════════════════════════════════════════════════════════
 
 const CONTRACTS = {
-  REGISTRY: '0x2263852363Bce16791A059c6F6fBb590f0b98c89',
-  CATALOG:  '0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74',
-  ROUTER:   '0x6594A6B2785b1f8505b291bDc50E017b5599aFC8',
-  TREASURY: '0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908',
+  REGISTRY: '0x34e22fc20D457095e2814CdFfad1e42980EEC389',
+  CATALOG:  '0xC935d6B73034dDDb97AD2a1BbD2106F34A977908',
+  ROUTER:   '0xc949AEa380D7b7984806143ddbfE519B03ABd68B',
+  TREASURY: '0x74A512F4f3F64aD479dEc4554a12855Ce943E12C',
 } as const;
 
 const SUBGRAPH_URL = process.env.PYRIMID_SUBGRAPH_URL || 'https://api.studio.thegraph.com/query/pyrimid/pyrimid-base/version/latest';
@@ -92,7 +92,7 @@ async function fetchProtocolStats() {
         transactionHash
       }
     }`),
-    fetch(CATALOG_URL, { signal: AbortSignal.timeout(5000) }).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch(`${CATALOG_URL}?limit=10000`, { signal: AbortSignal.timeout(5000) }).then(r => r.ok ? r.json() : null).catch(() => null),
   ]);
 
   const onchain = subgraphData?.protocolStats || {};
@@ -179,7 +179,23 @@ async function fetchAffiliateStats(affiliateId: string) {
   `, { id: affiliateId });
 
   if (!data?.affiliate) {
-    return { error: 'affiliate_not_found', affiliate_id: affiliateId };
+    return {
+      affiliate: {
+        id: affiliateId,
+        wallet: null,
+        reputation_score: 0,
+        erc8004_linked: false,
+        total_earnings_usdc: 0,
+        total_earnings_display: '$0',
+        sales_count: 0,
+        unique_buyers: 0,
+        vendors_served: 0,
+        registered: false,
+        registered_at: null,
+      },
+      recent_sales: [],
+      updated_at: new Date().toISOString(),
+    };
   }
 
   const a = data.affiliate;
@@ -334,7 +350,9 @@ export async function GET(req: NextRequest) {
 // ═══════════════════════════════════════════════════════════
 
 function formatUsdc(atomic: number): string {
+  if (atomic === 0) return '$0';
   const usd = atomic / 1_000_000;
+  if (usd >= 1_000_000) return `$${(usd / 1_000_000).toFixed(1)}M`;
   if (usd >= 1000) return `$${(usd / 1000).toFixed(1)}K`;
   if (usd >= 1) return `$${usd.toFixed(2)}`;
   return `$${usd.toFixed(4)}`;

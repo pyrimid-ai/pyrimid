@@ -163,10 +163,10 @@ const split = calculateSplit(250_000, 2000); // price, affiliateBps
 
 | Contract | Address | Deploy Block |
 |----------|---------|-------------|
-| PyrimidRegistry | `0x2263852363Bce16791A059c6F6fBb590f0b98c89` | 43437586 |
-| PyrimidCatalog | `0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74` | 43437593 |
-| PyrimidRouter | `0x6594A6B2785b1f8505b291bDc50E017b5599aFC8` | 43437600 |
-| PyrimidTreasury | `0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908` | 43437579 |
+| PyrimidRegistry | `0x34e22fc20D457095e2814CdFfad1e42980EEC389` | 43474113 |
+| PyrimidCatalog | `0xC935d6B73034dDDb97AD2a1BbD2106F34A977908` | 43474113 |
+| PyrimidRouter | `0xc949AEa380D7b7984806143ddbfE519B03ABd68B` | 43474113 |
+| PyrimidTreasury | `0x74A512F4f3F64aD479dEc4554a12855Ce943E12C` | 43474113 |
 
 USDC: `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`
 

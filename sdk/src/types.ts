@@ -11,10 +11,10 @@
 export const PYRIMID_ADDRESSES = {
   /** Base Mainnet */
   base: {
-    REGISTRY: '0x2263852363Bce16791A059c6F6fBb590f0b98c89',
-    CATALOG:  '0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74',
-    ROUTER:   '0x6594A6B2785b1f8505b291bDc50E017b5599aFC8',
-    TREASURY: '0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908',
+    REGISTRY: '0x34e22fc20D457095e2814CdFfad1e42980EEC389',
+    CATALOG:  '0xC935d6B73034dDDb97AD2a1BbD2106F34A977908',
+    ROUTER:   '0xc949AEa380D7b7984806143ddbfE519B03ABd68B',
+    TREASURY: '0x74A512F4f3F64aD479dEc4554a12855Ce943E12C',
     USDC:     '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
     ERC_8004: '0x8004A169FB4a3325136EB29fA0ceB6D2e539a432',
   },
@@ -159,7 +159,7 @@ export interface VendorMiddlewareConfig {
 // ═══════════════════════════════════════════════════════════
 
 export const ROUTER_ABI = [
-  'function routePayment(uint256 vendorId, bytes32 productId, uint256 affiliateId, address buyer) external',
+  'function routePayment(uint256 vendorId, bytes32 productId, uint256 affiliateId, address buyer, uint256 maxPrice) external',
   'event PaymentRouted(uint256 indexed vendorId, bytes32 indexed productId, uint256 indexed affiliateId, address buyer, uint256 total, uint256 platformFee, uint256 affiliateCommission, uint256 vendorShare)',
 ] as const;
 

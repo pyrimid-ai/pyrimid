@@ -58,7 +58,7 @@ async function getCatalog(): Promise<Product[]> {
     return cachedProducts;
   }
   try {
-    const res = await fetch(CATALOG_URL, { signal: AbortSignal.timeout(10000) });
+    const res = await fetch(`${CATALOG_URL}?limit=10000`, { signal: AbortSignal.timeout(10000) });
     if (!res.ok) return cachedProducts;
     const data = await res.json();
     cachedProducts = data.products || [];
@@ -279,7 +279,7 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
           text: [
             `Register as a Pyrimid affiliate on Base:`,
             ``,
-            `  Contract: 0x2263852363Bce16791A059c6F6fBb590f0b98c89`,
+            `  Contract: 0x34e22fc20D457095e2814CdFfad1e42980EEC389`,
             `  Function: ${referrer ? `registerAffiliateWithReferral("${referrer}")` : 'registerAffiliate()'}`,
             `  From: ${wallet}`,
             `  Cost: Free (gas only, ~$0.01 on Base)`,
@@ -305,10 +305,10 @@ const SERVER_INFO = {
   description: 'Pyrimid onchain affiliate distribution — product discovery, purchase, and affiliate tools',
   tools: TOOLS,
   contracts: {
-    registry: '0x2263852363Bce16791A059c6F6fBb590f0b98c89',
-    catalog: '0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74',
-    router: '0x6594A6B2785b1f8505b291bDc50E017b5599aFC8',
-    treasury: '0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908',
+    registry: '0x34e22fc20D457095e2814CdFfad1e42980EEC389',
+    catalog: '0xC935d6B73034dDDb97AD2a1BbD2106F34A977908',
+    router: '0xc949AEa380D7b7984806143ddbfE519B03ABd68B',
+    treasury: '0x74A512F4f3F64aD479dEc4554a12855Ce943E12C',
   },
   network: 'base',
 };

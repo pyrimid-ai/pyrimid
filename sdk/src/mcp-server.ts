@@ -39,9 +39,21 @@ export function createPyrimidMcpServer(config: McpServerConfig = {}) {
       return cachedProducts;
     }
     try {
-      const res = await fetch(catalogUrl);
-      const data = await res.json();
-      cachedProducts = data.products;
+      const allProducts: PyrimidProduct[] = [];
+      let offset = 0;
+      const limit = 100;
+
+      while (true) {
+        const sep = catalogUrl.includes('?') ? '&' : '?';
+        const url = `${catalogUrl}${sep}limit=${limit}&offset=${offset}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        allProducts.push(...data.products);
+        if (allProducts.length >= data.total || data.products.length < limit) break;
+        offset += limit;
+      }
+
+      cachedProducts = allProducts;
       lastFetch = Date.now();
     } catch (e) {
       console.error('[pyrimid] Catalog refresh failed:', e);
@@ -142,8 +154,9 @@ export function createPyrimidMcpServer(config: McpServerConfig = {}) {
     {
       vendor_id: z.string().describe('Vendor ID from browse results'),
       product_id: z.string().describe('Product ID from browse results'),
+      max_price_usd: z.number().optional().describe('Maximum price you are willing to pay in USD (slippage protection). Defaults to product listed price.'),
     },
-    async ({ vendor_id, product_id }) => {
+    async ({ vendor_id, product_id, max_price_usd }) => {
       const products = await refreshCatalog();
       const product = products.find(p => p.vendor_id === vendor_id && p.product_id === product_id);
 
@@ -159,10 +172,13 @@ export function createPyrimidMcpServer(config: McpServerConfig = {}) {
 
         if (response.status === 402) {
           const paymentRequired = response.headers.get('X-PAYMENT-REQUIRED');
+          const maxPrice = max_price_usd
+            ? (max_price_usd * 1_000_000).toString()
+            : product.price_usdc.toString();
           return {
             content: [{
               type: 'text' as const,
-              text: `Payment required: ${product.price_display} USDC on Base.\nPayment details: ${paymentRequired}\nThe x402 client will handle payment automatically on retry.`,
+              text: `Payment required: ${product.price_display} USDC on Base.\nMax price: $${(Number(maxPrice) / 1_000_000).toFixed(2)}\nPayment details: ${paymentRequired}\nThe x402 client will handle payment automatically on retry. Pass maxPrice=${maxPrice} to routePayment for slippage protection.`,
             }],
           };
         }
@@ -236,7 +252,7 @@ export function createPyrimidMcpServer(config: McpServerConfig = {}) {
           text: [
             `Register as a Pyrimid affiliate on Base:`,
             ``,
-            `  Contract: 0x2263852363Bce16791A059c6F6fBb590f0b98c89`,
+            `  Contract: 0x34e22fc20D457095e2814CdFfad1e42980EEC389`,
             `  Function: ${referrer_id ? `registerAffiliateWithReferral("${referrer_id}")` : 'registerAffiliate()'}`,
             `  From: ${wallet_address}`,
             `  Cost: Free (gas only, ~$0.01 on Base)`,

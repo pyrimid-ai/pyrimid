@@ -34,7 +34,24 @@ import {
 //                   PAYMENT SPLIT CALCULATOR
 // ═══════════════════════════════════════════════════════════
 
-export function calculateSplit(priceUsdc: number, affiliateBps: number): PaymentSplit {
+export function calculateSplit(priceUsdc: number | bigint, affiliateBps: number | bigint): PaymentSplit {
+  // Handle BigInt inputs from web3 libraries (viem/ethers)
+  if (typeof priceUsdc === 'bigint' || typeof affiliateBps === 'bigint') {
+    const price = BigInt(priceUsdc);
+    const bps = BigInt(affiliateBps);
+    const protocolFee = price / 100n;
+    const remaining = price - protocolFee;
+    const affiliateCommission = (remaining * bps) / 10_000n;
+    const vendorShare = remaining - affiliateCommission;
+    return {
+      total_usdc: Number(price),
+      protocol_fee: Number(protocolFee),
+      affiliate_commission: Number(affiliateCommission),
+      vendor_share: Number(vendorShare),
+      affiliate_bps: Number(bps),
+    };
+  }
+
   const protocolFee = Math.floor(priceUsdc / 100); // 1%
   const remaining = priceUsdc - protocolFee;
   const affiliateCommission = Math.floor((remaining * affiliateBps) / 10_000);
@@ -113,6 +130,7 @@ export function pyrimidMiddleware(config: VendorMiddlewareConfig) {
         network: 'base',
         asset: addresses.USDC,
         amount: productConfig.price.toString(),
+        max_price: productConfig.price.toString(),
         recipient: addresses.ROUTER,
         router: addresses.ROUTER,
         vendor_id: vendorId,
@@ -218,6 +236,7 @@ export function withPyrimid(
             network: 'base',
             asset: addresses.USDC,
             amount: product.price.toString(),
+            max_price: product.price.toString(),
             recipient: addresses.ROUTER,
             vendor_id: product.vendorId,
             product_id: product.productId,

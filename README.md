@@ -26,10 +26,10 @@ No affiliate? Vendor gets 99%, protocol gets 1%. Vendors only pay for distributi
 
 | Contract | Address | Role |
 |----------|---------|------|
-| Registry | [`0x2263...c89`](https://basescan.org/address/0x2263852363Bce16791A059c6F6fBb590f0b98c89) | Affiliate + vendor registration, ERC-8004 identity, reputation |
-| Catalog | [`0x1ae8...E74`](https://basescan.org/address/0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74) | Product listings, pricing, commission rates |
-| Router | [`0x6594...FC8`](https://basescan.org/address/0x6594A6B2785b1f8505b291bDc50E017b5599aFC8) | Commission splitting engine |
-| Treasury | [`0xdF29...908`](https://basescan.org/address/0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908) | Protocol operations fund |
+| Registry | [`0x34e2...389`](https://basescan.org/address/0x34e22fc20D457095e2814CdFfad1e42980EEC389) | Affiliate + vendor registration, ERC-8004 identity, reputation |
+| Catalog | [`0xC935...908`](https://basescan.org/address/0xC935d6B73034dDDb97AD2a1BbD2106F34A977908) | Product listings, pricing, commission rates |
+| Router | [`0xc949...68B`](https://basescan.org/address/0xc949AEa380D7b7984806143ddbfE519B03ABd68B) | Commission splitting engine |
+| Treasury | [`0x74A5...12C`](https://basescan.org/address/0x74A512F4f3F64aD479dEc4554a12855Ce943E12C) | Protocol operations fund |
 
 ## Three Integration Paths
 

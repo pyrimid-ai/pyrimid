@@ -7,7 +7,7 @@ const NAV_ITEMS = [
   { label: 'Products', href: '#products' },
   { label: 'Reputation', href: '#reputation' },
   { label: 'Docs', href: '/docs' },
-  { label: 'GitHub', href: 'https://github.com/henrimahal/pyri', external: true },
+  { label: 'GitHub (soon)', href: '#', external: false },
 ];
 
 export function MobileNav() {

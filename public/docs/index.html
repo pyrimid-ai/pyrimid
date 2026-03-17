@@ -5,39 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pyrimid — Developer Documentation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg-deep: #08090c;
-      --bg-surface: #0d0f14;
-      --bg-elevated: #13161d;
+      --bg-deep: #06070a;
+      --bg-surface: #0c0e14;
+      --bg-elevated: #10121a;
       --bg-code: #0a0c10;
-      --border: #1e2230;
-      --border-bright: #2a2f42;
-      --text-primary: #e8eaf0;
+      --border: #181b25;
+      --border-bright: #252838;
+      --text-primary: #dcdee5;
       --text-secondary: #8b90a5;
-      --text-muted: #5a5f74;
-      --accent: #5eead4;
-      --accent-dim: #2dd4bf20;
-      --accent-hover: #99f6e4;
-      --orange: #fb923c;
-      --orange-dim: #fb923c18;
-      --purple: #c084fc;
-      --purple-dim: #c084fc15;
+      --text-muted: #5e6278;
+      --accent: #00e5a0;
+      --accent-dim: #00e5a012;
+      --accent-hover: #00ffb3;
+      --orange: #ff8c42;
+      --orange-dim: #ff8c4215;
+      --purple: #7c6bff;
+      --purple-dim: #7c6bff12;
       --pink: #f472b6;
-      --blue: #60a5fa;
+      --blue: #00b8ff;
       --red: #f87171;
       --green: #4ade80;
-      --yellow: #fbbf24;
+      --yellow: #f0c040;
       --sidebar-w: 260px;
       --header-h: 56px;
     }
 
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Instrument Sans', -apple-system, sans-serif;
+      font-family: 'Outfit', -apple-system, sans-serif;
       background: var(--bg-deep);
       color: var(--text-primary);
       line-height: 1.65;
@@ -55,31 +55,27 @@
       backdrop-filter: blur(12px);
     }
     .logo {
-      font-weight: 700; font-size: 18px; letter-spacing: -0.5px;
-      display: flex; align-items: center; gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 1.2rem; letter-spacing: -0.5px;
+      display: flex; align-items: center; gap: 0;
     }
-    .logo .mark {
-      width: 24px; height: 24px;
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-    }
-    .logo span { color: var(--text-primary); }
-    .logo .ver {
-      font-size: 11px; font-weight: 500; color: var(--accent);
-      background: var(--accent-dim); padding: 2px 8px; border-radius: 20px;
-      margin-left: 6px;
+    .logo .name { color: var(--accent); }
+    .logo .sub {
+      font-weight: 400; font-size: 0.7rem; margin-left: 8px;
+      color: var(--text-muted);
     }
     .header-links {
-      margin-left: auto; display: flex; gap: 20px; align-items: center;
+      margin-left: auto; display: flex; gap: 12px; align-items: center;
     }
     .header-links a {
-      color: var(--text-secondary); text-decoration: none; font-size: 13px;
-      font-weight: 500; transition: color 0.15s;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted); text-decoration: none; font-size: 0.78rem;
+      transition: color 0.2s;
     }
     .header-links a:hover { color: var(--text-primary); }
     .header-links .cta {
       background: var(--accent); color: var(--bg-deep); padding: 6px 14px;
-      border-radius: 6px; font-weight: 600;
+      border-radius: 6px; font-weight: 600; font-size: 0.78rem;
     }
     .header-links .cta:hover { background: var(--accent-hover); color: var(--bg-deep); }
 
@@ -123,8 +119,10 @@
       margin-bottom: 12px; line-height: 1.2;
     }
     h1 .gradient {
-      background: linear-gradient(135deg, var(--accent), var(--purple));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      background: none;
+      -webkit-background-clip: unset; -webkit-text-fill-color: unset;
     }
     .subtitle {
       font-size: 17px; color: var(--text-secondary); margin-bottom: 40px;
@@ -160,10 +158,7 @@
       line-height: 1.7; color: var(--text-secondary);
     }
     pre .lang-tag {
-      position: absolute; top: 10px; right: 14px;
-      font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
-      color: var(--text-muted); text-transform: uppercase;
-      font-family: 'JetBrains Mono', monospace;
+      display: none;
     }
     code:not(pre code) {
       font-family: 'JetBrains Mono', monospace; font-size: 13px;
@@ -349,15 +344,14 @@
 <header>
   <button class="menu-toggle" onclick="document.querySelector('aside').classList.toggle('open')">☰</button>
   <div class="logo">
-    <div class="mark"></div>
-    <span>Pyrimid</span>
-    <span class="ver">v0.2</span>
+    <span class="name">pyrimid</span>
+    <span class="sub">docs</span>
   </div>
   <div class="header-links">
+    <a href="/">Home</a>
     <a href="#api-reference">API</a>
     <a href="#contracts">Contracts</a>
-    <a href="https://basescan.org/address/0x2263852363Bce16791A059c6F6fBb590f0b98c89" target="_blank">BaseScan</a>
-    <a href="https://github.com/henrimahal/pyri" target="_blank">GitHub</a>
+    <a href="#" style="opacity:0.5;pointer-events:none;">GitHub (coming soon)</a>
     <a href="#quickstart" class="cta">Get Started</a>
   </div>
 </header>
@@ -394,7 +388,7 @@
     </div>
     <div class="nav-group">
       <div class="nav-group-title">Resources</div>
-      <a class="nav-link" href="#spec">Specification <span class="badge">PDF</span></a>
+
       <a class="nav-link" href="#sdk-source">SDK Source</a>
     </div>
   </nav>
@@ -406,7 +400,7 @@
 <!-- ═════ OVERVIEW ═════ -->
 <section id="overview">
   <h1><span class="gradient">Pyrimid</span> Documentation</h1>
-  <p class="subtitle">Onchain monetization infrastructure for agent-to-agent commerce. One-layer affiliate distribution protocol on Base. Payments settle instantly in USDC.</p>
+  <p class="subtitle">Onchain Distribution Infrastructure for Agents. Agent-to-Agent Monetization via One Layer Affiliate Protocol on BASE. Payments settle instantly in USDC via x402.</p>
 
   <div class="path-grid">
     <a class="path-card" href="#resolver" style="text-decoration:none; color:inherit;">
@@ -428,7 +422,7 @@
 
   <div class="callout tip">
     <div class="callout-title">How it works</div>
-    <p>Vendors list products. Agents earn commissions by distributing them. Every transaction splits automatically: <strong>1% protocol</strong>, <strong>5-50% affiliate</strong> (vendor sets), <strong>remainder to vendor</strong>. No affiliate? Vendor gets 99%.</p>
+    <p>Vendors list products. Agents earn commissions by distributing them. Every transaction splits automatically: <strong>1% protocol</strong>, <strong>0-50% affiliate</strong> (vendor sets, default 0%), <strong>remainder to vendor</strong>. No affiliate commission set? Vendor gets 99%.</p>
   </div>
 </section>
 
@@ -593,10 +587,10 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
   <h3>Contract addresses</h3>
   <pre><code><span class="kw">import</span> { <span class="ty">PYRIMID_ADDRESSES</span> } <span class="kw">from</span> <span class="str">'@pyrimid/sdk'</span>;
 
-<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">REGISTRY</span>  <span class="cm">// 0x2263...c89</span>
-<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">CATALOG</span>   <span class="cm">// 0x1ae8...E74</span>
-<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">ROUTER</span>    <span class="cm">// 0x6594...FC8</span>
-<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">TREASURY</span>  <span class="cm">// 0xdF29...908</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">REGISTRY</span>  <span class="cm">// 0x34e2...389</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">CATALOG</span>   <span class="cm">// 0xC935...908</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">ROUTER</span>    <span class="cm">// 0xc949...68B</span>
+<span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">TREASURY</span>  <span class="cm">// 0x74A5...12C</span>
 <span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">USDC</span>      <span class="cm">// 0x8335...913</span>
 <span class="ty">PYRIMID_ADDRESSES</span>.base.<span class="prop">ERC_8004</span>  <span class="cm">// 0x8004...432</span></code><span class="lang-tag">typescript</span></pre>
 
@@ -750,22 +744,22 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
     <tbody>
       <tr>
         <td><strong>PyrimidRegistry</strong></td>
-        <td><span class="addr" onclick="copyAddr(this)">0x2263852363Bce16791A059c6F6fBb590f0b98c89<span class="copy-icon">⧉</span></span></td>
+        <td><span class="addr" onclick="copyAddr(this)">0x34e22fc20D457095e2814CdFfad1e42980EEC389<span class="copy-icon">⧉</span></span></td>
         <td>Affiliate + vendor registration, ERC-8004, reputation</td>
       </tr>
       <tr>
         <td><strong>PyrimidCatalog</strong></td>
-        <td><span class="addr" onclick="copyAddr(this)">0x1ae8EbbFf7c5A15a155c9bcF9fF7984e7C8e0E74<span class="copy-icon">⧉</span></span></td>
+        <td><span class="addr" onclick="copyAddr(this)">0xC935d6B73034dDDb97AD2a1BbD2106F34A977908<span class="copy-icon">⧉</span></span></td>
         <td>Product listings, pricing, commission rates</td>
       </tr>
       <tr>
         <td><strong>PyrimidRouter</strong></td>
-        <td><span class="addr" onclick="copyAddr(this)">0x6594A6B2785b1f8505b291bDc50E017b5599aFC8<span class="copy-icon">⧉</span></span></td>
+        <td><span class="addr" onclick="copyAddr(this)">0xc949AEa380D7b7984806143ddbfE519B03ABd68B<span class="copy-icon">⧉</span></span></td>
         <td>Commission splitting engine</td>
       </tr>
       <tr>
         <td><strong>PyrimidTreasury</strong></td>
-        <td><span class="addr" onclick="copyAddr(this)">0xdF29F94EA8053cC0cb1567D0A8Ac8dd3d1E00908<span class="copy-icon">⧉</span></span></td>
+        <td><span class="addr" onclick="copyAddr(this)">0x74A512F4f3F64aD479dEc4554a12855Ce943E12C<span class="copy-icon">⧉</span></span></td>
         <td>Protocol operations fund (1% accumulator)</td>
       </tr>
     </tbody>
@@ -847,20 +841,7 @@ registry.<span class="fn">linkERC8004Identity</span>(agentId);
   <p><strong>Roadmap:</strong> Optional at launch → increasingly advantageous → eventually required for affiliate registration.</p>
 </section>
 
-<!-- ═════ SPEC ═════ -->
-<section id="spec">
-  <h2>Specification</h2>
-  <p>The full Pyrimid v0.2 master specification covers architecture, contract design, SDK, distribution model, revenue projections, anti-gaming, and go-to-market strategy.</p>
 
-  <div class="callout info">
-    <div class="callout-title">Attached files</div>
-    <p>
-      <strong>pyrimid-spec-v0.2.md</strong> — Master specification (single source of truth)<br>
-      <strong>pyrimid-sdk-mcp-server.ts</strong> — MCP server factory source<br>
-      <strong>pyrimid-sdk-resolver.ts</strong> — PyrimidResolver source
-    </p>
-  </div>
-</section>
 
 <!-- ═════ SDK SOURCE ═════ -->
 <section id="sdk-source">

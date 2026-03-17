@@ -101,6 +101,7 @@ export class PyrimidResolver {
   async purchase(
     product: PyrimidProduct,
     buyerWallet: any, // ethers.Wallet or viem account
+    options?: { maxPriceUsdc?: number },
   ): Promise<PurchaseResult> {
     // Step 1: Hit vendor endpoint → get 402 with payment requirements
     const initialResponse = await fetch(product.endpoint, {
@@ -165,21 +166,46 @@ export class PyrimidResolver {
       return this.cache.products;
     }
 
-    const response = await fetch(this.catalogUrl);
-    if (!response.ok) throw new Error(`Catalog fetch failed: ${response.status}`);
+    const allProducts: PyrimidProduct[] = [];
+    let offset = 0;
+    const limit = 100;
 
-    const data = await response.json();
-    this.cache = { products: data.products, fetchedAt: Date.now() };
-    return data.products;
+    while (true) {
+      const sep = this.catalogUrl.includes('?') ? '&' : '?';
+      const url = `${this.catalogUrl}${sep}limit=${limit}&offset=${offset}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Catalog fetch failed: ${response.status}`);
+
+      const data = await response.json();
+      allProducts.push(...data.products);
+
+      if (allProducts.length >= data.total || data.products.length < limit) break;
+      offset += limit;
+    }
+
+    this.cache = { products: allProducts, fetchedAt: Date.now() };
+    return allProducts;
   }
 
   /**
    * Get affiliate performance stats.
    */
   async getStats() {
+    const baseUrl = this.catalogUrl.replace('/catalog', '/stats');
     const response = await fetch(
-      `${this.catalogUrl.replace('/catalog', '/stats')}/affiliate/${this.affiliateId}`
+      `${baseUrl}?type=affiliate&id=${encodeURIComponent(this.affiliateId)}`
     );
+    if (response.status === 404) {
+      return {
+        affiliate_id: this.affiliateId,
+        registered: false,
+        total_earnings_usdc: 0,
+        sales_count: 0,
+        unique_buyers: 0,
+        vendors_served: 0,
+        reputation_score: 0,
+      };
+    }
     if (!response.ok) throw new Error(`Stats fetch failed: ${response.status}`);
     return response.json();
   }

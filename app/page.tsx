@@ -69,12 +69,11 @@ export default function LandingPage() {
           {['Integrate', 'Products', 'Reputation', 'Docs', 'GitHub'].map((label) => (
             <a
               key={label}
-              href={label === 'Docs' ? '/docs' : label === 'GitHub' ? 'https://github.com/henrimahal/pyri' : `#${label.toLowerCase()}`}
+              href={label === 'Docs' ? '/docs' : label === 'GitHub' ? '#' : `#${label.toLowerCase()}`}
               className={styles.navLink}
-              style={{ color: 'var(--muted)' }}
-              {...(label === 'GitHub' ? { target: '_blank', rel: 'noopener' } : {})}
+              style={label === 'GitHub' ? { color: 'var(--muted)', opacity: 0.4, pointerEvents: 'none' as const } : { color: 'var(--muted)' }}
             >
-              {label}
+              {label === 'GitHub' ? 'GitHub (soon)' : label}
             </a>
           ))}
         </div>
@@ -85,15 +84,15 @@ export default function LandingPage() {
       <section className={`${styles.hero}`}>
         <div className={styles.heroGlow} style={{ background: 'radial-gradient(ellipse, var(--accent-d) 0%, transparent 70%)' }} />
         <h1 className={`${styles.h1} fu`}>
-          Monetization infrastructure<br />for <span style={{ color: 'var(--accent)' }}>agent-to-agent commerce</span>
+          Onchain Distribution &amp;<br /><span style={{ color: 'var(--accent)' }}>Monetization for Agents</span>
         </h1>
         <p className={`${styles.hsub} fu d1`} style={{ color: 'var(--muted)' }}>
-          Onchain monetization infrastructure for agent-to-agent commerce. One MCP server. Aggregated catalog. Onchain commission splits. Plug in with 5 lines.
+          Infrastructure for Agent-to-Agent commerce via x402 &amp; erc8004. One MCP, one SDK, one API. Aggregated catalog. Immutable, transparent commission splits. Plug in with 5 lines.
         </p>
         <div className={`${styles.hcode} fu d2`} style={{ background: 'var(--bg2)', borderColor: 'var(--border)', color: 'var(--muted)' }}>
           <span style={{ color: 'var(--accent)' }}>PyrimidRouter</span>.<span style={{ color: 'var(--blue)' }}>routePayment</span>(vendor, product, affiliate, buyer){'\n'}
           {'  '}<span style={{ color: 'var(--dim)' }}>├─</span> <span style={{ color: '#f0a040' }}>1%</span>{'  → protocol\n'}
-          {'  '}<span style={{ color: 'var(--dim)' }}>├─</span> <span style={{ color: '#f0a040' }}>5-50%</span>{' → affiliate (vendor sets)\n'}
+          {'  '}<span style={{ color: 'var(--dim)' }}>├─</span> <span style={{ color: '#f0a040' }}>0-50%</span>{' → affiliate (set by vendor on registration)\n'}
           {'  '}<span style={{ color: 'var(--dim)' }}>└─</span> rest → vendor
         </div>
         <div className={`${styles.ctas} fu d3`}>
@@ -215,7 +214,7 @@ export default function LandingPage() {
             );
           })}
         </div>
-        <p style={{ color: 'var(--dim)', fontSize: '.72rem' }}>$0.001 to $1,000+ per call. Commission 5-50%. Vendors set both. Pyrimid is product-agnostic.</p>
+        <p style={{ color: 'var(--dim)', fontSize: '.72rem' }}>$0.001 to $1,000+ per call. Commission 0-50% (vendor sets). Pyrimid is product-agnostic.</p>
       </section>
 
       {/* ═══════ FLYWHEEL ═══════ */}
@@ -343,7 +342,7 @@ export default function LandingPage() {
         </div>
         <div className="flex gap-3">
           <a href="/docs" style={{ color: 'var(--muted)' }}>Docs</a>
-          <a href="https://github.com/henrimahal/pyri" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>GitHub</a>
+          <a href="#" style={{ color: 'var(--muted)', opacity: 0.5, pointerEvents: 'none' }}>GitHub (coming soon)</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>BaseScan</a>
         </div>
       </footer>
