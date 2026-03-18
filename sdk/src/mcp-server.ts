@@ -264,5 +264,51 @@ export function createPyrimidMcpServer(config: McpServerConfig = {}) {
     }
   );
 
+  // ═══════════════════════════════════════════════════════════
+  //                   VENDOR & COMMISSION TOOLS
+  // ═══════════════════════════════════════════════════════════
+
+  server.tool(
+    'pyrimid_vendor_stats',
+    'Get vendor performance stats — total volume, sales count, products listed, affiliate payouts. Query the stats API for vendor-specific data.',
+    {
+      vendor_id: z.string().describe('Vendor ID (bytes16 hex, e.g. "0x03151ef1da0ab3edeb941a890e6cbc75")'),
+    },
+    async ({ vendor_id }) => {
+      try {
+        const statsUrl = catalogUrl.replace('/catalog', '/stats');
+        const response = await fetch(`${statsUrl}?type=vendor&id=${encodeURIComponent(vendor_id)}`);
+        if (!response.ok) {
+          return { content: [{ type: 'text' as const, text: `Failed to fetch vendor stats: HTTP ${response.status}` }] };
+        }
+        const data = await response.json();
+        return { content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }] };
+      } catch (error) {
+        return { content: [{ type: 'text' as const, text: `Error fetching vendor stats: ${error instanceof Error ? error.message : 'Unknown'}` }] };
+      }
+    }
+  );
+
+  server.tool(
+    'pyrimid_commission_check',
+    'Check affiliate commission earnings and performance. Returns total earnings, sales count, and recent sales for a given affiliate.',
+    {
+      affiliate_id: z.string().describe('Affiliate ID (bytes16 hex) or wallet address'),
+    },
+    async ({ affiliate_id }) => {
+      try {
+        const statsUrl = catalogUrl.replace('/catalog', '/stats');
+        const response = await fetch(`${statsUrl}?type=affiliate&id=${encodeURIComponent(affiliate_id)}`);
+        if (!response.ok) {
+          return { content: [{ type: 'text' as const, text: `Failed to fetch affiliate stats: HTTP ${response.status}` }] };
+        }
+        const data = await response.json();
+        return { content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }] };
+      } catch (error) {
+        return { content: [{ type: 'text' as const, text: `Error fetching commission data: ${error instanceof Error ? error.message : 'Unknown'}` }] };
+      }
+    }
+  );
+
   return server;
 }

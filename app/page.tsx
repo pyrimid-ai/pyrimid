@@ -344,6 +344,8 @@ export default function LandingPage() {
           <a href="/docs" style={{ color: 'var(--muted)' }}>Docs</a>
           <a href="#" style={{ color: 'var(--muted)', opacity: 0.5, pointerEvents: 'none' }}>GitHub (coming soon)</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>BaseScan</a>
+          <a href="/llms.txt" style={{ color: 'var(--muted)' }}>llms.txt</a>
+          <a href="/skill.md" style={{ color: 'var(--muted)' }}>skill.md</a>
         </div>
       </footer>
 

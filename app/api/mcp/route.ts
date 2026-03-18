@@ -129,6 +129,28 @@ const TOOLS = [
       required: ['wallet_address'],
     },
   },
+  {
+    name: 'pyrimid_vendor_stats',
+    description: 'Get vendor performance stats — total volume, sales count, products listed, affiliate payouts.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        vendor_id: { type: 'string', description: 'Vendor ID (bytes16 hex)' },
+      },
+      required: ['vendor_id'],
+    },
+  },
+  {
+    name: 'pyrimid_commission_check',
+    description: 'Check affiliate commission earnings and performance for a given affiliate.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        affiliate_id: { type: 'string', description: 'Affiliate ID (bytes16 hex) or wallet address' },
+      },
+      required: ['affiliate_id'],
+    },
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════
@@ -288,6 +310,32 @@ async function handleToolCall(name: string, args: Record<string, unknown>): Prom
           ].join('\n'),
         }],
       };
+    }
+
+    case 'pyrimid_vendor_stats': {
+      const vendorId = String(args.vendor_id || '');
+      if (!vendorId) return { content: [{ type: 'text', text: 'vendor_id is required' }] };
+      try {
+        const statsUrl = CATALOG_URL.replace('/catalog', '/stats');
+        const res = await fetch(`${statsUrl}?type=vendor&id=${encodeURIComponent(vendorId)}`, { signal: AbortSignal.timeout(10000) });
+        const data = await res.json();
+        return { content: [{ type: 'text', text: JSON.stringify(data, null, 2) }] };
+      } catch (error) {
+        return { content: [{ type: 'text', text: `Error: ${error instanceof Error ? error.message : 'Unknown'}` }] };
+      }
+    }
+
+    case 'pyrimid_commission_check': {
+      const affiliateId = String(args.affiliate_id || '');
+      if (!affiliateId) return { content: [{ type: 'text', text: 'affiliate_id is required' }] };
+      try {
+        const statsUrl = CATALOG_URL.replace('/catalog', '/stats');
+        const res = await fetch(`${statsUrl}?type=affiliate&id=${encodeURIComponent(affiliateId)}`, { signal: AbortSignal.timeout(10000) });
+        const data = await res.json();
+        return { content: [{ type: 'text', text: JSON.stringify(data, null, 2) }] };
+      } catch (error) {
+        return { content: [{ type: 'text', text: `Error: ${error instanceof Error ? error.message : 'Unknown'}` }] };
+      }
     }
 
     default:

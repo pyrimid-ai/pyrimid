@@ -9,9 +9,16 @@ export const metadata: Metadata = {
     title: 'Pyrimid — Monetization Infrastructure for Agent-to-Agent Commerce',
     description: 'Onchain monetization infrastructure for agent-to-agent commerce on Base.',
     type: 'website',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pyrimid — Agent-to-Agent Commerce on Base',
+    description: 'Onchain affiliate distribution. x402 payments. USDC settlement.',
+    images: ['/og-image.png'],
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon.ico?v=3',
     apple: '/apple-touch-icon.png',
   },
 };

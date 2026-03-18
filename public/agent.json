@@ -1,0 +1,8 @@
+{
+  "name": "pyrimid",
+  "description": "Onchain affiliate distribution protocol for AI agents. Browse 92+ products, purchase via x402 USDC on Base, earn commissions.",
+  "protocols": ["a2a", "mcp", "x402"],
+  "mcp_endpoint": "https://pyrimid.ai/api/mcp",
+  "api_docs": "https://pyrimid.ai/docs",
+  "url": "https://pyrimid.ai"
+}

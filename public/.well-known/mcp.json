@@ -1,0 +1,8 @@
+{
+  "name": "pyrimid",
+  "version": "1.0.0",
+  "description": "Onchain affiliate distribution protocol for AI agents on Base. Browse products, purchase via x402, earn commissions.",
+  "transport": "streamable-http",
+  "url": "https://pyrimid.ai/api/mcp",
+  "tools": ["pyrimid_browse", "pyrimid_buy", "pyrimid_preview", "pyrimid_categories", "pyrimid_register_affiliate", "pyrimid_vendor_stats", "pyrimid_commission_check"]
+}
