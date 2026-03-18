@@ -38,7 +38,7 @@ const CONTRACTS = {
 //                   EXTERNAL SOURCES
 // ═══════════════════════════════════════════════════════════
 
-const SUBGRAPH_URL = process.env.PYRIMID_SUBGRAPH_URL || 'https://api.studio.thegraph.com/query/pyrimid/pyrimid-base/version/latest';
+const SUBGRAPH_URL = process.env.PYRIMID_SUBGRAPH_URL || 'https://api.studio.thegraph.com/query/1744480/pyrimid/v0.2.0';
 // Real CDP Bazaar discovery endpoint (x402 v2)
 const BAZAAR_URL   = process.env.BAZAAR_CATALOG_URL   || 'https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources';
 // x402.org testnet discovery (fallback, also valid)
@@ -93,22 +93,21 @@ async function fetchOnchainProducts(): Promise<Product[]> {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         query: `{
-          products(first: 1000, where: { active: true }) {
+          productListedEvents(first: 1000) {
             id
             vendorId
-            vendorName
             productId
-            endpoint
-            description
             priceUsdc
             affiliateBps
-            vendor {
-              erc8004Linked
-              reputation
-            }
-            monthlySales
-            monthlyBuyers
-            createdAt
+            endpoint
+            blockTimestamp
+            transactionHash
+          }
+          vendors(first: 100) {
+            id
+            name
+            wallet
+            active
           }
         }`,
       }),
@@ -116,29 +115,43 @@ async function fetchOnchainProducts(): Promise<Product[]> {
 
     if (!res.ok) return [];
     const data = await res.json();
-    const raw = data?.data?.products || [];
+    const events = data?.data?.productListedEvents || [];
+    const vendors = data?.data?.vendors || [];
+    
+    // Build vendor name lookup
+    const vendorMap: Record<string, string> = {};
+    for (const v of vendors) {
+      vendorMap[v.id] = v.name || `Vendor ${v.id.slice(0, 10)}`;
+    }
 
-    return raw.map((p: any) => ({
+    // Deduplicate: keep latest event per vendorId+productId
+    const seen = new Map<string, any>();
+    for (const e of events) {
+      const key = `${e.vendorId}-${e.productId}`;
+      seen.set(key, e);
+    }
+
+    return Array.from(seen.values()).map((p: any) => ({
       vendor_id: p.vendorId,
-      vendor_name: p.vendorName || `Vendor #${p.vendorId}`,
-      vendor_erc8004: p.vendor?.erc8004Linked || false,
-      product_id: p.productId,
-      description: p.description || '',
-      category: inferCategory(p.description, p.productId),
-      tags: inferTags(p.description),
+      vendor_name: vendorMap[p.vendorId] || `Vendor ${p.vendorId.slice(0, 10)}`,
+      vendor_erc8004: false,
+      product_id: `onchain_${p.vendorId.slice(0, 8)}_${p.productId}`,
+      description: p.endpoint ? `Onchain product — ${p.endpoint}` : 'Onchain registered product',
+      category: inferCategory(p.endpoint || '', ''),
+      tags: inferTags(p.endpoint || ''),
       price_usdc: Number(p.priceUsdc),
       price_display: formatPrice(Number(p.priceUsdc)),
       affiliate_bps: Number(p.affiliateBps),
-      endpoint: p.endpoint,
+      endpoint: p.endpoint || '',
       method: 'GET',
       output_schema: {},
-      monthly_volume: Number(p.monthlySales) || 0,
-      monthly_buyers: Number(p.monthlyBuyers) || 0,
+      monthly_volume: 0,
+      monthly_buyers: 0,
       network: 'base',
       asset: 'USDC',
       source: 'onchain',
       sdk_integrated: true,
-      indexed_at: new Date(Number(p.createdAt) * 1000).toISOString(),
+      indexed_at: p.blockTimestamp ? new Date(Number(p.blockTimestamp) * 1000).toISOString() : new Date().toISOString(),
     }));
   } catch (err) {
     console.error('[catalog] Subgraph fetch failed:', err);

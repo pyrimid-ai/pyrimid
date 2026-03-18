@@ -24,7 +24,7 @@ const CONTRACTS = {
   TREASURY: '0x74A512F4f3F64aD479dEc4554a12855Ce943E12C',
 } as const;
 
-const SUBGRAPH_URL = process.env.PYRIMID_SUBGRAPH_URL || 'https://api.studio.thegraph.com/query/pyrimid/pyrimid-base/version/latest';
+const SUBGRAPH_URL = process.env.PYRIMID_SUBGRAPH_URL || 'https://api.studio.thegraph.com/query/1744480/pyrimid/v0.2.0';
 const CATALOG_URL  = process.env.NEXT_PUBLIC_BASE_URL
   ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/catalog`
   : 'https://pyrimid.ai/api/v1/catalog';
@@ -81,10 +81,10 @@ async function fetchProtocolStats() {
         orderBy: blockTimestamp,
         orderDirection: desc
       ) {
-        vendorId
-        productId
-        affiliateId
-        total
+        vendor
+        product
+        affiliate
+        amount
         platformFee
         affiliateCommission
         vendorShare
@@ -128,11 +128,11 @@ async function fetchProtocolStats() {
       sources,
     },
     recent_transactions: (subgraphData?.recentPayments || []).map((p: any) => ({
-      vendor_id: p.vendorId,
-      product_id: p.productId,
-      affiliate_id: p.affiliateId,
-      total_usdc: Number(p.total),
-      total_display: formatUsdc(Number(p.total)),
+      vendor_id: p.vendor,
+      product_id: p.product,
+      affiliate_id: p.affiliate,
+      total_usdc: Number(p.amount),
+      total_display: formatUsdc(Number(p.amount)),
       platform_fee: Number(p.platformFee),
       affiliate_commission: Number(p.affiliateCommission),
       vendor_share: Number(p.vendorShare),
@@ -163,15 +163,15 @@ async function fetchAffiliateStats(affiliateId: string) {
         registeredAt
       }
       affiliateSales: paymentRoutedEvents(
-        where: { affiliateId: $id }
+        where: { affiliate: $id }
         first: 20
         orderBy: blockTimestamp
         orderDirection: desc
       ) {
-        vendorId
-        productId
+        vendor
+        product
         affiliateCommission
-        total
+        amount
         blockTimestamp
         transactionHash
       }
@@ -203,7 +203,7 @@ async function fetchAffiliateStats(affiliateId: string) {
     affiliate: {
       id: affiliateId,
       wallet: a.wallet,
-      reputation_score: Number(a.reputation || 0),
+      reputation_score: Number(a.reputationScore || 0),
       erc8004_linked: a.erc8004Linked || false,
       total_earnings_usdc: Number(a.totalEarnings || 0),
       total_earnings_display: formatUsdc(Number(a.totalEarnings || 0)),
@@ -215,11 +215,11 @@ async function fetchAffiliateStats(affiliateId: string) {
         : null,
     },
     recent_sales: (data.affiliateSales || []).map((s: any) => ({
-      vendor_id: s.vendorId,
-      product_id: s.productId,
+      vendor_id: s.vendor,
+      product_id: s.product,
       commission_usdc: Number(s.affiliateCommission),
       commission_display: formatUsdc(Number(s.affiliateCommission)),
-      total_usdc: Number(s.total),
+      total_usdc: Number(s.amount),
       timestamp: new Date(Number(s.blockTimestamp) * 1000).toISOString(),
       tx_hash: s.transactionHash,
     })),
@@ -242,13 +242,13 @@ async function fetchVendorStats(vendorId: string) {
         registeredAt
       }
       vendorSales: paymentRoutedEvents(
-        where: { vendorId: $id }
+        where: { vendor: $id }
         first: 20
         orderBy: blockTimestamp
         orderDirection: desc
       ) {
-        productId
-        affiliateId
+        product
+        affiliate
         vendorShare
         total
         blockTimestamp
@@ -279,10 +279,10 @@ async function fetchVendorStats(vendorId: string) {
         : null,
     },
     recent_sales: (data.vendorSales || []).map((s: any) => ({
-      product_id: s.productId,
-      affiliate_id: s.affiliateId,
+      product_id: s.product,
+      affiliate_id: s.affiliate,
       vendor_share_usdc: Number(s.vendorShare),
-      total_usdc: Number(s.total),
+      total_usdc: Number(s.amount),
       timestamp: new Date(Number(s.blockTimestamp) * 1000).toISOString(),
       tx_hash: s.transactionHash,
     })),
