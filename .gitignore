@@ -41,3 +41,4 @@ yarn-error.log*
 # Local DB
 *.db
 *.db-journal
+contracts/
