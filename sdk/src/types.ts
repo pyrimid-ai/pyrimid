@@ -159,32 +159,47 @@ export interface VendorMiddlewareConfig {
 // ═══════════════════════════════════════════════════════════
 
 export const ROUTER_ABI = [
-  'function routePayment(uint256 vendorId, bytes32 productId, uint256 affiliateId, address buyer, uint256 maxPrice) external',
-  'event PaymentRouted(uint256 indexed vendorId, bytes32 indexed productId, uint256 indexed affiliateId, address buyer, uint256 total, uint256 platformFee, uint256 affiliateCommission, uint256 vendorShare)',
+  'function routePayment(bytes16 vendorId, uint256 productId, bytes16 affiliateId, address buyer, uint256 maxPrice) external',
+  'function previewSplit(bytes16 vendorId, uint256 productId) external view returns (uint256 total, uint256 platformFee, uint256 affiliateMax, uint256 vendorMin)',
+  'event PaymentRouted(bytes16 indexed vendorId, uint256 indexed productId, bytes16 indexed affiliateId, address buyer, uint256 amount, uint256 platformFee, uint256 affiliateCommission, uint256 vendorShare)',
 ] as const;
 
 export const REGISTRY_ABI = [
-  'function registerAffiliate() external returns (uint256)',
-  'function registerAffiliateWithReferral(uint256 referrerId) external returns (uint256)',
-  'function registerVendor(string name, string baseUrl, address payoutAddress) external returns (uint256)',
+  'function registerAffiliate() external returns (bytes16)',
+  'function registerAffiliateWithReferral(bytes16 referredBy) external returns (bytes16)',
+  'function registerVendor(string name, string baseUrl, address payoutAddress) external returns (bytes16)',
+  'function updateVendor(bytes16 vendorId, string name, string baseUrl, address payoutAddress) external',
+  'function deactivateVendor(bytes16 vendorId) external',
   'function linkERC8004Identity(uint256 agentId) external',
-  'function getAffiliate(uint256 id) external view returns (address wallet, uint256 reputation, bool erc8004Linked, uint256 salesCount, uint256 totalVolume)',
-  'function getVendor(uint256 id) external view returns (string name, string baseUrl, address payoutAddress, bool active)',
-  'event AffiliateRegistered(uint256 indexed affiliateId, address indexed wallet)',
-  'event VendorRegistered(uint256 indexed vendorId, address indexed wallet)',
+  'function linkVendorERC8004Identity(uint256 agentId) external',
+  'function getAffiliate(bytes16 affiliateId) external view returns (address wallet, uint256 reputation, bool erc8004Linked, uint256 salesCount, uint256 totalVolume)',
+  'function getVendor(bytes16 vendorId) external view returns (string name, string baseUrl, address payoutAddress, bool active)',
+  'function isAffiliate(address wallet) external view returns (bool)',
+  'function isVendor(address wallet) external view returns (bool)',
+  'event AffiliateRegistered(bytes16 indexed affiliateId, address indexed wallet, bytes16 referredBy)',
+  'event VendorRegistered(bytes16 indexed vendorId, address indexed wallet, string name)',
+  'event VendorUpdated(bytes16 indexed vendorId)',
+  'event ERC8004Linked(bytes16 indexed affiliateOrVendorId, uint256 indexed agentId, address indexed wallet)',
 ] as const;
 
 export const CATALOG_ABI = [
-  'function listProduct(bytes32 productId, string endpoint, string description, uint256 priceUsdc, uint256 affiliateBps) external',
-  'function updateProduct(bytes32 productId, string endpoint, string description, uint256 priceUsdc, uint256 affiliateBps) external',
-  'function deactivateProduct(bytes32 productId) external',
-  'function getProduct(uint256 vendorId, bytes32 productId) external view returns (string endpoint, string description, uint256 priceUsdc, uint256 affiliateBps, bool active)',
-  'function listVendorProducts(uint256 vendorId) external view returns (bytes32[])',
-  'event ProductListed(uint256 indexed vendorId, bytes32 indexed productId, uint256 priceUsdc, uint256 affiliateBps)',
+  'function listProduct(bytes16 vendorId, uint256 productId, string endpoint, string description, uint256 priceUsdc, uint16 affiliateBps) external',
+  'function updatePrice(bytes16 vendorId, uint256 productId, uint256 newPrice) external',
+  'function updateCommission(bytes16 vendorId, uint256 productId, uint16 newBps) external',
+  'function updateProductMeta(bytes16 vendorId, uint256 productId, string endpoint, string description) external',
+  'function deactivateProduct(bytes16 vendorId, uint256 productId) external',
+  'function reactivateProduct(bytes16 vendorId, uint256 productId) external',
+  'function getProductByVendor(bytes16 vendorId, uint256 productId) external view returns (uint256 id, string endpoint, string description, uint256 priceUsdc, uint16 affiliateBps, bool active)',
+  'function getProductByKey(bytes32 key) external view returns (uint256 id, string endpoint, string description, uint256 priceUsdc, uint16 affiliateBps, bool active)',
+  'function listVendorProducts(bytes16 vendorId) external view returns (uint256[] memory)',
+  'function productKey(bytes16 vendorId, uint256 productId) external pure returns (bytes32)',
+  'event ProductListed(bytes16 indexed vendorId, uint256 indexed productId, uint256 priceUsdc, uint16 affiliateBps, string endpoint)',
+  'event ProductUpdated(bytes16 indexed vendorId, uint256 indexed productId)',
+  'event ProductDeactivated(bytes16 indexed vendorId, uint256 indexed productId)',
 ] as const;
 
 export const TREASURY_ABI = [
   'function allocate(address to, uint256 amount, string purpose) external',
   'function balance() external view returns (uint256)',
-  'event Allocation(address indexed to, uint256 amount, string purpose)',
+  'event FundsAllocated(address indexed to, uint256 amount, string purpose)',
 ] as const;

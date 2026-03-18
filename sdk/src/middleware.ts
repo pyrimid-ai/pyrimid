@@ -301,7 +301,7 @@ interface PaymentReceipt {
 }
 
 const PAYMENT_ROUTED_TOPIC = toEventSelector(
-  'PaymentRouted(uint256,bytes32,uint256,address,uint256,uint256,uint256,uint256)'
+  'PaymentRouted(bytes16,uint256,bytes16,address,uint256,uint256,uint256,uint256)'
 );
 
 const TRANSFER_TOPIC = toEventSelector(
