@@ -30,12 +30,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <link rel="canonical" href="https://pyrimid.ai/" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KHZWGT5NJ"></script>
         <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4KHZWGT5NJ');` }} />
         <link
           href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Pyrimid",
+          "description": "Onchain monetization infrastructure for agent-to-agent commerce",
+          "url": "https://pyrimid.ai",
+          "applicationCategory": "DeveloperApplication"
+        }) }} />
       </head>
       <body>
         <div className="gbg" />
