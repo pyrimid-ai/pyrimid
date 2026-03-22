@@ -1,5 +1,6 @@
 import { CONTRACTS, CHAIN, LINKS } from '@/lib/contracts';
 import { MobileNav } from './mobile-nav';
+import { CopyNpmButton } from './copy-npm-button';
 
 /* ═══════════════════════════════════════════════════════════
    Pyrimid Landing — production design
@@ -9,14 +10,14 @@ import { MobileNav } from './mobile-nav';
 const styles = {
   c: 'max-w-[880px] mx-auto px-6 relative z-[1]',
   // Nav
-  nav: 'py-5 flex justify-between items-center border-b flex-wrap gap-2',
+  nav: 'py-5 flex justify-between items-center flex-wrap gap-2',
   navBorder: { borderColor: 'var(--border)' },
   logo: 'font-mono font-bold text-[1.2rem]',
   logoSub: 'font-normal text-[.7rem] ml-2',
   navLinks: 'flex gap-3 flex-wrap max-md:hidden',
   navLink: 'text-[.78rem] font-mono transition-colors duration-200 no-underline',
   // Hero
-  hero: 'py-20 pb-11 relative text-center',
+  hero: 'py-20 pb-11 relative text-center overflow-hidden',
   heroGlow: 'absolute -top-[280px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] pointer-events-none',
   h1: 'text-[clamp(2rem,4.5vw,3.2rem)] font-[900] leading-[1.08] tracking-[-1.5px] mb-4',
   hsub: 'text-[.95rem] max-w-[500px] leading-[1.7] mx-auto mb-8',
@@ -58,27 +59,31 @@ const styles = {
 
 export default function LandingPage() {
   return (
-    <div className={styles.c}>
-
+    <>
       {/* ═══════ NAV ═══════ */}
-      <nav className={styles.nav} style={styles.navBorder}>
-        <div className={styles.logo} style={{ color: 'var(--accent)' }}>
-          pyrimid<span className={styles.logoSub} style={{ color: 'var(--dim)' }}>base</span>
-        </div>
-        <div className={styles.navLinks}>
-          {['Integrate', 'Products', 'Reputation', 'Docs', 'GitHub'].map((label) => (
-            <a
-              key={label}
-              href={label === 'Docs' ? '/docs' : label === 'GitHub' ? '#' : `#${label.toLowerCase()}`}
-              className={styles.navLink}
-              style={label === 'GitHub' ? { color: 'var(--muted)', opacity: 0.4, pointerEvents: 'none' as const } : { color: 'var(--muted)' }}
-            >
-              {label === 'GitHub' ? 'GitHub (soon)' : label}
-            </a>
-          ))}
-        </div>
-        <MobileNav />
-      </nav>
+      <div className="sticky top-0 z-50 bg-[#0a0a0f]/95 backdrop-blur-md border-b" style={styles.navBorder}>
+        <nav className={`${styles.nav} ${styles.c}`}>
+          <div className={styles.logo} style={{ color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <svg width="22" height="22" viewBox="0 0 512 512" fill="none"><polygon points="256,56 460,456 52,456" fill="#00e5a0"/></svg>
+            pyrimid<span className={styles.logoSub} style={{ color: 'var(--dim)' }}>base</span>
+          </div>
+          <div className={styles.navLinks}>
+            {['Integrate', 'Products', 'Reputation', 'Docs'].map((label) => (
+              <a
+                key={label}
+                href={label === 'Docs' ? '/docs' : `#${label.toLowerCase()}`}
+                className={styles.navLink}
+                style={{ color: 'var(--muted)' }}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+          <MobileNav />
+        </nav>
+      </div>
+
+      <div className={styles.c}>
 
       {/* ═══════ HERO ═══════ */}
       <section className={`${styles.hero}`}>
@@ -96,7 +101,7 @@ export default function LandingPage() {
           {'  '}<span style={{ color: 'var(--dim)' }}>└─</span> rest → vendor
         </div>
         <div className={`${styles.ctas} fu d3`}>
-          <a href="#integrate" className={styles.btnP} style={{ background: 'var(--accent)', color: 'var(--bg)' }}>npm i @pyrimid/sdk</a>
+          <CopyNpmButton className={styles.btnP} style={{ background: 'var(--accent)', color: 'var(--bg)' }} />
           <a href="/docs" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Docs →</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>BaseScan →</a>
         </div>
@@ -329,7 +334,7 @@ export default function LandingPage() {
           Pyrimid is the monetization layer that agent-to-agent commerce is missing.
         </p>
         <div className={styles.ctas} style={{ justifyContent: 'center' }}>
-          <a href="#integrate" className={styles.btnP} style={{ background: 'var(--accent)', color: 'var(--bg)' }}>npm i @pyrimid/sdk</a>
+          <CopyNpmButton className={styles.btnP} style={{ background: 'var(--accent)', color: 'var(--bg)' }} />
           <a href="/docs" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Read the docs →</a>
         </div>
       </section>
@@ -342,13 +347,16 @@ export default function LandingPage() {
         </div>
         <div className="flex gap-3">
           <a href="/docs" style={{ color: 'var(--muted)' }}>Docs</a>
-          <a href="#" style={{ color: 'var(--muted)', opacity: 0.5, pointerEvents: 'none' }}>GitHub (coming soon)</a>
+          <a href="https://perpetuals.trading" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>perpetuals.trading</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>BaseScan</a>
+          <a href="https://pragma.trading" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>pragma.trading</a>
+          <a href="https://monetizeyouragent.fun" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>MYA</a>
           <a href="/llms.txt" style={{ color: 'var(--muted)' }}>llms.txt</a>
           <a href="/skill.md" style={{ color: 'var(--muted)' }}>skill.md</a>
         </div>
       </footer>
 
     </div>
+    </>
   );
 }

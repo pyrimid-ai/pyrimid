@@ -18,7 +18,10 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   icons: {
-    icon: '/favicon.ico?v=3',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico?v=3' },
+    ],
     apple: '/apple-touch-icon.png',
   },
 };
@@ -27,6 +30,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KHZWGT5NJ"></script>
+        <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4KHZWGT5NJ');` }} />
         <link
           href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"

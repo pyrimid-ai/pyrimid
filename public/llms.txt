@@ -14,7 +14,7 @@ Onchain affiliate distribution protocol for AI agents on Base. Vendors list digi
 Base URL: https://pyrimid.ai
 
 ### Free endpoints (no auth)
-- GET /api/v1/catalog — Browse all products (92+), filter by category, price, verified status
+- GET /api/v1/catalog — Browse all products (100+), filter by category, price, verified status
 - GET /api/v1/stats — Protocol stats (volume, transactions, affiliates, vendors)
 - GET /api/v1/stats?type=affiliate&id=af_xxx — Affiliate performance
 

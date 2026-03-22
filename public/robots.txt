@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /api/v1/
+Allow: /api/mcp
+Allow: /.well-known/
+Allow: /llms.txt
+Allow: /skill.md
+Allow: /agent.json
+Allow: /docs
+
+Disallow: /api/admin/
+
+Sitemap: https://pyrimid.ai/sitemap.xml
