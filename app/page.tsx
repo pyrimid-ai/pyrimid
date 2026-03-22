@@ -345,12 +345,9 @@ export default function LandingPage() {
           <span className={styles.logo} style={{ fontSize: '.85rem', color: 'var(--accent)' }}>pyrimid</span>
           <span style={{ marginLeft: '8px' }}>base · x402 · erc-8004 · mcp</span>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap justify-center">
           <a href="/docs" style={{ color: 'var(--muted)' }}>Docs</a>
-          <a href="https://perpetuals.trading" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>perpetuals.trading</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>BaseScan</a>
-          <a href="https://pragma.trading" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>pragma.trading</a>
-          <a href="https://monetizeyouragent.fun" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>MYA</a>
           <a href="/llms.txt" style={{ color: 'var(--muted)' }}>llms.txt</a>
           <a href="/skill.md" style={{ color: 'var(--muted)' }}>skill.md</a>
         </div>

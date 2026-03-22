@@ -10,7 +10,6 @@ const NAV_ITEMS = [
   { label: 'Contracts', href: 'https://basescan.org/address/0x34e22fc20D457095e2814CdFfad1e42980EEC389', external: true },
   { label: 'llms.txt', href: '/llms.txt', external: true },
   { label: 'skill.md', href: '/skill.md', external: true },
-  { label: 'perpetuals.trading', href: 'https://perpetuals.trading', external: true },
 ];
 
 export function MobileNav() {
