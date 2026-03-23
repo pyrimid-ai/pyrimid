@@ -1,6 +1,5 @@
 'use client';
 
-/* Agent compatibility / integration badge section */
 const platforms = [
   { name: 'Claude', icon: '◆' },
   { name: 'GPT', icon: '●' },
@@ -28,7 +27,7 @@ const methods = [
   {
     label: 'REST API',
     desc: '5 endpoints — /catalog, /product, /purchase, /register, /commissions',
-    code: 'curl https://pyrimid.ai/api/v1/catalog',
+    code: 'curl pyrimid.ai/api/v1/catalog',
     color: 'var(--purple)',
     bg: 'var(--purple-d)',
   },
@@ -36,7 +35,7 @@ const methods = [
 
 export default function AgentCompat() {
   return (
-    <section style={{ padding: '40px 0 20px', textAlign: 'center' }}>
+    <section id="compat" style={{ padding: '40px 0 20px', textAlign: 'center' }}>
       <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '.65rem', letterSpacing: '2.5px', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 6 }}>
         Integrations
       </div>
@@ -64,7 +63,7 @@ export default function AgentCompat() {
       </div>
 
       {/* Method cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, maxWidth: 720, margin: '0 auto' }}>
+      <div id="compat-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, maxWidth: 720, margin: '0 auto' }}>
         {methods.map(m => (
           <div key={m.label} style={{
             textAlign: 'left', padding: 18, borderRadius: 8,
@@ -93,10 +92,9 @@ export default function AgentCompat() {
         ))}
       </div>
 
-      {/* Responsive override */}
       <style>{`
         @media (max-width: 768px) {
-          section > div:last-of-type { grid-template-columns: 1fr !important; }
+          #compat-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>
