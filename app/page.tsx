@@ -292,20 +292,24 @@ export default function LandingPage() {
           <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
             <h3 className="mono" style={{ fontSize: '.8rem', color: 'var(--accent)' }}>PyrimidRegistry</h3>
             <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Affiliates, vendors, ERC-8004, reputation engine, soulbound membership</p>
+            <a href="https://basescan.org/address/0x34e22fc20D457095e2814CdFfad1e42980EEC389" target="_blank" rel="noopener noreferrer" className="mono" style={{ fontSize: '.7rem', color: 'var(--accent)', opacity: 0.7 }}>View on BaseScan ↗</a>
           </div>
           <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
             <h3 className="mono" style={{ fontSize: '.8rem', color: 'var(--accent)' }}>PyrimidCatalog</h3>
             <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Product listings, per-product pricing + commission, vendor self-service</p>
+            <a href="https://basescan.org/address/0xC935d6B73034dDDb97AD2a1BbD2106F34A977908" target="_blank" rel="noopener noreferrer" className="mono" style={{ fontSize: '.7rem', color: 'var(--accent)', opacity: 0.7 }}>View on BaseScan ↗</a>
           </div>
         </div>
         <div className={styles.two}>
           <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
             <h3 className="mono" style={{ fontSize: '.8rem', color: 'var(--accent)' }}>PyrimidRouter</h3>
             <p className={styles.cardP} style={{ color: 'var(--muted)' }}>Commission splitting, discovery bonus, anti-sybil, reputation updates</p>
+            <a href="https://basescan.org/address/0xc949AEa380D7b7984806143ddbfE519B03ABd68B" target="_blank" rel="noopener noreferrer" className="mono" style={{ fontSize: '.7rem', color: 'var(--accent)', opacity: 0.7 }}>View on BaseScan ↗</a>
           </div>
           <div className={styles.card} style={{ background: 'var(--bg3)', border: '1px solid var(--border)' }}>
             <h3 className="mono" style={{ fontSize: '.8rem', color: 'var(--accent)' }}>PyrimidTreasury</h3>
             <p className={styles.cardP} style={{ color: 'var(--muted)' }}>1% protocol fee, bonus pool, operations fund</p>
+            <a href="https://basescan.org/address/0x74A512F4f3F64aD479dEc4554a12855Ce943E12C" target="_blank" rel="noopener noreferrer" className="mono" style={{ fontSize: '.7rem', color: 'var(--accent)', opacity: 0.7 }}>View on BaseScan ↗</a>
           </div>
         </div>
       </section>
