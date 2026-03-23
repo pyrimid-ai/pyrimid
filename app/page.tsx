@@ -351,6 +351,8 @@ export default function LandingPage() {
         </div>
         <div className="flex gap-3 flex-wrap justify-center">
           <a href="/docs" style={{ color: 'var(--muted)' }}>Docs</a>
+          <a href="https://github.com/pyrimid-ai/pyrimid" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>GitHub</a>
+          <a href="https://x.com/pyrimidprotocol" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>𝕏</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>BaseScan</a>
           <a href="/llms.txt" style={{ color: 'var(--muted)' }}>llms.txt</a>
           <a href="/skill.md" style={{ color: 'var(--muted)' }}>skill.md</a>
