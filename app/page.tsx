@@ -1,6 +1,7 @@
 import { CONTRACTS, CHAIN, LINKS } from '@/lib/contracts';
 import { MobileNav } from './mobile-nav';
 import { CopyNpmButton } from './copy-npm-button';
+import AgentCompat from './agent-compat';
 
 /* ═══════════════════════════════════════════════════════════
    Pyrimid Landing — production design
@@ -328,6 +329,9 @@ export default function LandingPage() {
           </div>
         ))}
       </div>
+
+      {/* ═══════ AGENT INTEGRATIONS ═══════ */}
+      <AgentCompat />
 
       {/* ═══════ BOTTOM CTA ═══════ */}
       <section style={{ padding: '52px 0 32px', textAlign: 'center' }}>
