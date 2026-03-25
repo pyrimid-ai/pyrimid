@@ -361,6 +361,7 @@ export default function LandingPage() {
           <a href="/llms.txt" style={{ color: 'var(--muted)' }}>llms.txt</a>
           <a href="/skill.md" style={{ color: 'var(--muted)' }}>skill.md</a>
           <a href="https://www.x402scan.com" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>x402scan</a>
+          <a href="https://glama.ai/mcp/servers/pyrimid-ai/pyrimid" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>Glama</a>
         </div>
       </footer>
 
