@@ -360,6 +360,7 @@ export default function LandingPage() {
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>BaseScan</a>
           <a href="/llms.txt" style={{ color: 'var(--muted)' }}>llms.txt</a>
           <a href="/skill.md" style={{ color: 'var(--muted)' }}>skill.md</a>
+          <a href="https://www.x402scan.com" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>x402scan</a>
         </div>
       </footer>
 
