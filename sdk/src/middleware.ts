@@ -115,7 +115,10 @@ export function pyrimidMiddleware(config: VendorMiddlewareConfig) {
 
     // Extract affiliate ID from header
     const headers = req.headers instanceof Headers ? req.headers : new Headers(req.headers as Record<string, string>);
-    const affiliateId = headers.get('x-affiliate-id') || '';
+    const affiliateId = headers.get('x-affiliate-id');
+
+    // No affiliate ID — pass through to underlying x402 paymentMiddleware
+    if (!affiliateId) return next();
 
     // Check for x402 payment proof (X-PAYMENT per x402 spec)
     const paymentProof = headers.get('x-payment') || headers.get('x-payment-response');
