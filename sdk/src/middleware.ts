@@ -117,12 +117,13 @@ export function pyrimidMiddleware(config: VendorMiddlewareConfig) {
     const headers = req.headers instanceof Headers ? req.headers : new Headers(req.headers as Record<string, string>);
     const affiliateId = headers.get('x-affiliate-id') || '';
 
-    // Check for x402 payment proof
-    const paymentProof = headers.get('x-payment-response');
+    // Check for x402 payment proof (X-PAYMENT per x402 spec)
+    const paymentProof = headers.get('x-payment') || headers.get('x-payment-response');
 
     if (!paymentProof) {
-      // No payment — return 402 with payment requirements
+      // No payment — return 402 with x402 v1 spec-compliant challenge
       const split = calculateSplit(productConfig.price, productConfig.affiliateBps);
+      const resource = req.url || pathname;
 
       res.status(402);
       res.setHeader('X-PAYMENT-REQUIRED', JSON.stringify({
@@ -144,9 +145,30 @@ export function pyrimidMiddleware(config: VendorMiddlewareConfig) {
         expires: new Date(Date.now() + 5 * 60_000).toISOString(),
       }));
       res.json({
-        error: 'payment_required',
-        price: `$${(productConfig.price / 1_000_000).toFixed(2)}`,
-        message: 'x402 payment required. Sign an EIP-712 payment and retry with X-PAYMENT-RESPONSE header.',
+        x402Version: 1,
+        error: 'X402 payment required',
+        accepts: [
+          {
+            scheme: 'exact',
+            network: 'base-mainnet',
+            maxAmountRequired: productConfig.price.toString(),
+            resource,
+            payTo: addresses.ROUTER,
+            asset: addresses.USDC,
+            extra: {
+              name: 'USDC',
+              version: '1',
+              vendorId,
+              productId: productConfig.productId,
+              affiliateId: affiliateId || 'af_treasury',
+              split: {
+                protocol: split.protocol_fee,
+                affiliate: split.affiliate_commission,
+                vendor: split.vendor_share,
+              },
+            },
+          },
+        ],
       });
       return;
     }
@@ -219,14 +241,36 @@ export function withPyrimid(
 
   return async function pyrimidHandler(req: Request): Promise<Response> {
     const affiliateId = req.headers.get('x-affiliate-id') || 'af_treasury';
-    const paymentProof = req.headers.get('x-payment-response');
+    const paymentProof = req.headers.get('x-payment') || req.headers.get('x-payment-response');
 
     if (!paymentProof) {
       const split = calculateSplit(product.price, product.affiliateBps);
+      const resource = req.url;
       return new Response(JSON.stringify({
-        error: 'payment_required',
-        price: `$${(product.price / 1_000_000).toFixed(2)}`,
-        message: 'x402 payment required.',
+        x402Version: 1,
+        error: 'X402 payment required',
+        accepts: [
+          {
+            scheme: 'exact',
+            network: 'base-mainnet',
+            maxAmountRequired: product.price.toString(),
+            resource,
+            payTo: addresses.ROUTER,
+            asset: addresses.USDC,
+            extra: {
+              name: 'USDC',
+              version: '1',
+              vendorId: product.vendorId,
+              productId: product.productId,
+              affiliateId,
+              split: {
+                protocol: split.protocol_fee,
+                affiliate: split.affiliate_commission,
+                vendor: split.vendor_share,
+              },
+            },
+          },
+        ],
       }), {
         status: 402,
         headers: {

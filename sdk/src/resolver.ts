@@ -142,7 +142,7 @@ export class PyrimidResolver {
     }
 
     // Step 4: Build receipt
-    const txHash = paidResponse.headers.get('X-PAYMENT-RESPONSE') || '';
+    const txHash = paidResponse.headers.get('X-PAYMENT') || paidResponse.headers.get('X-PAYMENT-RESPONSE') || '';
     const protocolFee = Math.floor(product.price_usdc / 100);
     const remaining = product.price_usdc - protocolFee;
     const affiliateEarned = Math.floor((remaining * product.affiliate_bps) / 10_000);
