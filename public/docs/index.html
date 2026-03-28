@@ -594,7 +594,7 @@ app.<span class="fn">use</span>(<span class="fn">pyrimidMiddleware</span>({
 
   <div class="callout info">
     <div class="callout-title">How it works</div>
-    <p>The middleware intercepts requests to configured endpoints. No <code>X-PAYMENT-RESPONSE</code> header? Returns <strong>402</strong> with x402 payment requirements. Valid payment proof? Verifies via CommissionRouter and passes through to your handler.</p>
+    <p>The middleware intercepts affiliate-tagged requests to configured endpoints. No <code>X-PAYMENT</code> header? Returns <strong>402</strong> with x402 v1 payment requirements. Valid payment proof? Verifies via CommissionRouter and passes through to your handler. Requests without an <code>X-Affiliate-ID</code> header pass through to the underlying x402 middleware.</p>
   </div>
 
   <h3 id="withpyrimid">Next.js App Router</h3>

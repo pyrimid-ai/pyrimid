@@ -188,7 +188,7 @@ export class PyrimidResolver {
     }
 
     // Step 4: Extract payment receipt
-    const txHash = paidResponse.headers.get('X-PAYMENT-RESPONSE') || '';
+    const txHash = paidResponse.headers.get('X-PAYMENT') || paidResponse.headers.get('X-PAYMENT-RESPONSE') || '';
     const affiliateEarned = (product.price_usdc * product.affiliate_bps) / 10000;
 
     return {
