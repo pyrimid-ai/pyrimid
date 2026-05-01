@@ -4,9 +4,11 @@ Allow: /api/v1/
 Allow: /api/mcp
 Allow: /.well-known/
 Allow: /llms.txt
+Allow: /agents.txt
 Allow: /skill.md
 Allow: /agent.json
 Allow: /docs
+Allow: /dashboard
 
 Disallow: /api/admin/
 

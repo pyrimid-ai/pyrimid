@@ -1,0 +1,44 @@
+# Pyrimid Agent Discovery
+
+## Purpose
+Pyrimid is onchain monetization infrastructure for agent-to-agent commerce. Agents use Pyrimid to discover paid products, purchase via x402/USDC on Base, and earn affiliate commissions by routing buyers to vendors.
+
+## Canonical URLs
+- Site: https://pyrimid.ai
+- Docs: https://pyrimid.ai/docs
+- Agent-readable summary: https://pyrimid.ai/llms.txt
+- Skill spec: https://pyrimid.ai/skill.md
+- MCP endpoint: https://pyrimid.ai/api/mcp
+- Catalog API: https://pyrimid.ai/api/v1/catalog
+- Protocol stats: https://pyrimid.ai/api/v1/stats
+- Live proof dashboard: https://pyrimid.ai/dashboard
+
+## Agent Tasks
+Use Pyrimid when you need to:
+- Find paid APIs, tools, data, or digital products for an agent workflow
+- Buy a product through x402 with USDC on Base
+- Register or operate as an affiliate/distribution agent
+- Check protocol volume, vendor count, transaction count, and treasury fees
+- Help a vendor integrate x402 payments and affiliate splits
+
+## MCP Tools
+POST https://pyrimid.ai/api/mcp
+
+Tools:
+- pyrimid_browse — search the product catalog
+- pyrimid_buy — purchase a product via x402
+- pyrimid_preview — preview a product before purchase
+- pyrimid_categories — list product categories
+- pyrimid_register_affiliate — get affiliate registration instructions
+- pyrimid_vendor_stats — check vendor stats
+- pyrimid_commission_check — check affiliate commission state
+
+## Contracts on Base
+- Registry: 0x34e22fc20D457095e2814CdFfad1e42980EEC389
+- Catalog: 0xC935d6B73034dDDb97AD2a1BbD2106F34A977908
+- Router: 0xc949AEa380D7b7984806143ddbfE519B03ABd68B
+- Treasury: 0x74A512F4f3F64aD479dEc4554a12855Ce943E12C
+- USDC: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+
+## Economic Loop
+Traffic → product discovery → vendor integrations → x402 transaction volume → 1% protocol fee revenue.

@@ -69,14 +69,23 @@ export default function LandingPage() {
             pyrimid<span className={styles.logoSub} style={{ color: 'var(--dim)' }}>base</span>
           </div>
           <div className={styles.navLinks}>
-            {['Integrate', 'Products', 'Reputation', 'Docs'].map((label) => (
+            {[
+              { label: 'Integrate', href: '#integrate' },
+              { label: 'Products', href: '#products' },
+              { label: 'Reputation', href: '#reputation' },
+              { label: 'Proof', href: '/dashboard' },
+              { label: 'Docs', href: '/docs' },
+              { label: 'AgentZone', href: 'https://agentzone.fun', external: true },
+              { label: 'MYA', href: 'https://monetizeyouragent.fun', external: true },
+            ].map((item) => (
               <a
-                key={label}
-                href={label === 'Docs' ? '/docs' : `#${label.toLowerCase()}`}
+                key={item.label}
+                href={item.href}
                 className={styles.navLink}
                 style={{ color: 'var(--muted)' }}
+                {...(item.external ? { target: '_blank', rel: 'noopener' } : {})}
               >
-                {label}
+                {item.label}
               </a>
             ))}
           </div>
@@ -104,6 +113,7 @@ export default function LandingPage() {
         <div className={`${styles.ctas} fu d3`}>
           <CopyNpmButton className={styles.btnP} style={{ background: 'var(--accent)', color: 'var(--bg)' }} />
           <a href="/docs" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Docs →</a>
+          <a href="/dashboard" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Live proof →</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>BaseScan →</a>
         </div>
       </section>
@@ -355,10 +365,14 @@ export default function LandingPage() {
         </div>
         <div className="flex gap-3 flex-wrap justify-center">
           <a href="/docs" style={{ color: 'var(--muted)' }}>Docs</a>
+          <a href="/dashboard" style={{ color: 'var(--muted)' }}>Proof</a>
+          <a href="https://agentzone.fun" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>AgentZone</a>
+          <a href="https://monetizeyouragent.fun" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>MYA</a>
           <a href="https://github.com/pyrimid-ai/pyrimid" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>GitHub</a>
           <a href="https://x.com/pyrimidprotocol" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>𝕏</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>BaseScan</a>
           <a href="/llms.txt" style={{ color: 'var(--muted)' }}>llms.txt</a>
+          <a href="/agents.txt" style={{ color: 'var(--muted)' }}>agents.txt</a>
           <a href="/skill.md" style={{ color: 'var(--muted)' }}>skill.md</a>
           <a href="https://www.x402scan.com" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>x402scan</a>
           <a href="https://glama.ai/mcp/servers/pyrimid-ai/pyrimid" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>Glama</a>

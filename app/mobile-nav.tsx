@@ -6,9 +6,13 @@ const NAV_ITEMS = [
   { label: 'Integrate', href: '#integrate' },
   { label: 'Products', href: '#products' },
   { label: 'Reputation', href: '#reputation' },
+  { label: 'Proof', href: '/dashboard' },
   { label: 'Docs', href: '/docs' },
+  { label: 'AgentZone', href: 'https://agentzone.fun', external: true },
+  { label: 'MYA', href: 'https://monetizeyouragent.fun', external: true },
   { label: 'Contracts', href: 'https://basescan.org/address/0x34e22fc20D457095e2814CdFfad1e42980EEC389', external: true },
   { label: 'llms.txt', href: '/llms.txt', external: true },
+  { label: 'agents.txt', href: '/agents.txt', external: true },
   { label: 'skill.md', href: '/skill.md', external: true },
 ];
 
