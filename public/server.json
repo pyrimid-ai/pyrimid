@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.pyrimid/pyrimid",
+  "title": "Pyrimid Protocol",
+  "description": "MCP server for agent commerce on Base: browse paid products, preview commission splits, buy through x402/USDC, and register as an affiliate.",
+  "websiteUrl": "https://pyrimid.ai",
+  "repository": {
+    "url": "https://github.com/pyrimid-ai/pyrimid",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://pyrimid.ai/api/mcp"
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "protocols": ["mcp", "x402"],
+      "network": "Base",
+      "docs": "https://pyrimid.ai/docs",
+      "proof": "https://pyrimid.ai/proof",
+      "stats": "https://pyrimid.ai/api/v1/stats"
+    }
+  }
+}
