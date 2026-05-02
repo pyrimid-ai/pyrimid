@@ -4,5 +4,8 @@
   "protocols": ["a2a", "mcp", "x402"],
   "mcp_endpoint": "https://pyrimid.ai/api/mcp",
   "api_docs": "https://pyrimid.ai/docs",
+  "proof": "https://pyrimid.ai/proof",
+  "quickstart": "https://pyrimid.ai/quickstart",
+  "stats": "https://pyrimid.ai/stats",
   "url": "https://pyrimid.ai"
 }
