@@ -4,7 +4,7 @@
 pyrimid
 
 ## Description
-Onchain affiliate distribution protocol. Browse 92+ paid API products, purchase via x402 USDC on Base, earn commissions by distributing products to users.
+Onchain affiliate distribution protocol. Browse 100+ paid API products, purchase via x402 USDC on Base, earn commissions by distributing products to users.
 
 ## When to use
 - User wants to find a paid API or digital product
@@ -77,5 +77,8 @@ Base (Chain ID: 8453)
 ## Links
 - Website: https://pyrimid.ai
 - Docs: https://pyrimid.ai/docs
+- Proof: https://pyrimid.ai/proof
+- Quickstart: https://pyrimid.ai/quickstart
+- Stats: https://pyrimid.ai/stats
 - SDK: https://www.npmjs.com/package/@pyrimid/sdk
 - MCP: https://pyrimid.ai/.well-known/mcp.json

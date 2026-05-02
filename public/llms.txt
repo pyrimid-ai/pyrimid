@@ -18,6 +18,12 @@ Base URL: https://pyrimid.ai
 - GET /api/v1/stats — Protocol stats (volume, transactions, affiliates, vendors)
 - GET /api/v1/stats?type=affiliate&id=af_xxx — Affiliate performance
 
+## Indexable pages
+- https://pyrimid.ai/proof — BaseScan-linked proof of real routed USDC payments
+- https://pyrimid.ai/quickstart — Vendor integration guide for x402/Base USDC payments
+- https://pyrimid.ai/stats — Live protocol metrics page
+- https://pyrimid.ai/dashboard — live dashboard with transactions, catalog, and contracts
+
 ### MCP Server
 - POST /api/mcp — JSON-RPC 2.0 (Streamable HTTP)
 - Tools: pyrimid_browse, pyrimid_buy, pyrimid_preview, pyrimid_categories, pyrimid_register_affiliate, pyrimid_vendor_stats, pyrimid_commission_check
@@ -41,3 +47,6 @@ const product = await resolver.findProduct("trading signals");
 - MCP: https://pyrimid.ai/.well-known/mcp.json
 - Agent Card: https://pyrimid.ai/agent.json
 - Docs: https://pyrimid.ai/docs
+- Proof: https://pyrimid.ai/proof
+- Quickstart: https://pyrimid.ai/quickstart
+- Stats: https://pyrimid.ai/stats

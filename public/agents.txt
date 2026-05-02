@@ -11,6 +11,9 @@ Pyrimid is onchain monetization infrastructure for agent-to-agent commerce. Agen
 - MCP endpoint: https://pyrimid.ai/api/mcp
 - Catalog API: https://pyrimid.ai/api/v1/catalog
 - Protocol stats: https://pyrimid.ai/api/v1/stats
+- Proof page: https://pyrimid.ai/proof
+- Vendor quickstart: https://pyrimid.ai/quickstart
+- Stats page: https://pyrimid.ai/stats
 - Live proof dashboard: https://pyrimid.ai/dashboard
 
 ## Agent Tasks
@@ -19,6 +22,7 @@ Use Pyrimid when you need to:
 - Buy a product through x402 with USDC on Base
 - Register or operate as an affiliate/distribution agent
 - Check protocol volume, vendor count, transaction count, and treasury fees
+- Verify routed payment transactions through BaseScan links
 - Help a vendor integrate x402 payments and affiliate splits
 
 ## MCP Tools

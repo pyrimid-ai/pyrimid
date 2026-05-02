@@ -8,6 +8,9 @@ Allow: /agents.txt
 Allow: /skill.md
 Allow: /agent.json
 Allow: /docs
+Allow: /proof
+Allow: /quickstart
+Allow: /stats
 Allow: /dashboard
 
 Disallow: /api/admin/

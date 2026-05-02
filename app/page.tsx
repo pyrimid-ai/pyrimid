@@ -73,7 +73,9 @@ export default function LandingPage() {
               { label: 'Integrate', href: '#integrate' },
               { label: 'Products', href: '#products' },
               { label: 'Reputation', href: '#reputation' },
-              { label: 'Proof', href: '/dashboard' },
+              { label: 'Proof', href: '/proof' },
+              { label: 'Stats', href: '/stats' },
+              { label: 'Quickstart', href: '/quickstart' },
               { label: 'Docs', href: '/docs' },
               { label: 'AgentZone', href: 'https://agentzone.fun', external: true },
               { label: 'MYA', href: 'https://monetizeyouragent.fun', external: true },
@@ -113,7 +115,8 @@ export default function LandingPage() {
         <div className={`${styles.ctas} fu d3`}>
           <CopyNpmButton className={styles.btnP} style={{ background: 'var(--accent)', color: 'var(--bg)' }} />
           <a href="/docs" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Docs →</a>
-          <a href="/dashboard" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Live proof →</a>
+          <a href="/proof" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Proof →</a>
+          <a href="/quickstart" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>Quickstart →</a>
           <a href={LINKS.basescan(CONTRACTS.REGISTRY)} target="_blank" rel="noopener" className={styles.btnG} style={{ color: 'var(--muted)', border: '1px solid var(--border2)' }}>BaseScan →</a>
         </div>
       </section>
@@ -365,7 +368,10 @@ export default function LandingPage() {
         </div>
         <div className="flex gap-3 flex-wrap justify-center">
           <a href="/docs" style={{ color: 'var(--muted)' }}>Docs</a>
-          <a href="/dashboard" style={{ color: 'var(--muted)' }}>Proof</a>
+          <a href="/proof" style={{ color: 'var(--muted)' }}>Proof</a>
+          <a href="/stats" style={{ color: 'var(--muted)' }}>Stats</a>
+          <a href="/quickstart" style={{ color: 'var(--muted)' }}>Quickstart</a>
+          <a href="/dashboard" style={{ color: 'var(--muted)' }}>Dashboard</a>
           <a href="https://agentzone.fun" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>AgentZone</a>
           <a href="https://monetizeyouragent.fun" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>MYA</a>
           <a href="https://github.com/pyrimid-ai/pyrimid" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>GitHub</a>

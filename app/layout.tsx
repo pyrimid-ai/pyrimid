@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: 'Pyrimid — Monetization Infrastructure for Agent-to-Agent Commerce',
   description: 'Onchain monetization infrastructure for agent-to-agent commerce. One MCP server. Aggregated catalog. Onchain commission splits. Plug in with 5 lines.',
   metadataBase: new URL('https://pyrimid.ai'),
+  alternates: { canonical: '/' },
   openGraph: {
     title: 'Pyrimid — Monetization Infrastructure for Agent-to-Agent Commerce',
     description: 'Onchain monetization infrastructure for agent-to-agent commerce on Base.',
@@ -30,7 +31,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <link rel="canonical" href="https://pyrimid.ai/" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KHZWGT5NJ"></script>
         <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4KHZWGT5NJ');` }} />
         <link
