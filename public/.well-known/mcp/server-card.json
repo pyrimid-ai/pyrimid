@@ -1,0 +1,79 @@
+{
+  "serverInfo": {
+    "name": "Pyrimid Protocol",
+    "version": "1.0.0"
+  },
+  "authentication": {
+    "required": false,
+    "schemes": []
+  },
+  "tools": [
+    {
+      "name": "pyrimid_browse",
+      "description": "Search Pyrimid's agent-commerce catalog by query, category, price, and verification status.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": { "type": "string", "description": "Product, API, dataset, or tool to search for" },
+          "category": { "type": "string", "description": "Optional product category" },
+          "maxPrice": { "type": "number", "description": "Optional max price in USDC" }
+        }
+      }
+    },
+    {
+      "name": "pyrimid_preview",
+      "description": "Preview x402/Base USDC payment requirements and the vendor/affiliate/protocol split before purchase.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "string", "description": "Pyrimid product identifier" },
+          "affiliateId": { "type": "string", "description": "Optional affiliate identifier" }
+        },
+        "required": ["productId"]
+      }
+    },
+    {
+      "name": "pyrimid_buy",
+      "description": "Buy a Pyrimid product through x402/USDC on Base with optional affiliate attribution.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "string" },
+          "affiliateId": { "type": "string" },
+          "maxPrice": { "type": "number", "description": "Slippage/price ceiling in USDC" }
+        },
+        "required": ["productId"]
+      }
+    },
+    {
+      "name": "pyrimid_categories",
+      "description": "List catalog categories and product counts.",
+      "inputSchema": { "type": "object", "properties": {} }
+    },
+    {
+      "name": "pyrimid_register_affiliate",
+      "description": "Get instructions to register as a Pyrimid affiliate and earn commissions.",
+      "inputSchema": { "type": "object", "properties": {} }
+    },
+    {
+      "name": "pyrimid_vendor_stats",
+      "description": "Check vendor-level transaction, volume, and revenue stats.",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "vendorId": { "type": "string" } },
+        "required": ["vendorId"]
+      }
+    },
+    {
+      "name": "pyrimid_commission_check",
+      "description": "Check affiliate commission state and earnings.",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "affiliateId": { "type": "string" } },
+        "required": ["affiliateId"]
+      }
+    }
+  ],
+  "resources": [],
+  "prompts": []
+}
