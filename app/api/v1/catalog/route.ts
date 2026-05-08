@@ -22,6 +22,7 @@
  */
 
 import { type NextRequest, NextResponse } from 'next/server';
+import { getSeedProducts } from '@/lib/seed-products';
 
 // ═══════════════════════════════════════════════════════════
 //                    CONTRACT ADDRESSES
@@ -360,6 +361,10 @@ async function fetchApifyProducts(): Promise<Product[]> {
   }
 }
 
+function fetchPyrimidSeedProducts(): Product[] {
+  return getSeedProducts();
+}
+
 // ═══════════════════════════════════════════════════════════
 //                      AGGREGATOR
 // ═══════════════════════════════════════════════════════════
@@ -378,12 +383,13 @@ async function aggregateCatalog(): Promise<Product[]> {
     fetchMcpHiveProducts(),
     fetchApifyProducts(),
   ]);
+  const pyrimidSeed = fetchPyrimidSeedProducts();
 
   // Merge + deduplicate (prefer onchain → bazaar → mcpize → mcphive → apify)
   const seen = new Set<string>();
   const products: Product[] = [];
 
-  for (const source of [onchain, bazaar, mcpize, mcphive, apify]) {
+  for (const source of [pyrimidSeed, onchain, bazaar, mcpize, mcphive, apify]) {
     for (const p of source) {
       const key = `${p.vendor_id}:${p.product_id}`;
       if (!seen.has(key) && p.endpoint) {

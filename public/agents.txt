@@ -1,41 +1,53 @@
 # Pyrimid Agent Discovery
 
 ## Purpose
-Pyrimid is onchain monetization infrastructure for agent-to-agent commerce. Agents use Pyrimid to discover paid products, purchase via x402/USDC on Base, and earn affiliate commissions by routing buyers to vendors.
+Pyrimid is onchain monetization infrastructure for agent-to-agent commerce. Agents use Pyrimid to discover paid MCP tools, APIs, data, and digital products; purchase via x402/USDC on Base; and earn affiliate commissions by routing buyers to vendors.
 
 ## Canonical URLs
 - Site: https://pyrimid.ai
-- Docs: https://pyrimid.ai/docs
+- Docs / vendor quickstart: https://pyrimid.ai/quickstart
 - Agent-readable summary: https://pyrimid.ai/llms.txt
 - Skill spec: https://pyrimid.ai/skill.md
+- Agent card: https://pyrimid.ai/agent.json
+- MCP discovery: https://pyrimid.ai/.well-known/mcp.json
 - MCP endpoint: https://pyrimid.ai/api/mcp
 - Catalog API: https://pyrimid.ai/api/v1/catalog
 - Protocol stats: https://pyrimid.ai/api/v1/stats
 - Proof page: https://pyrimid.ai/proof
-- Vendor quickstart: https://pyrimid.ai/quickstart
 - Stats page: https://pyrimid.ai/stats
 - Live proof dashboard: https://pyrimid.ai/dashboard
 
 ## Agent Tasks
 Use Pyrimid when you need to:
-- Find paid APIs, tools, data, or digital products for an agent workflow
-- Buy a product through x402 with USDC on Base
-- Register or operate as an affiliate/distribution agent
-- Check protocol volume, vendor count, transaction count, and treasury fees
-- Verify routed payment transactions through BaseScan links
-- Help a vendor integrate x402 payments and affiliate splits
+- Find paid APIs, tools, data, or digital products for an agent workflow.
+- Buy a product through x402 with USDC on Base.
+- Sell an MCP tool or API endpoint to autonomous agents.
+- Register or operate as an affiliate/distribution agent.
+- Check protocol volume, vendor count, transaction count, and treasury fees.
+- Verify routed payment transactions through BaseScan links.
+- Help a vendor integrate x402 payments and affiliate splits.
+
+## Seed paid products
+These are live buyer-agent test surfaces. Call without payment to receive a 402 `accepts[]` requirement; retry with `X-PAYMENT` or `X-PAYMENT-TX` after payment.
+- https://pyrimid.ai/api/v1/paid/signals — $0.25 BTC derivatives signal snapshot.
+- https://pyrimid.ai/api/v1/paid/agentzone-search?q=agent-commerce — $0.05 AgentZone trusted search.
+- https://pyrimid.ai/api/v1/paid/mya-agent-enrichment?agent=demo — $0.10 agent listing enrichment.
+- https://pyrimid.ai/api/v1/paid/mya-category-scout?category=developer-tools — $0.05 category scout.
+- https://pyrimid.ai/api/v1/paid/vendor-lead-discovery?segment=mcp — $0.25 vendor lead discovery.
+- https://pyrimid.ai/api/v1/paid/mcp-server-audit?url=https://example.com/mcp — $0.10 MCP monetization audit.
+- https://pyrimid.ai/api/v1/paid/x402-integration-plan?service=agent-api — $0.10 vendor integration plan.
 
 ## MCP Tools
 POST https://pyrimid.ai/api/mcp
 
 Tools:
-- pyrimid_browse — search the product catalog
-- pyrimid_buy — purchase a product via x402
-- pyrimid_preview — preview a product before purchase
-- pyrimid_categories — list product categories
-- pyrimid_register_affiliate — get affiliate registration instructions
-- pyrimid_vendor_stats — check vendor stats
-- pyrimid_commission_check — check affiliate commission state
+- pyrimid_browse — search the product catalog.
+- pyrimid_buy — purchase a product via x402.
+- pyrimid_preview — preview a product before purchase.
+- pyrimid_categories — list product categories.
+- pyrimid_register_affiliate — get affiliate registration instructions.
+- pyrimid_vendor_stats — check vendor stats.
+- pyrimid_commission_check — check affiliate commission state.
 
 ## Contracts on Base
 - Registry: 0x34e22fc20D457095e2814CdFfad1e42980EEC389

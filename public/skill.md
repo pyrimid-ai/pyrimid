@@ -33,8 +33,18 @@ Use this skill when a user or agent wants to:
 Prefer read-only endpoints before any paid action.
 
 ```bash
-curl "https://pyrimid.ai/api/v1/catalog?query=trading&limit=10"
+curl "https://pyrimid.ai/api/v1/catalog?query=paid+mcp+tool&limit=10"
+curl "https://pyrimid.ai/api/v1/catalog?query=x402&category=devtools&limit=10"
 curl "https://pyrimid.ai/api/v1/stats"
+```
+
+## Seed Paid Products
+These live surfaces are designed for buyer-agent demos and vendor integration tests. Calling without payment returns HTTP 402 with x402 `accepts[]` metadata.
+
+```bash
+curl -i "https://pyrimid.ai/api/v1/paid/mya-agent-enrichment?agent=demo"
+curl -i "https://pyrimid.ai/api/v1/paid/mcp-server-audit?url=https://example.com/mcp"
+curl -i "https://pyrimid.ai/api/v1/paid/x402-integration-plan?service=agent-api"
 ```
 
 MCP tool-call example:

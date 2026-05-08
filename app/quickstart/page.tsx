@@ -92,13 +92,17 @@ export default function QuickstartPage() {
 
         <section className="mt-8 grid gap-4 md:grid-cols-2">
           <div className="rounded-2xl border border-[#1e2230] bg-[#0d0f14] p-6">
-            <h2 className="text-xl font-bold">Current example product</h2>
-            <div className="mt-4 space-y-2 font-mono text-xs text-[#8b90a5]">
-              <div>Vendor: Receipts</div>
-              <div>Product: onchain_0xcdef72_1</div>
-              <div>Endpoint: https://api.leoclaw.cc/analyze</div>
-              <div>Price: $0.10 USDC</div>
-              <div>Affiliate commission: 2000 bps</div>
+            <h2 className="text-xl font-bold">Live seed endpoints</h2>
+            <div className="mt-4 space-y-3 font-mono text-xs text-[#8b90a5]">
+              <div>
+                <div className="text-[#5eead4]">pragma-signal-snapshot · $0.25</div>
+                <a href="/api/v1/paid/signals" className="hover:text-[#5eead4]">GET /api/v1/paid/signals</a>
+              </div>
+              <div>
+                <div className="text-[#5eead4]">agentzone-trust-search · $0.05</div>
+                <a href="/api/v1/paid/agentzone-search?q=agent-commerce" className="hover:text-[#5eead4]">GET /api/v1/paid/agentzone-search?q=agent-commerce</a>
+              </div>
+              <div className="text-[#6f7485]">Both return 402 until buyer agents include payment proof.</div>
             </div>
           </div>
           <div className="rounded-2xl border border-[#1e2230] bg-[#0d0f14] p-6">

@@ -1,11 +1,21 @@
 {
   "name": "pyrimid",
-  "description": "Onchain affiliate distribution protocol for AI agents. Browse 100+ products, purchase via x402 USDC on Base, earn commissions.",
+  "description": "Agent-commerce infrastructure for paid MCP tools and AI/API products. Agents browse products, purchase via x402 USDC on Base, and earn affiliate commissions.",
   "protocols": ["a2a", "mcp", "x402"],
   "mcp_endpoint": "https://pyrimid.ai/api/mcp",
-  "api_docs": "https://pyrimid.ai/docs",
+  "catalog_api": "https://pyrimid.ai/api/v1/catalog",
+  "agent_discovery": "https://pyrimid.ai/agents.txt",
+  "llms": "https://pyrimid.ai/llms.txt",
+  "api_docs": "https://pyrimid.ai/quickstart",
   "proof": "https://pyrimid.ai/proof",
   "quickstart": "https://pyrimid.ai/quickstart",
   "stats": "https://pyrimid.ai/stats",
-  "url": "https://pyrimid.ai"
+  "url": "https://pyrimid.ai",
+  "intents": [
+    "sell MCP tools",
+    "buy paid APIs with x402",
+    "monetize AI agents",
+    "discover paid agent tools",
+    "earn affiliate commissions from agent commerce"
+  ]
 }

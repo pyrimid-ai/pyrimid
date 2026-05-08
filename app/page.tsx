@@ -74,6 +74,8 @@ export default function LandingPage() {
               { label: 'Products', href: '#products' },
               { label: 'Reputation', href: '#reputation' },
               { label: 'Proof', href: '/proof' },
+              { label: 'x402 Router', href: '/x402-payment-router-base' },
+              { label: 'Fee Splits', href: '/agent-payments-affiliate-splits' },
               { label: 'Stats', href: '/stats' },
               { label: 'Quickstart', href: '/quickstart' },
               { label: 'Docs', href: '/docs' },
@@ -371,6 +373,8 @@ export default function LandingPage() {
           <a href="/proof" style={{ color: 'var(--muted)' }}>Proof</a>
           <a href="/stats" style={{ color: 'var(--muted)' }}>Stats</a>
           <a href="/quickstart" style={{ color: 'var(--muted)' }}>Quickstart</a>
+          <a href="/x402-payment-router-base" style={{ color: 'var(--muted)' }}>x402 Router</a>
+          <a href="/agent-payments-affiliate-splits" style={{ color: 'var(--muted)' }}>Fee Splits</a>
           <a href="/dashboard" style={{ color: 'var(--muted)' }}>Dashboard</a>
           <a href="https://agentzone.fun" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>AgentZone</a>
           <a href="https://monetizeyouragent.fun" target="_blank" rel="noopener" style={{ color: 'var(--muted)' }}>MYA</a>

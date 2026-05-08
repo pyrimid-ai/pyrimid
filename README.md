@@ -5,12 +5,13 @@
 <h1 align="center">Pyrimid Protocol</h1>
 
 <p align="center">
-  <strong>Onchain affiliate distribution for AI agents on Base.</strong>
+  <strong>Agent-commerce infra for paid MCP tools and x402 AI/API products on Base.</strong>
 </p>
 
 <p align="center">
   <a href="https://pyrimid.ai">Website</a> ·
-  <a href="https://pyrimid.ai/docs">Documentation</a> ·
+  <a href="https://pyrimid.ai/quickstart">Quickstart</a> ·
+  <a href="https://pyrimid.ai/api/mcp">MCP Server</a> ·
   <a href="https://www.npmjs.com/package/@pyrimid/sdk">SDK on npm</a> ·
   <a href="https://basescan.org/address/0xc949AEa380D7b7984806143ddbfE519B03ABd68B">Contracts</a>
 </p>
@@ -26,7 +27,7 @@
 
 ## What is Pyrimid?
 
-Pyrimid is a protocol where **vendors list digital products**, **AI agents distribute them as affiliates**, and **commissions settle instantly in USDC** via smart contracts on Base.
+Pyrimid is a protocol where **vendors sell paid MCP tools / AI APIs**, **agents discover and buy them via x402**, and **commissions settle instantly in USDC** via smart contracts on Base.
 
 ```
 Agent discovers a product → purchases via x402 → smart contract splits payment:
@@ -108,6 +109,20 @@ const server = createPyrimidMcpServer({
 
 ---
 
+## Live buyer-agent test surfaces
+
+Call these without payment to receive HTTP 402 with x402 `accepts[]` metadata. Retry with `X-PAYMENT` or `X-PAYMENT-TX` after payment.
+
+| Endpoint | Price | Use case |
+|----------|-------|----------|
+| `/api/v1/paid/signals` | $0.25 | BTC derivatives signal snapshot |
+| `/api/v1/paid/agentzone-search?q=agent-commerce` | $0.05 | Trusted agent search |
+| `/api/v1/paid/mya-agent-enrichment?agent=demo` | $0.10 | Agent listing enrichment |
+| `/api/v1/paid/mya-category-scout?category=developer-tools` | $0.05 | Category scouting for buyer agents |
+| `/api/v1/paid/vendor-lead-discovery?segment=mcp` | $0.25 | Vendor lead discovery |
+| `/api/v1/paid/mcp-server-audit?url=https://example.com/mcp` | $0.10 | MCP monetization audit |
+| `/api/v1/paid/x402-integration-plan?service=agent-api` | $0.10 | Vendor x402 integration plan |
+
 ## Three Integration Paths
 
 | Path | Who | Effort | Leverage |
@@ -138,6 +153,7 @@ The Pyrimid API is free to read, rate-limited (60 req/min), and returns JSON.
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/v1/catalog` | `GET` | Full product catalog with search, filters, pagination |
+| `/api/v1/paid/*` | `GET` | Seed paid endpoints for x402 buyer-agent testing |
 | `/api/v1/stats` | `GET` | Protocol-level stats (volume, transactions, affiliates) |
 | `/api/v1/stats?type=affiliate&id=af_xxx` | `GET` | Affiliate performance & earnings |
 | `/api/v1/stats?type=vendor&id=vn_xxx` | `GET` | Vendor analytics |
@@ -164,7 +180,8 @@ pyrimid/
 │   ├── page.tsx               # Landing page
 │   ├── dashboard/             # Protocol dashboard
 │   └── api/
-│       ├── v1/catalog/        # Aggregated product catalog (92+ products)
+│       ├── v1/catalog/        # Aggregated product catalog
+│       ├── v1/paid/           # Seed x402 paid endpoints
 │       ├── v1/stats/          # Protocol & affiliate analytics
 │       └── mcp/               # MCP JSON-RPC endpoint
 ├── sdk/                       # @pyrimid/sdk (published to npm)
