@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSeedProduct, paymentRequirement } from '@/lib/seed-products';
 import { verifyPyrimidPaymentTx } from '@/lib/payment-verification';
+import { buildMcpServerAudit, buildVendorLeadDiscovery } from '@/lib/seed-product-payloads.mjs';
 
 function paymentRequired(req: NextRequest, product: NonNullable<ReturnType<typeof getSeedProduct>>) {
   const requirement = paymentRequirement(product, req.url);
@@ -54,28 +55,13 @@ function payload(productId: string, req: NextRequest, proof: string) {
     case 'vendor-lead-discovery': {
       const segment = query.segment || 'mcp';
       return {
-        segment,
-        leads: [
-          { segment: 'mcp', target: 'MCP servers with paid/data-heavy tools', pitch: 'Add optional x402 payment gate + Pyrimid catalog listing.' },
-          { segment: 'agent-frameworks', target: 'Agent frameworks with marketplace/plugin systems', pitch: 'Let builders sell tools to agents with Base USDC settlement.' },
-          { segment: 'api-tools', target: 'AI API services with per-call cost', pitch: 'Turn API calls into agent-purchasable products.' },
-        ],
+        lead_discovery: buildVendorLeadDiscovery(segment),
       };
     }
     case 'mcp-server-audit': {
       const url = query.url || 'https://example.com/mcp';
       return {
-        audit: {
-          url,
-          recommended_paid_tools: ['search', 'enrich', 'export', 'analyze'],
-          pricing: '$0.01-$0.25 per call depending on compute/data cost',
-          integration_steps: [
-            'Add 402 response with x402 accepts[] metadata',
-            'Register vendor/product in Pyrimid catalog',
-            'Expose tool schema in MCP server card',
-            'Add affiliateBps for distribution agents',
-          ],
-        },
+        audit: buildMcpServerAudit(url),
       };
     }
     case 'x402-integration-plan': {
