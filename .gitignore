@@ -19,6 +19,7 @@ subgraph/build/
 .env
 .env.local
 .env.*.local
+.mcpregistry_*
 
 # Vercel
 .vercel
