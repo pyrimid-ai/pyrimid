@@ -123,7 +123,30 @@ export const SEED_PRODUCTS: Omit<SeedProduct, 'indexed_at'>[] = [
     affiliate_bps: 4000,
     endpoint: `${SEED_PRODUCT_BASE}/vendor-lead-discovery?segment=mcp`,
     method: 'GET',
-    output_schema: { type: 'object', properties: { leads: { type: 'array' }, routed_by: { const: 'pyrimid' } } },
+    output_schema: {
+      type: 'object',
+      properties: {
+        segment: { type: 'string' },
+        scoring_model: { type: 'object' },
+        leads: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              target_url: { type: 'string' },
+              fit_score: { type: 'number' },
+              priority: { type: 'string' },
+              suggested_price_usdc: { type: 'string' },
+              suggested_affiliate_bps: { type: 'number' },
+              catalog_metadata: { type: 'object' },
+            },
+          },
+        },
+        next_actions: { type: 'array', items: { type: 'string' } },
+        routed_by: { const: 'pyrimid' },
+      },
+    },
     monthly_volume: 0,
     monthly_buyers: 0,
     network: 'base',
@@ -144,7 +167,25 @@ export const SEED_PRODUCTS: Omit<SeedProduct, 'indexed_at'>[] = [
     affiliate_bps: 4000,
     endpoint: `${SEED_PRODUCT_BASE}/mcp-server-audit?url=https://example.com/mcp`,
     method: 'GET',
-    output_schema: { type: 'object', properties: { audit: { type: 'object' }, routed_by: { const: 'pyrimid' } } },
+    output_schema: {
+      type: 'object',
+      properties: {
+        audit: {
+          type: 'object',
+          properties: {
+            url: { type: 'string' },
+            monetization_score: { type: 'number' },
+            detected_capabilities: { type: 'array', items: { type: 'string' } },
+            recommended_paid_tools: { type: 'array' },
+            route_shape: { type: 'object' },
+            catalog_metadata: { type: 'array' },
+            implementation_steps: { type: 'array', items: { type: 'string' } },
+            risk_notes: { type: 'array', items: { type: 'string' } },
+          },
+        },
+        routed_by: { const: 'pyrimid' },
+      },
+    },
     monthly_volume: 0,
     monthly_buyers: 0,
     network: 'base',
