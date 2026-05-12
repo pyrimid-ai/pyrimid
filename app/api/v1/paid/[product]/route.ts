@@ -24,6 +24,189 @@ function paymentRequired(req: NextRequest, product: NonNullable<ReturnType<typeo
   );
 }
 
+type VendorLead = {
+  lead_id: string;
+  segment: string;
+  target: string;
+  fit_score: number;
+  source_channels: string[];
+  why_now: string;
+  pitch: string;
+  discovery_queries: string[];
+  next_action: string;
+};
+
+function buildVendorLeadDiscovery(segment: string) {
+  const normalized = segment.toLowerCase();
+  const leadSets: Record<string, VendorLead[]> = {
+    mcp: [
+      {
+        lead_id: 'mcp-paid-data',
+        segment: 'mcp',
+        target: 'MCP servers with data-heavy or enrichment-heavy tools',
+        fit_score: 92,
+        source_channels: ['github', 'mcp directories', 'glama-like registries'],
+        why_now: 'These vendors already expose machine-usable tools, so adding a paid route is operationally small.',
+        pitch: 'Add optional x402 payment gating plus a Pyrimid catalog listing for the highest-cost tools.',
+        discovery_queries: [
+          'site:github.com \"mcp server\" enrich OR search OR export',
+          'site:github.com \"Model Context Protocol\" \"pricing\"',
+          'site:glama.ai mcp data search'
+        ],
+        next_action: 'Shortlist the top five servers whose most valuable tool already burns compute or premium data.'
+      },
+      {
+        lead_id: 'mcp-observability',
+        segment: 'mcp',
+        target: 'Observability and debugging MCP servers with expensive backend calls',
+        fit_score: 84,
+        source_channels: ['github', 'mcp directories'],
+        why_now: 'They sell high-signal operational context where pay-per-call pricing is easier to justify.',
+        pitch: 'Wrap the costly inspect or analyze actions with x402 and affiliate routing.',
+        discovery_queries: [
+          'site:github.com \"mcp\" observability',
+          'site:github.com \"mcp server\" logs metrics traces'
+        ],
+        next_action: 'Check whether the server already distinguishes cheap metadata tools from expensive analysis tools.'
+      }
+    ],
+    'agent-frameworks': [
+      {
+        lead_id: 'framework-plugin-marketplace',
+        segment: 'agent-frameworks',
+        target: 'Agent frameworks with plugin or tool marketplaces',
+        fit_score: 88,
+        source_channels: ['github', 'docs sites', 'marketplace pages'],
+        why_now: 'The framework already owns tool discovery, so Pyrimid can become the payment and affiliate layer.',
+        pitch: 'Embed Pyrimid as the default recommendation resolver for paid tools and APIs.',
+        discovery_queries: [
+          'site:github.com agent framework marketplace tools',
+          'site:github.com \"MCP\" framework plugins'
+        ],
+        next_action: 'Prioritize frameworks where tool discovery is centralized rather than fully ad hoc.'
+      }
+    ],
+    'api-tools': [
+      {
+        lead_id: 'usage-priced-apis',
+        segment: 'api-tools',
+        target: 'AI APIs with existing per-call cost or quota limits',
+        fit_score: 86,
+        source_channels: ['github', 'docs', 'pricing pages'],
+        why_now: 'They already think in usage units, so x402 is a packaging change rather than a pricing rewrite.',
+        pitch: 'Sell premium endpoints directly to agents with Base USDC settlement and affiliate distribution.',
+        discovery_queries: [
+          'site:github.com api ai pricing usage-based',
+          'site:docs.* \"per request\" ai api'
+        ],
+        next_action: 'Filter for APIs whose premium value is concentrated in a few high-cost endpoints.'
+      }
+    ]
+  };
+
+  const leads = leadSets[normalized] || leadSets.mcp;
+  return {
+    output_version: '2',
+    segment: normalized,
+    lead_count: leads.length,
+    scoring_legend: {
+      '90+': 'Immediate outreach target',
+      '80-89': 'Good target if the team already experiments with MCP or x402',
+      'below 80': 'Needs a stronger custom distribution story'
+    },
+    leads,
+    recommended_workflow: [
+      'Pick one segment and run the discovery queries.',
+      'Score vendors by whether they already expose tool-shaped interfaces.',
+      'Pitch the smallest paid route first, not a whole-platform rewrite.'
+    ]
+  };
+}
+
+function normalizeAuditUrl(rawUrl: string) {
+  try {
+    const parsed = new URL(rawUrl);
+    return {
+      original: rawUrl,
+      origin: parsed.origin,
+      hostname: parsed.hostname,
+      pathname: parsed.pathname,
+      protocol: parsed.protocol.replace(':', '')
+    };
+  } catch {
+    return {
+      original: rawUrl,
+      origin: null,
+      hostname: null,
+      pathname: null,
+      protocol: null
+    };
+  }
+}
+
+function buildMcpServerAudit(url: string) {
+  return {
+    audit_version: '2',
+    normalized_target: normalizeAuditUrl(url),
+    paid_tool_candidates: [
+      {
+        tool: 'search',
+        fit_score: 90,
+        reason: 'Search is easy to preview for free and monetize for full result sets or enrichment.'
+      },
+      {
+        tool: 'enrich',
+        fit_score: 94,
+        reason: 'Enrichment usually burns the most third-party API cost and is the cleanest x402 candidate.'
+      },
+      {
+        tool: 'export',
+        fit_score: 82,
+        reason: 'Export is often a natural premium boundary when results become operational artifacts.'
+      },
+      {
+        tool: 'analyze',
+        fit_score: 88,
+        reason: 'Analysis tools are defensible to price when they invoke model or compute-heavy workflows.'
+      }
+    ],
+    pricing_ladder: [
+      { tier: 'preview', price_usdc: 0, pattern: 'free schema, sample output, and buy path' },
+      { tier: 'standard', price_usdc: 50000, pattern: '$0.05 for lightweight lookup or search' },
+      { tier: 'premium', price_usdc: 250000, pattern: '$0.25 for enrichment or analysis with real compute/data cost' }
+    ],
+    payment_contract: {
+      required_headers: ['X-PAYMENT', 'X-PAYMENT-TX'],
+      required_402_fields: ['vendorId', 'productId', 'asset', 'network', 'maxAmountRequired', 'resource'],
+      route_shape: 'Return HTTP 402 until the buyer retries with verifiable payment proof.'
+    },
+    catalog_metadata_template: {
+      vendor_id: 'your-mcp-server',
+      product_id: 'paid_search',
+      category: 'devtools',
+      affiliate_bps: 3000,
+      network: 'base',
+      asset: 'USDC'
+    },
+    integration_steps: [
+      'Add a free preview tool and a paid execution tool.',
+      'Return x402 accepts[] metadata in the 402 response.',
+      'Register the vendor and product in the Pyrimid catalog.',
+      'Publish MCP discovery artifacts so buyer agents can find the server before purchase.'
+    ],
+    risk_notes: [
+      'Do not paywall every tool. Keep discovery and lightweight previews free.',
+      'Do not force the buyer to infer output shape after paying.',
+      'Separate expensive third-party API calls from cheap metadata lookups.'
+    ],
+    success_criteria: [
+      'A buyer can discover the tool before purchase.',
+      'The paid route returns a machine-readable 402 contract.',
+      'The post-payment payload is deterministic and matches the advertised schema.'
+    ]
+  };
+}
+
 function payload(productId: string, req: NextRequest, proof: string) {
   const query = Object.fromEntries(req.nextUrl.searchParams.entries());
 
@@ -53,30 +236,11 @@ function payload(productId: string, req: NextRequest, proof: string) {
     }
     case 'vendor-lead-discovery': {
       const segment = query.segment || 'mcp';
-      return {
-        segment,
-        leads: [
-          { segment: 'mcp', target: 'MCP servers with paid/data-heavy tools', pitch: 'Add optional x402 payment gate + Pyrimid catalog listing.' },
-          { segment: 'agent-frameworks', target: 'Agent frameworks with marketplace/plugin systems', pitch: 'Let builders sell tools to agents with Base USDC settlement.' },
-          { segment: 'api-tools', target: 'AI API services with per-call cost', pitch: 'Turn API calls into agent-purchasable products.' },
-        ],
-      };
+      return { lead_discovery: buildVendorLeadDiscovery(segment) };
     }
     case 'mcp-server-audit': {
       const url = query.url || 'https://example.com/mcp';
-      return {
-        audit: {
-          url,
-          recommended_paid_tools: ['search', 'enrich', 'export', 'analyze'],
-          pricing: '$0.01-$0.25 per call depending on compute/data cost',
-          integration_steps: [
-            'Add 402 response with x402 accepts[] metadata',
-            'Register vendor/product in Pyrimid catalog',
-            'Expose tool schema in MCP server card',
-            'Add affiliateBps for distribution agents',
-          ],
-        },
-      };
+      return { audit: buildMcpServerAudit(url) };
     }
     case 'x402-integration-plan': {
       const service = query.service || 'agent-api';
