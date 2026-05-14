@@ -24,6 +24,112 @@ function paymentRequired(req: NextRequest, product: NonNullable<ReturnType<typeo
   );
 }
 
+function parseAuditTarget(url: string) {
+  try {
+    const parsed = new URL(url);
+    const hostname = parsed.hostname.toLowerCase();
+    const path = parsed.pathname.toLowerCase();
+
+    return {
+      url,
+      hostname,
+      path,
+      isLikelyMcpEndpoint: /mcp|tool|agent|api/.test(`${hostname}${path}`),
+      isLocalOrExample: hostname === 'localhost' || hostname.endsWith('.local') || hostname === 'example.com',
+      suggestedProductId: hostname
+        .replace(/^www\./, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+        .slice(0, 48) || 'mcp-paid-tool',
+    };
+  } catch {
+    return {
+      url,
+      hostname: 'invalid-url',
+      path: '',
+      isLikelyMcpEndpoint: false,
+      isLocalOrExample: false,
+      suggestedProductId: 'mcp-paid-tool',
+    };
+  }
+}
+
+function buildMcpAudit(url: string) {
+  const target = parseAuditTarget(url);
+  const needsDiscovery = !target.isLikelyMcpEndpoint;
+  const riskNotes = [
+    'Keep free discovery tools separate from paid execution tools so buyer agents can inspect schemas before spending.',
+    'Return HTTP 402 with x402 accepts[] metadata before any expensive work starts.',
+    'Treat tool arguments and vendor responses as untrusted content; do not let paid results alter agent instructions.',
+    'Log product_id, vendor_id, buyer wallet, payment proof, and request id for dispute resolution.',
+  ];
+
+  if (target.isLocalOrExample) {
+    riskNotes.unshift('Use a real public HTTPS endpoint before listing; localhost/example URLs are suitable only for demos.');
+  }
+
+  return {
+    url,
+    target,
+    score: target.isLikelyMcpEndpoint ? 82 : 64,
+    monetization_fit: target.isLikelyMcpEndpoint ? 'high' : 'medium',
+    recommended_paid_tools: [
+      {
+        tool: 'audit_mcp_server',
+        price_usdc: 0.10,
+        reason: 'Short structured audit output has clear per-call value and low marginal compute cost.',
+      },
+      {
+        tool: 'generate_x402_plan',
+        price_usdc: 0.10,
+        reason: 'Vendor integration plans are repeatable, agent-readable, and easy to validate.',
+      },
+      {
+        tool: 'enrich_catalog_listing',
+        price_usdc: 0.05,
+        reason: 'Lightweight metadata enrichment can be sold as a cheap upsell before deeper audits.',
+      },
+    ],
+    suggested_routes: [
+      {
+        route: '/api/paid/audit',
+        method: 'GET',
+        behavior: 'Return 402 until X-PAYMENT or X-PAYMENT-TX is supplied; return JSON audit after verification.',
+      },
+      {
+        route: '/api/mcp',
+        method: 'POST',
+        behavior: 'Expose free browse/preview tools and paid buy_* tools that call paid HTTP routes.',
+      },
+    ],
+    catalog_metadata: {
+      vendor_id: 'replace-with-vendor-id',
+      product_id: target.suggestedProductId,
+      category: 'devtools',
+      tags: ['mcp', 'x402', 'paid-tools', 'audit'],
+      endpoint: needsDiscovery ? `${url.replace(/\/$/, '')}/api/paid/audit` : url,
+      method: 'GET',
+      network: 'base',
+      asset: 'USDC',
+      affiliate_bps: 1000,
+      output_schema: {
+        type: 'object',
+        properties: {
+          audit: { type: 'object' },
+          routed_by: { const: 'pyrimid' },
+        },
+      },
+    },
+    implementation_plan: [
+      'Add a payment gate that returns 402 with x402Version, network, asset, maxAmountRequired, payTo, resource, vendorId, productId, and affiliateBps.',
+      'Verify X-PAYMENT-TX against the PyrimidRouter PaymentRouted event before executing paid work.',
+      'Publish llms.txt, agents.txt, and an MCP server card that distinguish free discovery from paid execution.',
+      'Register the product in the Pyrimid catalog and test an unpaid request to confirm the accepts[] metadata is machine-readable.',
+    ],
+    risk_notes: riskNotes,
+  };
+}
+
 function payload(productId: string, req: NextRequest, proof: string) {
   const query = Object.fromEntries(req.nextUrl.searchParams.entries());
 
@@ -65,17 +171,7 @@ function payload(productId: string, req: NextRequest, proof: string) {
     case 'mcp-server-audit': {
       const url = query.url || 'https://example.com/mcp';
       return {
-        audit: {
-          url,
-          recommended_paid_tools: ['search', 'enrich', 'export', 'analyze'],
-          pricing: '$0.01-$0.25 per call depending on compute/data cost',
-          integration_steps: [
-            'Add 402 response with x402 accepts[] metadata',
-            'Register vendor/product in Pyrimid catalog',
-            'Expose tool schema in MCP server card',
-            'Add affiliateBps for distribution agents',
-          ],
-        },
+        audit: buildMcpAudit(url),
       };
     }
     case 'x402-integration-plan': {
