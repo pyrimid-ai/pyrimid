@@ -24,6 +24,113 @@ function paymentRequired(req: NextRequest, product: NonNullable<ReturnType<typeo
   );
 }
 
+function hostHint(rawUrl: string) {
+  try {
+    const parsed = new URL(rawUrl);
+    return {
+      url: parsed.toString(),
+      host: parsed.hostname,
+      slug: parsed.hostname.replace(/^www\./, '').split('.')[0] || 'mcp-server',
+      secure: parsed.protocol === 'https:',
+    };
+  } catch {
+    return {
+      url: rawUrl,
+      host: 'unknown-host',
+      slug: 'mcp-server',
+      secure: false,
+    };
+  }
+}
+
+function auditMcpServer(rawUrl: string) {
+  const target = hostHint(rawUrl);
+  const lower = rawUrl.toLowerCase();
+  const likelyCategories = [
+    lower.includes('search') || lower.includes('index') ? 'search' : null,
+    lower.includes('data') || lower.includes('api') ? 'data-api' : null,
+    lower.includes('audit') || lower.includes('security') ? 'audit' : null,
+    lower.includes('agent') || lower.includes('mcp') ? 'agent-tooling' : null,
+  ].filter(Boolean);
+  const primaryCategory = likelyCategories[0] || 'general-mcp';
+
+  const candidateTools = [
+    {
+      tool: 'preview',
+      why: 'Free or low-cost teaser that lets buyer agents inspect freshness and schema before payment.',
+      route: `/api/paid/${target.slug}/preview`,
+      suggested_price_usdc: 0,
+    },
+    {
+      tool: 'search',
+      why: 'Usage-based search maps cleanly to per-call pricing and affiliate distribution.',
+      route: `/api/paid/${target.slug}/search`,
+      suggested_price_usdc: primaryCategory === 'search' ? 0.05 : 0.03,
+    },
+    {
+      tool: 'enrich',
+      why: 'Transforms a buyer-provided URL, repo, or record into higher-value structured output.',
+      route: `/api/paid/${target.slug}/enrich`,
+      suggested_price_usdc: 0.1,
+    },
+    {
+      tool: 'export',
+      why: 'Batch output should cost more because it is larger and easier to resell downstream.',
+      route: `/api/paid/${target.slug}/export`,
+      suggested_price_usdc: 0.25,
+    },
+  ];
+
+  return {
+    url: target.url,
+    host: target.host,
+    https_ready: target.secure,
+    likely_category: primaryCategory,
+    recommended_paid_tools: candidateTools,
+    pricing: {
+      preview: '$0.00 or $0.01',
+      single_lookup: '$0.03-$0.10',
+      enriched_report: '$0.10-$0.25',
+      batch_export: '$0.25-$1.00',
+      rule: 'Price by marginal data/model cost plus value to a buyer agent; keep the first paid call below $0.25 to reduce friction.',
+    },
+    payment_route_shape: {
+      unpaid: 'Return HTTP 402 with accepts[] containing Base USDC asset, exact amount, payTo, resource, and mimeType.',
+      paid: 'Verify X-PAYMENT or X-PAYMENT-TX before returning paid data.',
+      retry: 'Buyer agent retries the same route with payment proof after x402 settlement.',
+    },
+    catalog_metadata: {
+      vendor_id: target.slug,
+      product_id: `${target.slug}-${primaryCategory}`,
+      category: primaryCategory,
+      tags: ['mcp', 'x402', 'base-usdc', primaryCategory],
+      endpoint: `${target.url.replace(/\/$/, '')}/paid/${primaryCategory}`,
+      method: 'GET',
+      affiliate_bps: 2000,
+      output_schema: {
+        type: 'object',
+        required: ['result', 'routed_by'],
+        properties: {
+          result: { type: 'object' },
+          routed_by: { const: 'pyrimid' },
+        },
+      },
+    },
+    risk_notes: [
+      target.secure ? 'HTTPS is present; keep TLS mandatory for paid routes.' : 'Use HTTPS before accepting payment proofs.',
+      'Do not return paid data before payment verification succeeds.',
+      'Keep secrets out of 402 examples, logs, query strings, and catalog metadata.',
+      'Document rate limits and cache freshness so buyer agents can price retries.',
+    ],
+    launch_checklist: [
+      'Add one unpaid 402 fixture test.',
+      'Add one paid-path verification test using a mocked valid x402 proof.',
+      'Publish llms.txt, agents.txt, and an MCP server card that point to the paid products.',
+      'List the product in the Pyrimid catalog with stable vendor_id/product_id.',
+    ],
+  };
+}
+
 function payload(productId: string, req: NextRequest, proof: string) {
   const query = Object.fromEntries(req.nextUrl.searchParams.entries());
 
@@ -65,17 +172,7 @@ function payload(productId: string, req: NextRequest, proof: string) {
     case 'mcp-server-audit': {
       const url = query.url || 'https://example.com/mcp';
       return {
-        audit: {
-          url,
-          recommended_paid_tools: ['search', 'enrich', 'export', 'analyze'],
-          pricing: '$0.01-$0.25 per call depending on compute/data cost',
-          integration_steps: [
-            'Add 402 response with x402 accepts[] metadata',
-            'Register vendor/product in Pyrimid catalog',
-            'Expose tool schema in MCP server card',
-            'Add affiliateBps for distribution agents',
-          ],
-        },
+        audit: auditMcpServer(url),
       };
     }
     case 'x402-integration-plan': {
