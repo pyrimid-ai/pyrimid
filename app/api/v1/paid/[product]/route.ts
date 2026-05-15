@@ -24,6 +24,95 @@ function paymentRequired(req: NextRequest, product: NonNullable<ReturnType<typeo
   );
 }
 
+function vendorLeadDiscovery(segment: string) {
+  const normalized = segment.trim().toLowerCase() || 'mcp';
+  const segmentProfiles: Record<string, { label: string; tags: string[]; intent: string }> = {
+    mcp: {
+      label: 'MCP servers and tool vendors',
+      tags: ['mcp-server', 'tools', 'stdio', 'streamable-http'],
+      intent: 'Monetize high-value tools with x402-gated paid endpoints.',
+    },
+    'agent-frameworks': {
+      label: 'Agent frameworks and plugin ecosystems',
+      tags: ['agent-framework', 'plugins', 'marketplace', 'tools'],
+      intent: 'Add Pyrimid as a default commerce layer for agent tool purchases.',
+    },
+    'api-tools': {
+      label: 'AI API and data-tool vendors',
+      tags: ['api', 'data', 'enrichment', 'search'],
+      intent: 'Convert per-call API value into Base USDC settlement through x402.',
+    },
+  };
+  const profile = segmentProfiles[normalized] || segmentProfiles.mcp;
+
+  const leads = [
+    {
+      name: 'MCP servers with paid or rate-limited tools',
+      source_type: 'github_search',
+      discovery_query: `topic:mcp-server ${profile.tags.join(' ')}`,
+      fit_score: 92,
+      score_reasons: ['already exposes tool interface', 'can add 402 gate without changing buyer UX', 'strong agent-discovery fit'],
+      suggested_pitch: 'List one premium tool in Pyrimid and let agents pay per call with Base USDC.',
+    },
+    {
+      name: 'Agent frameworks with plugin registries',
+      source_type: 'github_search',
+      discovery_query: 'agent framework plugin marketplace tool registry',
+      fit_score: 84,
+      score_reasons: ['aggregates tool demand', 'can distribute affiliate revenue to agent builders', 'clear recurring distribution channel'],
+      suggested_pitch: 'Bundle Pyrimid resolver support so framework users can recommend and buy paid tools.',
+    },
+    {
+      name: 'AI API wrappers with expensive upstream calls',
+      source_type: 'web_search',
+      discovery_query: `${normalized} AI API enrichment search pricing`,
+      fit_score: 79,
+      score_reasons: ['direct per-call cost', 'pricing already familiar', 'simple x402 route shape'],
+      suggested_pitch: 'Offer a low-priced paid endpoint and publish catalog metadata for buyer agents.',
+    },
+    {
+      name: 'Public agent directories',
+      source_type: 'directory_search',
+      discovery_query: 'AI agent directory MCP x402 paid tools',
+      fit_score: 71,
+      score_reasons: ['existing discovery surface', 'can route traffic to paid tools', 'good affiliate candidate'],
+      suggested_pitch: 'Add Pyrimid catalog links and earn affiliate commission on paid tool referrals.',
+    },
+  ];
+
+  return {
+    segment: normalized,
+    target_profile: profile,
+    scoring_model: {
+      max_score: 100,
+      signals: {
+        has_tool_interface: 30,
+        exposes_api_or_mcp: 25,
+        has_clear_per_call_value: 20,
+        has_existing_distribution: 15,
+        has_public_contact_or_repo: 10,
+      },
+    },
+    discovery_queries: [
+      `GitHub: topic:mcp-server ${profile.tags.join(' ')}`,
+      `GitHub: "${normalized}" "MCP" "tools"`,
+      `Web: "${normalized}" "x402" OR "paid API"`,
+      `Directory: agent tool marketplace ${normalized}`,
+    ],
+    leads,
+    clean_json_schema: {
+      required: ['name', 'source_type', 'discovery_query', 'fit_score', 'score_reasons', 'suggested_pitch'],
+      fit_score_range: '0-100',
+    },
+    outreach_next_steps: [
+      'Verify the target has a public repo, docs, or contact path.',
+      'Check whether the tool has high-cost calls, rate limits, premium data, or paid API history.',
+      'Pitch one low-friction paid endpoint with 402 metadata and Pyrimid catalog listing.',
+      'Track accepted listings and the first non-self x402 transaction.',
+    ],
+  };
+}
+
 function payload(productId: string, req: NextRequest, proof: string) {
   const query = Object.fromEntries(req.nextUrl.searchParams.entries());
 
@@ -54,12 +143,7 @@ function payload(productId: string, req: NextRequest, proof: string) {
     case 'vendor-lead-discovery': {
       const segment = query.segment || 'mcp';
       return {
-        segment,
-        leads: [
-          { segment: 'mcp', target: 'MCP servers with paid/data-heavy tools', pitch: 'Add optional x402 payment gate + Pyrimid catalog listing.' },
-          { segment: 'agent-frameworks', target: 'Agent frameworks with marketplace/plugin systems', pitch: 'Let builders sell tools to agents with Base USDC settlement.' },
-          { segment: 'api-tools', target: 'AI API services with per-call cost', pitch: 'Turn API calls into agent-purchasable products.' },
-        ],
+        vendor_lead_discovery: vendorLeadDiscovery(segment),
       };
     }
     case 'mcp-server-audit': {
