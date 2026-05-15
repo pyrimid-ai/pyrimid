@@ -123,7 +123,24 @@ export const SEED_PRODUCTS: Omit<SeedProduct, 'indexed_at'>[] = [
     affiliate_bps: 4000,
     endpoint: `${SEED_PRODUCT_BASE}/vendor-lead-discovery?segment=mcp`,
     method: 'GET',
-    output_schema: { type: 'object', properties: { leads: { type: 'array' }, routed_by: { const: 'pyrimid' } } },
+    output_schema: {
+      type: 'object',
+      properties: {
+        vendor_lead_discovery: {
+          type: 'object',
+          properties: {
+            segment: { type: 'string' },
+            target_profile: { type: 'object' },
+            scoring_model: { type: 'object' },
+            discovery_queries: { type: 'array' },
+            leads: { type: 'array' },
+            clean_json_schema: { type: 'object' },
+            outreach_next_steps: { type: 'array' },
+          },
+        },
+        routed_by: { const: 'pyrimid' },
+      },
+    },
     monthly_volume: 0,
     monthly_buyers: 0,
     network: 'base',
