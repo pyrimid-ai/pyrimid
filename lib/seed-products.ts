@@ -144,7 +144,24 @@ export const SEED_PRODUCTS: Omit<SeedProduct, 'indexed_at'>[] = [
     affiliate_bps: 4000,
     endpoint: `${SEED_PRODUCT_BASE}/mcp-server-audit?url=https://example.com/mcp`,
     method: 'GET',
-    output_schema: { type: 'object', properties: { audit: { type: 'object' }, routed_by: { const: 'pyrimid' } } },
+    output_schema: {
+      type: 'object',
+      properties: {
+        audit: {
+          type: 'object',
+          properties: {
+            target: { type: 'object' },
+            readiness: { type: 'object' },
+            recommended_paid_tools: { type: 'array' },
+            x402_route_shape: { type: 'object' },
+            pyrimid_catalog_metadata: { type: 'object' },
+            risk_notes: { type: 'array' },
+            launch_checklist: { type: 'array' },
+          },
+        },
+        routed_by: { const: 'pyrimid' },
+      },
+    },
     monthly_volume: 0,
     monthly_buyers: 0,
     network: 'base',
